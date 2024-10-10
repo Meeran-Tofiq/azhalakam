@@ -19,7 +19,7 @@ import { NodeEnvs } from "@src/common/misc";
 const app = express();
 
 // **** Setup **** //
-
+logger.info(`Environment: ${EnvVars.DatabaseURL}`);
 // Basic middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
