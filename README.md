@@ -1,32 +1,45 @@
-# Turborepo react-native starter
+# Azhalakam
 
-This is an official starter Turborepo.
+```
+           _           _       _
+  __ _ ___| |__   __ _| | __ _| | ____ _ _ __ ___
+ / _` |_  / '_ \ / _` | |/ _` | |/ / _` | '_ ` _ \
+| (_| |/ /| | | | (_| | | (_| |   < (_| | | | | | |
+ \__,_/___|_| |_|\__,_|_|\__,_|_|\_\__,_|_| |_| |_|
 
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest -e with-react-native-web
 ```
 
-## What's inside?
+## About
 
-This Turborepo includes the following packages/apps:
+Azhalakam is a mobile app that helps users with all things pet related. Our app lets you order pet food, book services for you pets like pet-sitting, walkers, and groomers, and view and compare all the local veternary clinics around you. If you like working with animals and want to make some extra cash, you can put yourself as a service provider and list whatever services that you are able to provide with your own custom fees. If you have a vet clinic and want to list your clinic on our app, you can do so with ust the click of a button!
 
-### Apps and Packages
+The app consists of a main monorepo, with two applications that are fleshed out within. The first is an Express based backend that has a PostgreSQL database and uses Prisma to facilitate all interactions with it. The frontend consists of a React Native/Expo mobile app, that then interacts with the backend to get the necessary information.
 
-- `native`: a [react-native](https://reactnative.dev/) app built with [expo](https://docs.expo.dev/)
-- `web`: a [Next.js](https://nextjs.org/) app built with [react-native-web](https://necolas.github.io/react-native-web/)
-- `@repo/ui`: a stub [react-native](https://reactnative.dev/) component library shared by both `web` and `native` applications
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+This is a capstone project made by [Meeran Saman Jalal](https://github.com/Meeran-Tofiq) and [Mohammed Fryad Saleem](https://github.com/MohammedF02), supervised by Dr. Hoger Mahmud.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## Structure of the Repo
 
-### Utilities
+This is a monorepo built using `turborepo`. The basic structure is simple:
 
-This Turborepo has some additional tools already setup for you:
+- `apps/`: Applications like the mobile frontend and the backend are stored in the `apps/` dir.
+- `packages`: Everything in `packages/` is a shared dependency between at least two applications.
 
-- [Expo](https://docs.expo.dev/) for native development
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [Prettier](https://prettier.io) for code formatting
+## Getting Started with Development/Contributing
+
+### Environment Variables
+
+### Database
+
+We use docker to host our database. We have a `docker-compose.yml` file at the root of the repo that runs and builds a container with the PostGreSQL image and correct configuration. To setup the db container:
+
+```sh
+docker compose up -d
+```
+
+The above command runs docker in a detached state.
+
+If you want to shutdown docker, you can run:
+
+```sh
+docker compose down
+```
