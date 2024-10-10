@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14 # Use PostgreSQL 14 image
+    container_name: postgre
+    environment:
+      POSTGRES_USER: azhalakam
+      POSTGRES_PASSWORD: azhalakm1234
+      POSTGRES_DB: azhalakm_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
