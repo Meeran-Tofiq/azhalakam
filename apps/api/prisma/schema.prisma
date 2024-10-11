@@ -5,10 +5,61 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id       String @id @default(uuid())
+    username String
+    password String
+    email    String @unique
+    bio      String
+
+    ServiceProvider ServiceProvider?
+    VetStore        VetStore?
+}
+
+model ServiceProvider {
+    id       String    @id @default(uuid())
+    user     User      @relation(fields: [userId], references: [id])
+    userId   String    @unique
+    services Service[]
+    rating   Float?
+}
+
+model Service {
+    id          String @id @default(uuid())
+    name        String
+    description String
+    price       Float
+
+    provider   ServiceProvider? @relation(fields: [providerId], references: [id])
+    providerId String
+
+    VetStore   VetStore? @relation(fields: [vetStoreId], references: [id])
+    vetStoreId String?
+}
+
+model VetStore {
+    id       String    @id @default(uuid())
+    services Service[]
+    rating   Float?
+
+    user   User   @relation(fields: [userId], references: [id])
+    userId String @unique
+
+    location Location?
+}
+
+model Location {
+    id         String   @id @default(uuid())
+    longitude  Float
+    latitude   Float
+    VetStore   VetStore @relation(fields: [vetStoreId], references: [id])
+    vetStoreId String   @unique
 }
