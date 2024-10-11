@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: General Issue Template
+    url: https://github.com/Meeran-Tofiq/azhalakam/issues/new
+    about: 'Please use this format for the title: "SCOPE: issue name" where scope is expo, web, api, etc.'
