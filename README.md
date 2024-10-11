@@ -22,11 +22,31 @@ This is a capstone project made by [Meeran Saman Jalal](https://github.com/Meera
 This is a monorepo built using `turborepo`. The basic structure is simple:
 
 - `apps/`: Applications like the mobile frontend and the backend are stored in the `apps/` dir.
-- `packages`: Everything in `packages/` is a shared dependency between at least two applications.
+- `packages/`: Everything in `packages/` is a shared dependency between at least two applications.
 
 ## Getting Started with Development/Contributing
 
 ### Environment Variables
+
+In general, the front and back end both have a `.env.example` file that can be copied into a `.env` file:
+
+```sh
+cp .env.example .env
+```
+
+The example file contains the format of the environment variables. If you need to add any new ones, please make sure to follow whatever convention is used for that application, and write descriptive comments for ease of understanding.
+
+#### backend
+
+In the backend, any name is acceptable and will be useable.
+
+#### frontend
+
+In the frontend, Expo is configured, by default, to make any variable with the the format of `EXPO_PUBLIC_[NAME]=value` to be available throughout the application. Like so:
+
+```
+EXPO_PUBLIC_API_URL=https://localhost:3000/api
+```
 
 ### Database
 
