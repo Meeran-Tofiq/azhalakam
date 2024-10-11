@@ -6,8 +6,8 @@ services:
     container_name: postgre
     environment:
       POSTGRES_USER: azhalakam
-      POSTGRES_PASSWORD: azhalakm1234
-      POSTGRES_DB: azhalakm_db
+      POSTGRES_PASSWORD: azhalakam1234
+      POSTGRES_DB: azhalakam_db
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
