@@ -63,3 +63,13 @@ If you want to shutdown docker, you can run:
 ```sh
 docker compose down
 ```
+
+#### Prisma Migrations
+
+To make sure the tables defined in the models of the backend are made in the database in your container, you need to run the following command:
+
+```sh
+yarn prisma:migrate
+```
+
+This will generate all the tables in the database. It is setup so that whenever there are changes in the tables, it will be updated automatically. However, just in case it doesn't work from merges and collaborative work, run the command again if the models have been changed.
