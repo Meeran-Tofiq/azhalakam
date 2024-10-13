@@ -58,6 +58,47 @@ class UserService {
 	}
 
 	/**
+	 * Get the user that the given JWT token belongs to.
+	 * @param token The JWT token to verify and get the user for.
+	 * @throws {UnauthorizedException} If the token is invalid.
+	 * @throws {NotFoundException} If no user is found with the given token.
+	 * @throws {BadRequestException} If the query fails.
+	 * @returns The user that the token belongs to.
+	 */
+	public async getOne(token: string): Promise<Partial<User>> {
+		let decoded: CustomJwtPayload;
+		let user: Partial<User> | null;
+
+		try {
+			decoded = await this.verifyToken(token);
+		} catch (error) {
+			throw new UnauthorizedException("Invalid token");
+		}
+
+		try {
+			user = await this.prisma.user.findUnique({
+				where: { id: decoded.userId },
+				select: {
+					id: true,
+					username: true,
+					email: true,
+					bio: true,
+					location: true,
+					password: false,
+					ServiceProvider: true,
+					VetStore: true,
+				},
+			});
+		} catch (error: any) {
+			throw new BadRequestException("Failed to get user");
+		}
+
+		if (!user) throw new NotFoundException("User not found.");
+
+		return user;
+	}
+
+	/**
 	 * Login user
 	 * @param email user email
 	 * @param password user password
