@@ -9,6 +9,7 @@ import prismaClient from "@src/common/PrismaClient";
 import jwt from "jsonwebtoken";
 import EnvVars from "@src/common/EnvVars";
 import bcrypt from "bcryptjs";
+import CustomJwtPayload from "@src/types/TokenPayload";
 
 // **** Variables **** //
 
@@ -84,9 +85,9 @@ class UserService {
 		return jwt.sign({ userId }, JWT_SECRET, { expiresIn: "1h" });
 	}
 
-	private verifyToken(token: string): string | object {
+	private verifyToken(token: string): CustomJwtPayload {
 		try {
-			return jwt.verify(token, JWT_SECRET);
+			return jwt.verify(token, JWT_SECRET) as CustomJwtPayload;
 		} catch (error) {
 			throw new UnauthorizedException("Invalid token");
 		}
