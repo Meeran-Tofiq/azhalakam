@@ -99,6 +99,35 @@ class UserService {
 	}
 
 	/**
+	 * Get all users.
+	 * @throws {BadRequestException} If the query fails.
+	 * @throws {NotFoundException} If no users are found.
+	 * @returns An array of all users.
+	 */
+	public async getAll(): Promise<Partial<User>[]> {
+		let users: Partial<User>[];
+
+		try {
+			users = await this.prisma.user.findMany({
+				select: {
+					id: true,
+					username: true,
+					bio: true,
+					email: false,
+					location: false,
+					password: false,
+				},
+			});
+		} catch (error) {
+			throw new BadRequestException("Failed to get users");
+		}
+
+		if (!users) throw new NotFoundException("Users not found.");
+
+		return users;
+	}
+
+	/**
 	 * Login user
 	 * @param email user email
 	 * @param password user password
