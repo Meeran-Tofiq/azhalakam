@@ -80,6 +80,42 @@ class UserService {
 		return token;
 	}
 
+	/**
+	 * Update one user
+	 * @param user user data
+	 * @param token authentication token
+	 * @returns void
+	 * @throws {NotFoundException} if user not found
+	 * @throws {UnauthorizedException} if invalid token
+	 * @throws {BadRequestException} if update fails
+	 */
+	public async updateOne(
+		updatedData: Partial<User>,
+		token: string
+	): Promise<void> {
+		let decoded: CustomJwtPayload;
+
+		try {
+			decoded = await this.verifyToken(token);
+		} catch (error) {
+			throw new UnauthorizedException("Invalid token");
+		}
+
+		const existingUser = await this.prisma.user.findUnique({
+			where: { id: decoded.userId },
+		});
+		if (!existingUser) throw new NotFoundException("User not found");
+
+		try {
+			await this.prisma.user.update({
+				where: { id: decoded.userId },
+				data: { ...updatedData },
+			});
+		} catch (error: any) {
+			throw new BadRequestException(error.message || "Failed to update user");
+		}
+	}
+
 	// **** Private Methods **** //
 	private async generateToken(userId: string): Promise<string> {
 		return jwt.sign({ userId }, JWT_SECRET, { expiresIn: "1h" });
