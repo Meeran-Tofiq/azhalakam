@@ -1,67 +1,32 @@
-import { RouteError } from '@src/common/classes';
-import HttpStatusCodes from '@src/common/HttpStatusCodes';
-
-import UserRepo from '@src/repos/UserRepo';
-import { IUser } from '@src/models/User';
-
+import {
+	BadRequestException,
+	ForbiddenException,
+	NotFoundException,
+	UnauthorizedException,
+} from "@src/common/classes";
+import { PrismaClient, User } from "@prisma/client";
+import prismaClient from "@src/common/PrismaClient";
+import jwt from "jsonwebtoken";
+import EnvVars from "@src/common/EnvVars";
 
 // **** Variables **** //
 
-export const USER_NOT_FOUND_ERR = 'User not found';
+const JWT_SECRET = EnvVars.Jwt.Secret;
 
-
-// **** Functions **** //
-
-/**
- * Get all users.
- */
-function getAll(): Promise<IUser[]> {
-  return UserRepo.getAll();
+export default class UserServiceFactory {
+	public static create(customPrismaClient?: PrismaClient) {
+		return new UserService(customPrismaClient || prismaClient);
+	}
 }
 
-/**
- * Add one user.
- */
-function addOne(user: IUser): Promise<void> {
-  return UserRepo.add(user);
+class UserService {
+	private prisma: PrismaClient;
+
+	constructor(prisma: PrismaClient) {
+		this.prisma = prisma;
+	}
+
+	// **** Public Methods **** //
+
+	// **** Private Methods **** //
 }
-
-/**
- * Update one user.
- */
-async function updateOne(user: IUser): Promise<void> {
-  const persists = await UserRepo.persists(user.id);
-  if (!persists) {
-    throw new RouteError(
-      HttpStatusCodes.NOT_FOUND,
-      USER_NOT_FOUND_ERR,
-    );
-  }
-  // Return user
-  return UserRepo.update(user);
-}
-
-/**
- * Delete a user by their id.
- */
-async function _delete(id: number): Promise<void> {
-  const persists = await UserRepo.persists(id);
-  if (!persists) {
-    throw new RouteError(
-      HttpStatusCodes.NOT_FOUND,
-      USER_NOT_FOUND_ERR,
-    );
-  }
-  // Delete user
-  return UserRepo.delete(id);
-}
-
-
-// **** Export default **** //
-
-export default {
-  getAll,
-  addOne,
-  updateOne,
-  delete: _delete,
-} as const;
