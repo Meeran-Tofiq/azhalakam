@@ -116,6 +116,37 @@ class UserService {
 		}
 	}
 
+	/**
+	 * Delete one user
+	 * @param token authentication token
+	 * @returns void
+	 * @throws {NotFoundException} if user not found
+	 * @throws {UnauthorizedException} if invalid token
+	 * @throws {BadRequestException} if delete fails
+	 */
+	public async deleteOne(token: string): Promise<void> {
+		let decoded: CustomJwtPayload;
+
+		try {
+			decoded = await this.verifyToken(token);
+		} catch (error) {
+			throw new UnauthorizedException("Invalid token");
+		}
+
+		const existingUser = await this.prisma.user.findUnique({
+			where: { id: decoded.userId },
+		});
+		if (!existingUser) throw new NotFoundException("User not found");
+
+		try {
+			await this.prisma.user.delete({
+				where: { id: decoded.userId },
+			});
+		} catch (error: any) {
+			throw new BadRequestException(error.message || "Failed to delete user");
+		}
+	}
+
 	// **** Private Methods **** //
 	private async generateToken(userId: string): Promise<string> {
 		return jwt.sign({ userId }, JWT_SECRET, { expiresIn: "1h" });
