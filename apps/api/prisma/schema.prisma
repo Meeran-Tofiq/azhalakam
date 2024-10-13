@@ -14,11 +14,12 @@ datasource db {
 }
 
 model User {
-    id       String @id @default(uuid())
+    id       String    @id @default(uuid())
     username String
     password String
-    email    String @unique
+    email    String    @unique
     bio      String
+    location Location?
 
     ServiceProvider ServiceProvider?
     VetStore        VetStore?
@@ -62,4 +63,6 @@ model Location {
     latitude   Float
     VetStore   VetStore @relation(fields: [vetStoreId], references: [id])
     vetStoreId String   @unique
+    User       User     @relation(fields: [userId], references: [id])
+    userId     String   @unique
 }
