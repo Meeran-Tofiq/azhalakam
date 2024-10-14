@@ -1,54 +1,75 @@
-import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import UserService from '@src/services/UserService';
-import User from '@src/models/User';
+import HttpStatusCodes from "@src/common/HttpStatusCodes";
+import UserServiceFactory from "@src/services/UserService";
 
-import { IReq, IRes } from './common/types';
-import check from './common/check';
+import prismaClient from "@src/common/PrismaClient";
+import { NextFunction, Request, Response } from "express";
+import { User } from "@prisma/client";
+import { UnauthorizedException } from "@src/common/classes";
 
+// **** Variables **** //
+
+const userService = UserServiceFactory.create(prismaClient);
 
 // **** Functions **** //
 
 /**
  * Get all users.
  */
-async function getAll(_: IReq, res: IRes) {
-  const users = await UserService.getAll();
-  res.status(HttpStatusCodes.OK).json({ users });
+async function getAll(_: Request, res: Response, next: NextFunction) {
+	let users: Partial<User>[];
+	try {
+		users = await userService.getAll();
+		res.status(HttpStatusCodes.OK).json({ users });
+	} catch (error) {
+		next(error);
+	}
 }
 
-/**
- * Add one user.
- */
-async function add(req: IReq, res: IRes) {
-  const user = check.isValid(req.body, 'user', User.isUser);
-  await UserService.addOne(user);
-  res.status(HttpStatusCodes.CREATED).end();
+async function getOne(req: Request, res: Response, next: NextFunction) {
+	try {
+		if (!req.decodedToken) throw new UnauthorizedException("Invalid token");
+		const user = await userService.getOne(req.decodedToken);
+		res.status(HttpStatusCodes.OK).json({ user });
+	} catch (error) {
+		next(error);
+	}
 }
 
-/**
- * Update one user.
- */
-async function update(req: IReq, res: IRes) {
-  const user = check.isValid(req.body, 'user', User.isUser);
-  await UserService.updateOne(user);
-  res.status(HttpStatusCodes.OK).end();
+async function create(req: Request, res: Response, next: NextFunction) {
+	try {
+		const token = await userService.create(req.body);
+		res.status(HttpStatusCodes.CREATED).json({ token });
+	} catch (error) {
+		next(error);
+	}
 }
 
-/**
- * Delete one user.
- */
-async function delete_(req: IReq, res: IRes) {
-  const id = check.isNum(req.params, 'id');
-  await UserService.delete(id);
-  res.status(HttpStatusCodes.OK).end();
+async function update(req: Request, res: Response, next: NextFunction) {
+	try {
+		if (!req.decodedToken) throw new UnauthorizedException("Invalid token");
+		const user = await userService.updateOne(req.body, req.decodedToken);
+		res.status(HttpStatusCodes.OK).json({ user });
+	} catch (error) {
+		next(error);
+	}
 }
 
+async function deleteOne(req: Request, res: Response, next: NextFunction) {
+	try {
+		if (!req.decodedToken) throw new UnauthorizedException("Invalid token");
+		await userService.deleteOne(req.decodedToken);
+		res.status(HttpStatusCodes.OK).json({});
+	} catch (error) {
+		next(error);
+	}
+}
 
 // **** Export default **** //
 
 export default {
-  getAll,
-  add,
-  update,
-  delete: delete_,
+	getAll,
+	getOne,
+	create,
+	update,
+	deleteOne,
 } as const;
