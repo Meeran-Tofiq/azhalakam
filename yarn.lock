@@ -3149,6 +3149,13 @@
     "@types/range-parser" "*"
     "@types/send" "*"
 
+"@types/express-validator@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/express-validator/-/express-validator-3.0.0.tgz#e6f3cab842e5ae376a1cfa11295202ec380b68d1"
+  integrity sha512-LusnB0YhTXpBT25PXyGPQlK7leE1e41Vezq1hHEUwjfkopM1Pkv2X2Ppxqh9c+w/HZ6Udzki8AJotKNjDTGdkQ==
+  dependencies:
+    express-validator "*"
+
 "@types/express@*", "@types/express@^4.17.13":
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.21.tgz#c26d4a151e60efe0084b23dc3369ebc631ed192d"
@@ -6202,6 +6209,14 @@ express-async-errors@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/express-async-errors/-/express-async-errors-3.1.1.tgz#6053236d61d21ddef4892d6bd1d736889fc9da41"
   integrity sha512-h6aK1da4tpqWSbyCa3FxB/V6Ehd4EEB15zyQq9qe75OZBp0krinNKuH4rAY+S/U/2I36vdLAUFSjQJ+TFmODng==
+
+express-validator@*, express-validator@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/express-validator/-/express-validator-7.2.0.tgz#f6077758732d52e2365bb983b1abaca51bbefba6"
+  integrity sha512-I2ByKD8panjtr8Y05l21Wph9xk7kk64UMyvJCl/fFM/3CTJq8isXYPLeKW/aZBCdb/LYNv63PwhY8khw8VWocA==
+  dependencies:
+    lodash "^4.17.21"
+    validator "~13.12.0"
 
 express@^4.17.3:
   version "4.19.2"
@@ -11904,6 +11919,11 @@ validate-npm-package-name@^3.0.0:
   integrity sha512-M6w37eVCMMouJ9V/sdPGnC5H4uDr73/+xdq0FBLO3TFFX1+7wiUY6Es328NN+y43tmY+doUdN9g9J21vqB7iLw==
   dependencies:
     builtins "^1.0.3"
+
+validator@~13.12.0:
+  version "13.12.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-13.12.0.tgz#7d78e76ba85504da3fee4fd1922b385914d4b35f"
+  integrity sha512-c1Q0mCiPlgdTVVVIJIrBuxNicYE+t/7oKeI9MWLj3fh/uq2Pxh/3eeWbVZ4OcGW1TUf53At0njHw5SMdA3tmMg==
 
 vary@~1.1.2:
   version "1.1.2"
