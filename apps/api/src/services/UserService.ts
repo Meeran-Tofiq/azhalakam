@@ -13,8 +13,6 @@ import CustomJwtPayload from "@src/types/TokenPayload";
 
 // **** Variables **** //
 
-const JWT_SECRET = EnvVars.Jwt.Secret;
-
 export default class UserServiceFactory {
 	public static create(customPrismaClient?: PrismaClient) {
 		return new UserService(customPrismaClient || prismaClient);
@@ -65,19 +63,12 @@ class UserService {
 	 * @throws {BadRequestException} If the query fails.
 	 * @returns The user that the token belongs to.
 	 */
-	public async getOne(token: string): Promise<Partial<User>> {
-		let decoded: CustomJwtPayload;
+	public async getOne(token: CustomJwtPayload): Promise<Partial<User>> {
 		let user: Partial<User> | null;
 
 		try {
-			decoded = await this.verifyToken(token);
-		} catch (error) {
-			throw new UnauthorizedException("Invalid token");
-		}
-
-		try {
 			user = await this.prisma.user.findUnique({
-				where: { id: decoded.userId },
+				where: { id: token.userId },
 				select: {
 					id: true,
 					username: true,
@@ -161,24 +152,16 @@ class UserService {
 	 */
 	public async updateOne(
 		updatedData: Partial<User>,
-		token: string
+		token: CustomJwtPayload
 	): Promise<void> {
-		let decoded: CustomJwtPayload;
-
-		try {
-			decoded = await this.verifyToken(token);
-		} catch (error) {
-			throw new UnauthorizedException("Invalid token");
-		}
-
 		const existingUser = await this.prisma.user.findUnique({
-			where: { id: decoded.userId },
+			where: { id: token.userId },
 		});
 		if (!existingUser) throw new NotFoundException("User not found");
 
 		try {
 			await this.prisma.user.update({
-				where: { id: decoded.userId },
+				where: { id: token.userId },
 				data: { ...updatedData },
 			});
 		} catch (error: any) {
@@ -194,23 +177,15 @@ class UserService {
 	 * @throws {UnauthorizedException} if invalid token
 	 * @throws {BadRequestException} if delete fails
 	 */
-	public async deleteOne(token: string): Promise<void> {
-		let decoded: CustomJwtPayload;
-
-		try {
-			decoded = await this.verifyToken(token);
-		} catch (error) {
-			throw new UnauthorizedException("Invalid token");
-		}
-
+	public async deleteOne(token: CustomJwtPayload): Promise<void> {
 		const existingUser = await this.prisma.user.findUnique({
-			where: { id: decoded.userId },
+			where: { id: token.userId },
 		});
 		if (!existingUser) throw new NotFoundException("User not found");
 
 		try {
 			await this.prisma.user.delete({
-				where: { id: decoded.userId },
+				where: { id: token.userId },
 			});
 		} catch (error: any) {
 			throw new BadRequestException(error.message || "Failed to delete user");
@@ -219,14 +194,6 @@ class UserService {
 
 	// **** Private Methods **** //
 	private async generateToken(userId: string): Promise<string> {
-		return jwt.sign({ userId }, JWT_SECRET, { expiresIn: "1h" });
-	}
-
-	private verifyToken(token: string): CustomJwtPayload {
-		try {
-			return jwt.verify(token, JWT_SECRET) as CustomJwtPayload;
-		} catch (error) {
-			throw new UnauthorizedException("Invalid token");
-		}
+		return jwt.sign({ userId }, EnvVars.Jwt.Secret, { expiresIn: "1h" });
 	}
 }

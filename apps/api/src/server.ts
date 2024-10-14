@@ -13,6 +13,7 @@ import EnvVars from "@src/common/EnvVars";
 import HttpStatusCodes from "@src/common/HttpStatusCodes";
 import { RouteError } from "@src/common/classes";
 import { NodeEnvs } from "@src/common/misc";
+import { extractJwtMiddleware } from "./middleware/JwtMiddleware";
 
 // **** Variables **** //
 
@@ -34,6 +35,9 @@ if (EnvVars.NodeEnv === NodeEnvs.Dev.valueOf()) {
 if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
 	app.use(helmet());
 }
+
+// extract JWT token
+app.use(extractJwtMiddleware);
 
 // Add APIs, must be after middleware
 app.use(Paths.Base, BaseRouter);
