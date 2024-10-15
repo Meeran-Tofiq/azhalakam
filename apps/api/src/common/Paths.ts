@@ -9,8 +9,8 @@ export default {
 		GetAll: "/all",
 		Login: "/login",
 		Create: "/create",
-		Get: "/:id",
-		Update: "/:id/update",
-		Delete: "/:id/delete",
+		Get: "/me",
+		Update: "/me/update",
+		Delete: "/me/delete",
 	},
 } as const;
