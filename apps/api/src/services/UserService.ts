@@ -120,14 +120,24 @@ class UserService {
 
 	/**
 	 * Login user
+	 * @param username user username
 	 * @param email user email
 	 * @param password user password
 	 * @returns token
 	 * @throws {NotFoundException} if user not found
 	 * @throws {UnauthorizedException} if invalid credentials
 	 */
-	public async login(email: string, password: string): Promise<string> {
-		const user = await this.prisma.user.findUnique({ where: { email } });
+	public async login(
+		username: string,
+		email: string,
+		password: string
+	): Promise<string> {
+		let user: User | null;
+		if (username) {
+			user = await this.prisma.user.findUnique({ where: { username } });
+		} else {
+			user = await this.prisma.user.findUnique({ where: { email } });
+		}
 
 		if (!user) {
 			throw new NotFoundException("User not found");
