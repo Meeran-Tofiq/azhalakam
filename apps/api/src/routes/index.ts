@@ -14,8 +14,9 @@ const userRouter = Router();
 
 // Get all users
 userRouter.get(Paths.Users.GetAll, UserRoutes.getAll);
-userRouter.get(Paths.Users.Get, UserRoutes.getOne);
+userRouter.post(Paths.Users.Login, UserRoutes.login);
 userRouter.post(Paths.Users.Create, UserRoutes.create);
+userRouter.get(Paths.Users.Get, UserRoutes.getOne);
 userRouter.put(Paths.Users.Update, UserRoutes.update);
 userRouter.delete(Paths.Users.Delete, UserRoutes.deleteOne);
 

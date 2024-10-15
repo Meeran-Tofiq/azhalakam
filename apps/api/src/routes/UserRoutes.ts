@@ -95,12 +95,24 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 	}
 }
 
+async function login(req: Request, res: Response, next: NextFunction) {
+	logger.info("Logging in...");
+
+	try {
+		const token = await userService.login(req.body.email, req.body.password);
+		res.status(HttpStatusCodes.OK).json({ token });
+	} catch (error) {
+		next(error);
+	}
+}
+
 // **** Export default **** //
 
 export default {
 	getAll,
 	getOne,
 	create,
+	login,
 	update,
 	deleteOne,
 } as const;

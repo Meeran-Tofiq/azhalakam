@@ -7,8 +7,9 @@ export default {
 	Users: {
 		Base: "/users",
 		GetAll: "/all",
-		Get: "/:id",
+		Login: "/login",
 		Create: "/create",
+		Get: "/:id",
 		Update: "/:id/update",
 		Delete: "/:id/delete",
 	},
