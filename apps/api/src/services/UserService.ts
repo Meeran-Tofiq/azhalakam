@@ -35,7 +35,7 @@ class UserService {
 	 * @throws {BadRequestException} If the user creation fails.
 	 * @returns A JWT token for the new user.
 	 */
-	public async create(user: User): Promise<string> {
+	public async create(user: Omit<User, "id">): Promise<string> {
 		try {
 			const hashedPassword = await bcrypt.hash(user.password, 10);
 			const createdUser = await this.prisma.user.create({
