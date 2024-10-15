@@ -25,7 +25,7 @@ export const extractJwtMiddleware = (
 	const authHeader = req.headers.authorization;
 
 	if (!authHeader || !authHeader.startsWith("Bearer ")) {
-		next(new UnauthorizedException("Invalid token"));
+		next();
 		return;
 	}
 

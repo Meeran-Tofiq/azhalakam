@@ -27,7 +27,8 @@ async function getAll(_: Request, res: Response, next: NextFunction) {
 
 async function getOne(req: Request, res: Response, next: NextFunction) {
 	try {
-		if (!req.decodedToken) throw new UnauthorizedException("Invalid token");
+		if (!req.decodedToken)
+			throw new UnauthorizedException("Invalid or missing token");
 		const user = await userService.getOne(req.decodedToken);
 		res.status(HttpStatusCodes.OK).json({ user });
 	} catch (error) {
@@ -46,7 +47,8 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
 async function update(req: Request, res: Response, next: NextFunction) {
 	try {
-		if (!req.decodedToken) throw new UnauthorizedException("Invalid token");
+		if (!req.decodedToken)
+			throw new UnauthorizedException("Invalid or missing token");
 		const user = await userService.updateOne(req.body, req.decodedToken);
 		res.status(HttpStatusCodes.OK).json({ user });
 	} catch (error) {
@@ -56,7 +58,8 @@ async function update(req: Request, res: Response, next: NextFunction) {
 
 async function deleteOne(req: Request, res: Response, next: NextFunction) {
 	try {
-		if (!req.decodedToken) throw new UnauthorizedException("Invalid token");
+		if (!req.decodedToken)
+			throw new UnauthorizedException("Invalid or missing token");
 		await userService.deleteOne(req.decodedToken);
 		res.status(HttpStatusCodes.OK).json({});
 	} catch (error) {
