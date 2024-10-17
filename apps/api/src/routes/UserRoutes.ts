@@ -26,7 +26,7 @@ async function getAll(_: Request, res: Response, next: NextFunction) {
 	try {
 		users = await userService.getAll();
 
-		logger.info("Successfully retrieved all users.");
+		logger.info("All users retrieved successfully.");
 		res.status(HttpStatusCodes.OK).json({ users });
 	} catch (error) {
 		next(error);
@@ -41,7 +41,7 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 			throw new UnauthorizedException("Invalid or missing token");
 		const user = await userService.getOne(req.decodedToken);
 
-		logger.info("Successfully retrieved user.");
+		logger.info("User retrieved successfully.");
 		res.status(HttpStatusCodes.OK).json({ user });
 	} catch (error) {
 		next(error);
@@ -58,7 +58,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
 	try {
 		const token = await userService.create(req.body);
 
-		logger.info("Successfully created user.");
+		logger.info("User created successfully.");
 		res.status(HttpStatusCodes.CREATED).json({ token });
 	} catch (error) {
 		next(error);
@@ -71,10 +71,10 @@ async function update(req: Request, res: Response, next: NextFunction) {
 	try {
 		if (!req.decodedToken)
 			throw new UnauthorizedException("Invalid or missing token");
-		const user = await userService.updateOne(req.body, req.decodedToken);
+		await userService.updateOne(req.body, req.decodedToken);
 
-		logger.info("Successfully updated user.");
-		res.status(HttpStatusCodes.OK).json({ user });
+		logger.info("User updated successfully.");
+		res.status(HttpStatusCodes.OK).json("User updated successfully.");
 	} catch (error) {
 		next(error);
 	}
@@ -88,8 +88,8 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 			throw new UnauthorizedException("Invalid or missing token");
 		await userService.deleteOne(req.decodedToken);
 
-		logger.info("Successfully deleted user.");
-		res.status(HttpStatusCodes.OK).json({});
+		logger.info("User deleted successfully.");
+		res.status(HttpStatusCodes.OK).json("User deleted successfully.");
 	} catch (error) {
 		next(error);
 	}
