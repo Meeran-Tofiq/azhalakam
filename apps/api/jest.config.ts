@@ -1,12 +1,10 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} **/
+const { pathsToModuleNameMapper } = require("ts-jest");
+const { compilerOptions } = require("./tsconfig");
+
 module.exports = {
+	preset: "ts-jest",
 	testEnvironment: "node",
-	transform: {
-		"^.+\\.(ts|tsx)$": "ts-jest", // Fix regex to correctly match .ts and .tsx files
-	},
-	testMatch: [
-		"**/__tests__/**/*.test.ts", // Match test files in __tests__ directory
-		"**/?(*.)+(spec|test).[jt]s?(x)", // Match any .spec or .test files
-	],
-	moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"], // Specify the file extensions Jest will look for
+	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
+		prefix: "<rootDir>/",
+	}),
 };

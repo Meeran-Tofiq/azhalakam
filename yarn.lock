@@ -8404,6 +8404,14 @@ jest-mock@^29.7.0:
     "@types/node" "*"
     jest-util "^29.7.0"
 
+jest-module-name-mapper@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/jest-module-name-mapper/-/jest-module-name-mapper-0.1.5.tgz#0b1291c4488151bc3e858c88f8c7959f8d2c1f7d"
+  integrity sha512-lUpDxar6/vh/DurBIr+CvmJA6TKtqHatLVYO0Q46EgFEtm17ksfXqXHZTj0fYOokdaW9wwzPMb8jRkOpP2VA4g==
+  dependencies:
+    chalk "^2.4.2"
+    tsconfig-paths "^3.9.0"
+
 jest-pnp-resolver@^1.2.2:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/jest-pnp-resolver/-/jest-pnp-resolver-1.2.3.tgz#930b1546164d4ad5937d5540e711d4d38d4cad2e"
@@ -12441,7 +12449,7 @@ ts-node@^10.9.2:
     v8-compile-cache-lib "^3.0.1"
     yn "3.1.1"
 
-tsconfig-paths@^3.15.0:
+tsconfig-paths@^3.15.0, tsconfig-paths@^3.9.0:
   version "3.15.0"
   resolved "https://registry.yarnpkg.com/tsconfig-paths/-/tsconfig-paths-3.15.0.tgz#5299ec605e55b1abb23ec939ef15edaf483070d4"
   integrity sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==
