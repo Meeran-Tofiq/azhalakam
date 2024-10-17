@@ -11,7 +11,7 @@ import BaseRouter from "@src/routes";
 import Paths from "@src/common/Paths";
 import EnvVars from "@src/common/EnvVars";
 import HttpStatusCodes from "@src/common/HttpStatusCodes";
-import { RouteError } from "@src/common/classes";
+import { RouteError, ValidationException } from "@src/common/classes";
 import { NodeEnvs } from "@src/common/misc";
 import { extractJwtMiddleware } from "./middleware/JwtMiddleware";
 
@@ -48,7 +48,11 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 		logger.err(err, true);
 	}
 	let status = HttpStatusCodes.BAD_REQUEST;
-	if (err instanceof RouteError) {
+	if (err instanceof ValidationException) {
+		res
+			.status(err.status)
+			.json({ error: err.message, validationErrors: err.validationErrors });
+	} else if (err instanceof RouteError) {
 		status = err.status;
 		res.status(status).json({ error: err.message });
 	}

@@ -1,4 +1,5 @@
 import HttpStatusCodes from "@src/common/HttpStatusCodes";
+import { ValidationError } from "express-validator";
 
 /**
  * Error with status code and message.
@@ -55,14 +56,11 @@ export class NotFoundException extends RouteError {
 /**
  * If route validation fails.
  */
-export class ValidationErr extends RouteError {
-	public static MSG = 'The follow parameter were missing or invalid "';
+export class ValidationException extends BadRequestException {
+	public validationErrors: ValidationError[];
 
-	public constructor(paramName: string) {
-		super(HttpStatusCodes.BAD_REQUEST, ValidationErr.GetMsg(paramName));
-	}
-
-	public static GetMsg(param: string) {
-		return ValidationErr.MSG + param + '".';
+	public constructor(errors: ValidationError[]) {
+		super("Validation failed");
+		this.validationErrors = errors;
 	}
 }
