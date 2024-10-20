@@ -15,13 +15,13 @@ datasource db {
 
 model User {
     id        String    @id @default(uuid())
+    phoneNo   String    @unique
+    username  String    @unique
+    email     String    @unique
     firstName String
     lastName  String
-    username  String    @unique
     password  String
-    email     String    @unique
-    bio       String
-    phoneNo   String    @unique
+    bio       String?
     location  Location?
 
     ServiceProvider ServiceProvider?
