@@ -11,7 +11,8 @@
 		"format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore",
 		"prisma:generate": "yarn workspace api prisma generate",
 		"prisma:migrate": "yarn workspace api prisma migrate dev",
-		"prisma:update-db": "yarn run prisma:generate && yarn run prisma:migrate"
+		"prisma:update-db": "yarn run prisma:generate && yarn run prisma:migrate",
+		"api:dev": "yarn workspace api dev"
 	},
 	"devDependencies": {
 		"prettier": "^3.1.1",
