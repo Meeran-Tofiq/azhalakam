@@ -24,16 +24,17 @@ model User {
     bio       String?
     location  Location?
 
-    ServiceProvider ServiceProvider?
-    Store           Store?
+    ServiceProvider   ServiceProvider? @relation(fields: [serviceProviderId], references: [id])
+    serviceProviderId String?          @unique
+    Store             Store?           @relation(fields: [storeId], references: [id])
+    storeId           String?          @unique
 }
 
 model ServiceProvider {
     id       String    @id @default(uuid())
-    user     User      @relation(fields: [userId], references: [id])
-    userId   String    @unique
     services Service[]
     rating   Float?
+    User     User?
 }
 
 model Service {
@@ -63,8 +64,6 @@ model Store {
     name           String
     location       String
     type           StoreType
-    userId         String       @unique
-    user           User         @relation(fields: [userId], references: [id])
     availability   Availability @relation(fields: [availabilityId], references: [id])
     availabilityId String       @unique
 
@@ -72,6 +71,7 @@ model Store {
     VetStore   VetStore?
     Location   Location? @relation(fields: [locationId], references: [id])
     locationId String?   @unique
+    User       User?
 }
 
 model PetStore {
