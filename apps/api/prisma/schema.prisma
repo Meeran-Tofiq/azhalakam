@@ -49,13 +49,24 @@ model Service {
     vetStoreId String?
 }
 
+model Availability {
+    id         String   @id @default(uuid())
+    daysOfWeek String[]
+    from       DateTime
+    to         DateTime
+    Store      Store?
+    Vet        Vet?
+}
+
 model Store {
-    id       String    @id @default(uuid())
-    name     String
-    location String
-    type     StoreType
-    userId   String    @unique
-    user     User      @relation(fields: [userId], references: [id])
+    id             String       @id @default(uuid())
+    name           String
+    location       String
+    type           StoreType
+    userId         String       @unique
+    user           User         @relation(fields: [userId], references: [id])
+    availability   Availability @relation(fields: [availabilityId], references: [id])
+    availabilityId String       @unique
 
     PetStore   PetStore?
     VetStore   VetStore?
@@ -80,12 +91,12 @@ model VetStore {
 }
 
 model Vet {
-    id            String    @id @default(uuid())
-    name          String
-    availableFrom DateTime
-    availableTo   DateTime
-    VetStore      VetStore? @relation(fields: [vetStoreId], references: [id])
-    vetStoreId    String?
+    id             String       @id @default(uuid())
+    name           String
+    VetStore       VetStore?    @relation(fields: [vetStoreId], references: [id])
+    vetStoreId     String?
+    availability   Availability @relation(fields: [availabilityId], references: [id])
+    availabilityId String       @unique
 }
 
 enum StoreType {
