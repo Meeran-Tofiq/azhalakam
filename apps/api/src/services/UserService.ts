@@ -80,7 +80,7 @@ class UserService {
 					phoneNo: true,
 					password: false,
 					ServiceProvider: true,
-					VetStore: true,
+					Store: true,
 				},
 			});
 		} catch (error: any) {

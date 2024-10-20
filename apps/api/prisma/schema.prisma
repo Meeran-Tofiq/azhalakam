@@ -25,7 +25,7 @@ model User {
     location  Location?
 
     ServiceProvider ServiceProvider?
-    VetStore        VetStore?
+    Store           Store?
 }
 
 model ServiceProvider {
@@ -49,23 +49,62 @@ model Service {
     vetStoreId String?
 }
 
-model VetStore {
+model Store {
     id       String    @id @default(uuid())
-    services Service[]
-    rating   Float?
+    name     String
+    location String
+    type     StoreType
+    userId   String    @unique
+    user     User      @relation(fields: [userId], references: [id])
 
-    user   User   @relation(fields: [userId], references: [id])
-    userId String @unique
+    PetStore   PetStore?
+    VetStore   VetStore?
+    Location   Location? @relation(fields: [locationId], references: [id])
+    locationId String?   @unique
+}
 
-    location Location?
+model PetStore {
+    id      String @id @default(uuid())
+    storeId String @unique
+    store   Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+    products Product[]
+}
+
+model VetStore {
+    id      String    @id @default(uuid())
+    storeId String    @unique
+    store   Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    Service Service[]
+    vets    Vet[]
+}
+
+model Vet {
+    id            String    @id @default(uuid())
+    name          String
+    availableFrom DateTime
+    availableTo   DateTime
+    VetStore      VetStore? @relation(fields: [vetStoreId], references: [id])
+    vetStoreId    String?
+}
+
+enum StoreType {
+    PetStore
+    VetStore
+}
+
+model Product {
+    id         String    @id @default(uuid())
+    price      Float
+    PetStore   PetStore? @relation(fields: [petStoreId], references: [id])
+    petStoreId String?
 }
 
 model Location {
-    id         String   @id @default(uuid())
-    longitude  Float
-    latitude   Float
-    VetStore   VetStore @relation(fields: [vetStoreId], references: [id])
-    vetStoreId String   @unique
-    User       User     @relation(fields: [userId], references: [id])
-    userId     String   @unique
+    id        String @id @default(uuid())
+    longitude Float
+    latitude  Float
+    User      User   @relation(fields: [userId], references: [id])
+    userId    String @unique
+    Store     Store?
 }
