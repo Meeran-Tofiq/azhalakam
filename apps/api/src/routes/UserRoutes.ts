@@ -9,6 +9,7 @@ import {
 	UnauthorizedException,
 } from "@src/common/classes";
 import logger from "jet-logger";
+import { createUserValidator } from "@src/validators/userValidator";
 
 // **** Variables **** //
 
@@ -115,7 +116,7 @@ async function login(req: Request, res: Response, next: NextFunction) {
 export default {
 	getAll,
 	getOne,
-	create,
+	create: [createUserValidator, create],
 	login,
 	update,
 	deleteOne,
