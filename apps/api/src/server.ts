@@ -4,7 +4,7 @@ import helmet from "helmet";
 import express, { Request, Response, NextFunction } from "express";
 import logger from "jet-logger";
 
-import "express-async-errors";
+// import "express-async-errors";
 
 import BaseRouter from "@src/routes";
 
@@ -47,16 +47,22 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 	if (EnvVars.NodeEnv !== NodeEnvs.Test.valueOf()) {
 		logger.err(err, true);
 	}
-	let status = HttpStatusCodes.BAD_REQUEST;
+
 	if (err instanceof ValidationException) {
 		res
 			.status(err.status)
 			.json({ error: err.message, validationErrors: err.validationErrors });
+		return;
 	} else if (err instanceof RouteError) {
-		status = err.status;
-		res.status(status).json({ error: err.message });
+		res.status(err.status).json({ error: err.message });
+		return;
 	}
-	return next(err);
+
+	// Default to internal server error if not handled above
+	res
+		.status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
+		.json({ error: "Internal Server Error" });
+	return;
 });
 
 // **** Export default **** //

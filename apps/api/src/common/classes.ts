@@ -10,6 +10,7 @@ export class RouteError extends Error {
 	public constructor(status: HttpStatusCodes, message: string) {
 		super(message);
 		this.status = status;
+		Object.setPrototypeOf(this, RouteError.prototype);
 	}
 }
 
@@ -20,6 +21,7 @@ export class RouteError extends Error {
 export class BadRequestException extends RouteError {
 	constructor(message: string) {
 		super(HttpStatusCodes.BAD_REQUEST, message);
+		Object.setPrototypeOf(this, BadRequestException.prototype);
 	}
 }
 
@@ -30,6 +32,7 @@ export class BadRequestException extends RouteError {
 export class UnauthorizedException extends RouteError {
 	constructor(message: string) {
 		super(HttpStatusCodes.UNAUTHORIZED, message);
+		Object.setPrototypeOf(this, UnauthorizedException.prototype);
 	}
 }
 
@@ -40,6 +43,7 @@ export class UnauthorizedException extends RouteError {
 export class ForbiddenException extends RouteError {
 	constructor(message: string) {
 		super(HttpStatusCodes.FORBIDDEN, message);
+		Object.setPrototypeOf(this, ForbiddenException.prototype);
 	}
 }
 
@@ -50,6 +54,7 @@ export class ForbiddenException extends RouteError {
 export class NotFoundException extends RouteError {
 	constructor(message: string) {
 		super(HttpStatusCodes.NOT_FOUND, message);
+		Object.setPrototypeOf(this, NotFoundException.prototype);
 	}
 }
 
@@ -62,5 +67,6 @@ export class ValidationException extends BadRequestException {
 	public constructor(errors: ValidationError[]) {
 		super("Validation failed");
 		this.validationErrors = errors;
+		Object.setPrototypeOf(this, ValidationException.prototype);
 	}
 }
