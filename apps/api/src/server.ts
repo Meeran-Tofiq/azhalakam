@@ -4,15 +4,16 @@ import helmet from "helmet";
 import express, { Request, Response, NextFunction } from "express";
 import logger from "jet-logger";
 
-import "express-async-errors";
+// import "express-async-errors";
 
 import BaseRouter from "@src/routes";
 
 import Paths from "@src/common/Paths";
 import EnvVars from "@src/common/EnvVars";
 import HttpStatusCodes from "@src/common/HttpStatusCodes";
-import { RouteError } from "@src/common/classes";
+import { RouteError, ValidationException } from "@src/common/classes";
 import { NodeEnvs } from "@src/common/misc";
+import { extractJwtMiddleware } from "./middleware/JwtMiddleware";
 
 // **** Variables **** //
 
@@ -35,6 +36,9 @@ if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
 	app.use(helmet());
 }
 
+// extract JWT token
+app.use(extractJwtMiddleware);
+
 // Add APIs, must be after middleware
 app.use(Paths.Base, BaseRouter);
 
@@ -43,12 +47,22 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 	if (EnvVars.NodeEnv !== NodeEnvs.Test.valueOf()) {
 		logger.err(err, true);
 	}
-	let status = HttpStatusCodes.BAD_REQUEST;
-	if (err instanceof RouteError) {
-		status = err.status;
-		res.status(status).json({ error: err.message });
+
+	if (err instanceof ValidationException) {
+		res
+			.status(err.status)
+			.json({ error: err.message, validationErrors: err.validationErrors });
+		return;
+	} else if (err instanceof RouteError) {
+		res.status(err.status).json({ error: err.message });
+		return;
 	}
-	return next(err);
+
+	// Default to internal server error if not handled above
+	res
+		.status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
+		.json({ error: "Internal Server Error" });
+	return;
 });
 
 // **** Export default **** //

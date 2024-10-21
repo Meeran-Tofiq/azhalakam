@@ -14,22 +14,28 @@ datasource db {
 }
 
 model User {
-    id       String @id @default(uuid())
-    username String
-    password String
-    email    String @unique
-    bio      String
+    id         String    @id @default(uuid())
+    phoneNo    String    @unique
+    username   String    @unique
+    email      String    @unique
+    firstName  String
+    lastName   String
+    password   String
+    bio        String?
+    location   Location? @relation(fields: [locationId], references: [id])
+    locationId String?   @unique
 
-    ServiceProvider ServiceProvider?
-    VetStore        VetStore?
+    ServiceProvider   ServiceProvider? @relation(fields: [serviceProviderId], references: [id])
+    serviceProviderId String?          @unique
+    Store             Store?           @relation(fields: [storeId], references: [id])
+    storeId           String?          @unique
 }
 
 model ServiceProvider {
     id       String    @id @default(uuid())
-    user     User      @relation(fields: [userId], references: [id])
-    userId   String    @unique
     services Service[]
     rating   Float?
+    User     User?
 }
 
 model Service {
@@ -45,21 +51,71 @@ model Service {
     vetStoreId String?
 }
 
+model Availability {
+    id         String   @id @default(uuid())
+    daysOfWeek String[]
+    from       DateTime
+    to         DateTime
+    Store      Store?
+    Vet        Vet?
+}
+
+model Store {
+    id             String       @id @default(uuid())
+    name           String
+    location       String
+    type           StoreType
+    availability   Availability @relation(fields: [availabilityId], references: [id])
+    availabilityId String       @unique
+
+    PetStore   PetStore?
+    VetStore   VetStore?
+    Location   Location? @relation(fields: [locationId], references: [id])
+    locationId String?   @unique
+    User       User?
+}
+
+model PetStore {
+    id      String @id @default(uuid())
+    storeId String @unique
+    store   Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+    products Product[]
+}
+
 model VetStore {
-    id       String    @id @default(uuid())
-    services Service[]
-    rating   Float?
+    id      String    @id @default(uuid())
+    storeId String    @unique
+    store   Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    Service Service[]
+    vets    Vet[]
+}
 
-    user   User   @relation(fields: [userId], references: [id])
-    userId String @unique
+model Vet {
+    id             String       @id @default(uuid())
+    name           String
+    VetStore       VetStore?    @relation(fields: [vetStoreId], references: [id])
+    vetStoreId     String?
+    availability   Availability @relation(fields: [availabilityId], references: [id])
+    availabilityId String       @unique
+}
 
-    location Location?
+enum StoreType {
+    PetStore
+    VetStore
+}
+
+model Product {
+    id         String    @id @default(uuid())
+    price      Float
+    PetStore   PetStore? @relation(fields: [petStoreId], references: [id])
+    petStoreId String?
 }
 
 model Location {
-    id         String   @id @default(uuid())
-    longitude  Float
-    latitude   Float
-    VetStore   VetStore @relation(fields: [vetStoreId], references: [id])
-    vetStoreId String   @unique
+    id        String @id @default(uuid())
+    longitude Float
+    latitude  Float
+    Store     Store?
+    User      User?
 }
