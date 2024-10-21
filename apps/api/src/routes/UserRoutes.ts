@@ -11,6 +11,7 @@ import {
 import logger from "jet-logger";
 import {
 	createUserValidator,
+	loginValidator,
 	updateUserValidator,
 } from "@src/validators/userValidator";
 
@@ -120,7 +121,7 @@ export default {
 	getAll,
 	getOne,
 	create: [createUserValidator, create],
-	login,
+	login: [loginValidator, login],
 	update: [updateUserValidator, update],
 	deleteOne,
 } as const;

@@ -150,3 +150,42 @@ export const updateUserValidator = [
 		.withMessage("Store id must be a string"),
 	validationHandler,
 ];
+
+// user validator for login, users can log in with either username or email
+export const loginValidator = [
+	body("username")
+		.optional()
+		.trim()
+		.escape()
+		.isString()
+		.isLength({ min: 3, max: 20 })
+		.withMessage("Username must be between 3 and 20 characters")
+		.matches(/^[a-zA-Z0-9_-]+$/)
+		.withMessage(
+			"Username can only contain letters, numbers, underscores, and hyphens."
+		),
+	body("username").custom((value, { req }) => {
+		if (req.body.email === undefined && value === undefined) {
+			throw new Error("You have to provide either username or email");
+		}
+		return true;
+	}),
+	body("email")
+		.optional()
+		.trim()
+		.escape()
+		.isEmail()
+		.withMessage("Invalid email"),
+	body("password")
+		.trim()
+		.escape()
+		.isLength({ min: 8 })
+		.withMessage("Password must be at least 8 characters long")
+		.matches(
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+		)
+		.withMessage(
+			"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+		),
+	validationHandler,
+];
