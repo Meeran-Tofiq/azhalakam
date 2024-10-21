@@ -4,5 +4,8 @@
   "private": true,
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@repo/typescript-config": "file:"
   }
 }
