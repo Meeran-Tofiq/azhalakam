@@ -9,7 +9,10 @@ import {
 	UnauthorizedException,
 } from "@src/common/classes";
 import logger from "jet-logger";
-import { createUserValidator } from "@src/validators/userValidator";
+import {
+	createUserValidator,
+	updateUserValidator,
+} from "@src/validators/userValidator";
 
 // **** Variables **** //
 
@@ -118,6 +121,6 @@ export default {
 	getOne,
 	create: [createUserValidator, create],
 	login,
-	update,
+	update: [updateUserValidator, update],
 	deleteOne,
 } as const;
