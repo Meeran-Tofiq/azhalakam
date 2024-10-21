@@ -38,6 +38,12 @@ describe("UserService Unit Tests", () => {
 				password: "password123",
 				email: "test@test.com",
 				bio: "Test bio",
+				firstName: "Test",
+				lastName: "Test",
+				phoneNo: "123456789",
+				locationId: "123",
+				serviceProviderId: "123",
+				storeId: "123",
 			};
 
 			// Mock bcrypt hash and jwt sign
@@ -63,6 +69,12 @@ describe("UserService Unit Tests", () => {
 				password: "password123",
 				email: "test@test.com",
 				bio: "Test bio",
+				firstName: "Test",
+				lastName: "Test",
+				phoneNo: "123456789",
+				locationId: "123",
+				serviceProviderId: "123",
+				storeId: "123",
 			};
 
 			(bcrypt.hash as jest.Mock).mockResolvedValue("hashedPassword");
@@ -79,12 +91,17 @@ describe("UserService Unit Tests", () => {
 	// **** LOGIN USER **** //
 	describe("login", () => {
 		it("should return a token for valid credentials if user logged in with username", async () => {
-			const mockUser: User = {
-				id: "123",
+			const mockUser: Omit<
+				User,
+				"id" | "locationId" | "serviceProviderId" | "storeId"
+			> = {
 				username: "testuser",
 				password: "hashedPassword",
 				email: "test@test.com",
 				bio: "Test bio",
+				firstName: "Test",
+				lastName: "Test",
+				phoneNo: "123456789",
 			};
 
 			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
@@ -104,12 +121,17 @@ describe("UserService Unit Tests", () => {
 		});
 
 		it("should return a token for valid credentials if user logged in with email", async () => {
-			const mockUser: User = {
-				id: "123",
+			const mockUser: Omit<
+				User,
+				"id" | "locationId" | "serviceProviderId" | "storeId"
+			> = {
 				username: "testuser",
 				password: "hashedPassword",
 				email: "test@test.com",
 				bio: "Test bio",
+				firstName: "Test",
+				lastName: "Test",
+				phoneNo: "123456789",
 			};
 
 			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
@@ -141,12 +163,17 @@ describe("UserService Unit Tests", () => {
 		});
 
 		it("should throw UnauthorizedException if password is incorrect", async () => {
-			const mockUser: User = {
-				id: "123",
+			const mockUser: Omit<
+				User,
+				"id" | "locationId" | "serviceProviderId" | "storeId"
+			> = {
 				username: "testuser",
-				password: "hashedPassword",
+				password: "password123",
 				email: "test@test.com",
 				bio: "Test bio",
+				firstName: "Test",
+				lastName: "Test",
+				phoneNo: "123456789",
 			};
 
 			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
@@ -161,10 +188,18 @@ describe("UserService Unit Tests", () => {
 	// **** GET USER **** //
 	describe("getOne", () => {
 		it("should return the user for a valid token", async () => {
-			const mockUser: Partial<User> = {
-				id: "123",
+			const mockUser: Omit<
+				User,
+				"locationId" | "serviceProviderId" | "storeId"
+			> = {
 				username: "testuser",
+				password: "password123",
+				email: "test@test.com",
 				bio: "Test bio",
+				firstName: "Test",
+				lastName: "Test",
+				phoneNo: "123456789",
+				id: "123",
 			};
 
 			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
@@ -219,12 +254,18 @@ describe("UserService Unit Tests", () => {
 	// **** UPDATE USER **** //
 	describe("updateOne", () => {
 		it("should update a user successfully", async () => {
-			const mockUser: User = {
+			const mockUser: Omit<
+				User,
+				"locationId" | "serviceProviderId" | "storeId"
+			> = {
 				id: "123",
 				username: "testuser",
 				password: "password123",
 				email: "test@test.com",
 				bio: "Test bio",
+				firstName: "Test",
+				lastName: "Test",
+				phoneNo: "123456789",
 			};
 
 			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
@@ -256,12 +297,18 @@ describe("UserService Unit Tests", () => {
 	// **** DELETE USER **** //
 	describe("deleteOne", () => {
 		it("should delete a user successfully", async () => {
-			const mockUser: User = {
+			const mockUser: Omit<
+				User,
+				"locationId" | "serviceProviderId" | "storeId"
+			> = {
 				id: "123",
 				username: "testuser",
 				password: "password123",
 				email: "test@test.com",
 				bio: "Test bio",
+				firstName: "Test",
+				lastName: "Test",
+				phoneNo: "123456789",
 			};
 
 			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
