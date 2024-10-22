@@ -1,0 +1,18 @@
+{
+	"name": "api-client",
+	"version": "0.0.0",
+	"scripts": {
+		"build": "tsc"
+	},
+	"engines": {
+		"node": ">=16.0.0"
+	},
+	"dependencies": {
+		"@prisma/client": "^5.20.0",
+		"prisma": "^5.20.0"
+	},
+	"devDependencies": {
+		"@types/node": "^22.7.8",
+		"yarn": "^1.22.22"
+	}
+}
