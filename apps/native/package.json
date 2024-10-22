@@ -21,6 +21,7 @@
     "expo-status-bar": "~1.12.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.53.0",
     "react-native": "0.74.5",
     "react-native-gesture-handler": "^2.20.0",
     "react-native-reanimated": "^3.15.5",
@@ -42,6 +43,9 @@
   },
   "jest": {
     "preset": "react-native",
-    "extensionsToTreatAsEsm": [".ts", ".tsx"]
+    "extensionsToTreatAsEsm": [
+      ".ts",
+      ".tsx"
+    ]
   }
 }
