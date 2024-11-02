@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { Button } from 'react-native-elements';
 import { useForm } from 'react-hook-form';
 import { LinearGradient } from 'expo-linear-gradient';
-import FormInput from '../components/FormInput'; 
+import FormInput from '../components/FormInput';
+import useApiClient from '../hooks/useApiClient';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/types';
 
 const { height } = Dimensions.get('window');
 
 function RegistrationScreen() {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  
   const { control, handleSubmit, formState: { errors }, watch } = useForm();
   const [focusedInputs, setFocusedInputs] = useState<{ [key: string]: boolean }>({});
+  const password = watch('password'); // Watch password to use it for retypePassword validation
+  const apiClient = useApiClient("http://192.168.3.241:3000/api"); // changed based on PC's IP
 
   const handleFocus = (field: string) => {
     setFocusedInputs({ ...focusedInputs, [field]: true });
@@ -19,17 +27,26 @@ function RegistrationScreen() {
     setFocusedInputs({ ...focusedInputs, [field]: false });
   };
 
-  // Watch password to use it for retypePassword validation
-  const password = watch('password');
+  const onSubmit = async (data: any) => {
+    try {
+      const registerData = {
+        username: data.username,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phoneNo: data.phoneNumber,
+        password: data.password,
+      };
 
-  const onSubmit = (data: any) => {
-    console.log('Username:', data.username); // For testing for now
-    console.log('First Name:', data.firstName); // For testing for now
-    console.log('Last Name:', data.lastName); // For testing for now
-    console.log('Email:', data.email); // For testing for now
-    console.log('Phone Number:', data.phoneNumber); // For testing for now
-    console.log('Password:', data.password); // For testing for now
-    console.log('Retype Password:', data.retypePassword); // For testing for now
+      const response = await apiClient.userApi.register(registerData);
+
+      Alert.alert(
+        "Registration Successful",
+        "Welcome to our app!"
+      );
+    } catch (error) {
+      Alert.alert("Registration Failed", error.message || "Something went wrong. Please try again.");
+    }
   };
 
   return (
