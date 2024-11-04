@@ -1,4 +1,5 @@
 import { User } from "@prisma/client";
+import userToken from "../utils/userToken";
 
 export type RegisterUserInput = Omit<
 	User,
@@ -10,19 +11,9 @@ export type UpdateUserInput = Partial<Omit<User, "id">>;
 
 export default class UserApi {
 	private userUrl: String;
-	private token: String | null = null;
 
 	constructor(baseUrl: String) {
 		this.userUrl = baseUrl + "/users";
-	}
-
-	/**
-	 * Sets the token to use for authenticated requests.
-	 * When you call register or login, the token is automatically set.
-	 * @param token The token to set.
-	 */
-	async setToken(token: String) {
-		this.token = token;
 	}
 
 	/**
@@ -51,7 +42,7 @@ export default class UserApi {
 	 * @returns A Promise that resolves with the JSON data of the user.
 	 */
 	async getUserFromToken() {
-		if (!this.token)
+		if (!userToken.getToken())
 			throw new Error("No token provided for this authenticated request.");
 
 		try {
@@ -59,7 +50,7 @@ export default class UserApi {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${this.token}`,
+					Authorization: `Bearer ${userToken.getToken()}`,
 				},
 			});
 
@@ -94,7 +85,7 @@ export default class UserApi {
 			}
 
 			const json = await response.json();
-			this.setToken(json.token);
+			userToken.setToken(json.token);
 
 			return json;
 		} catch (error) {
@@ -125,7 +116,7 @@ export default class UserApi {
 			}
 
 			const json = await response.json();
-			this.setToken(json.token);
+			userToken.setToken(json.token);
 
 			return json;
 		} catch (error) {
@@ -158,7 +149,7 @@ export default class UserApi {
 			}
 
 			const json = await response.json();
-			this.setToken(json.token);
+			userToken.setToken(json.token);
 
 			return json;
 		} catch (error) {
@@ -174,7 +165,7 @@ export default class UserApi {
 	 * @returns A Promise that resolves with the JSON data of the updated user.
 	 */
 	async updateUser(user: UpdateUserInput) {
-		if (!this.token)
+		if (!userToken.getToken())
 			throw new Error("No token provided for this authenticated request.");
 
 		try {
@@ -182,7 +173,7 @@ export default class UserApi {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${this.token}`,
+					Authorization: `Bearer ${userToken.getToken()}`,
 				},
 				body: JSON.stringify(user),
 			});
@@ -204,7 +195,7 @@ export default class UserApi {
 	 * @returns A Promise that resolves with the JSON data of the deleted user.
 	 */
 	async deleteUser() {
-		if (!this.token)
+		if (!userToken.getToken())
 			throw new Error("No token provided for this authenticated request.");
 
 		try {
@@ -212,7 +203,7 @@ export default class UserApi {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${this.token}`,
+					Authorization: `Bearer ${userToken.getToken()}`,
 				},
 			});
 
