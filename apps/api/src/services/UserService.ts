@@ -70,6 +70,7 @@ class UserService {
 			user = await this.prisma.user.findUnique({
 				where: { id: token.userId },
 				select: {
+					password: false,
 					id: true,
 					username: true,
 					email: true,
@@ -78,9 +79,12 @@ class UserService {
 					firstName: true,
 					lastName: true,
 					phoneNo: true,
-					password: false,
 					ServiceProvider: true,
 					Store: true,
+					pets: true,
+					locationId: true,
+					serviceProviderId: true,
+					storeId: true,
 				},
 			});
 		} catch (error: any) {
@@ -107,9 +111,7 @@ class UserService {
 					id: true,
 					username: true,
 					bio: true,
-					email: false,
-					location: false,
-					password: false,
+					pets: true,
 				},
 			});
 		} catch (error) {
