@@ -13,4 +13,12 @@ export default {
 		Update: "/me/update",
 		Delete: "/me/delete",
 	},
+	Pets: {
+		Base: "/pets",
+		GetAll: "/all",
+		Create: "/create",
+		Get: "/:petId",
+		Update: "/:petId/update",
+		Delete: "/:petId/delete",
+	},
 } as const;
