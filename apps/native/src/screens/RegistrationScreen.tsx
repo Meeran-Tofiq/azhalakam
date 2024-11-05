@@ -83,6 +83,24 @@ function RegistrationScreen() {
                         message: 'Invalid email address',
                       },
                     }
+                    : field === 'username'
+                    ? {
+                        required: 'Username is required',
+                        pattern: {
+                          value: /^[a-zA-Z0-9_-]*$/,  // Only allows letters, numbers, underscores, and hyphens
+                          message: 'Username can only contain letters, numbers, underscores, and hyphens',
+                        },
+                        minLength: {
+                          value: 3,
+                          message: 'Username must be at least 3 characters',
+                        },
+                        maxLength: {
+                          value: 20,
+                          message: 'Username must be less than 20 characters',
+                        },
+                        validate: (value: string) => 
+                          !value.includes('@') || 'Username cannot contain @ symbol',
+                      }
                   : field === 'password'
                   ? {
                       required: 'Password is required',
