@@ -1,3 +1,4 @@
+import PetApi from "./services/petApi";
 import UserApi, {
 	RegisterUserInput,
 	UpdateUserInput,
@@ -8,6 +9,7 @@ const defaultBaseUrl = "http://localhost:3000/api";
 export default class ApiClient {
 	private baseUrl: string;
 	public userApi: UserApi;
+	public petApi: PetApi;
 
 	/**
 	 * Constructs an ApiClient instance with a given base URL.
@@ -19,6 +21,7 @@ export default class ApiClient {
 	constructor(baseUrl?: string) {
 		this.baseUrl = baseUrl || defaultBaseUrl;
 		this.userApi = new UserApi(this.baseUrl);
+		this.petApi = new PetApi(this.baseUrl);
 	}
 }
 
