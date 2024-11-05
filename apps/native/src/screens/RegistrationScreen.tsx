@@ -42,7 +42,13 @@ function RegistrationScreen() {
 
       Alert.alert(
         "Registration Successful",
-        "Welcome to our app!"
+        "Welcome!",
+        [
+          {
+            text: "OK",
+            onPress: () => navigation.replace('MainPage')
+          }
+        ]
       );
     } catch (error) {
       Alert.alert("Registration Failed", error.message || "Something went wrong. Please try again.");
@@ -107,7 +113,7 @@ function RegistrationScreen() {
 
         <View style={styles.signIn}>
           <Text>Already have an account? </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text style={styles.link}>Sign In</Text>
           </TouchableOpacity>
         </View>
