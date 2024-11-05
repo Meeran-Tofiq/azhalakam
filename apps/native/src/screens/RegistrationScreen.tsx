@@ -33,7 +33,7 @@ function RegistrationScreen() {
         username: data.username,
         firstName: data.firstName,
         lastName: data.lastName,
-        email: data.email,
+        email: data.email.toLowerCase(),
         phoneNo: data.phoneNumber,
         password: data.password,
       };
