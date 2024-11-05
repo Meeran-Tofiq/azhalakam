@@ -17,7 +17,7 @@ function RegistrationScreen() {
   const { control, handleSubmit, formState: { errors }, watch } = useForm();
   const [focusedInputs, setFocusedInputs] = useState<{ [key: string]: boolean }>({});
   const password = watch('password'); // Watch password to use it for retypePassword validation
-  const apiClient = useApiClient("http://192.168.3.241:3000/api"); // changed based on PC's IP
+  const apiClient = useApiClient();
 
   const handleFocus = (field: string) => {
     setFocusedInputs({ ...focusedInputs, [field]: true });
