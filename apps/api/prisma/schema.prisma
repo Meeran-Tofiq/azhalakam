@@ -14,14 +14,17 @@ datasource db {
 }
 
 model User {
-    id         String    @id @default(uuid())
-    phoneNo    String    @unique
-    username   String    @unique
-    email      String    @unique
-    firstName  String
-    lastName   String
-    password   String
-    bio        String?
+    id        String  @id @default(uuid())
+    phoneNo   String  @unique
+    username  String  @unique
+    email     String  @unique
+    firstName String
+    lastName  String
+    password  String
+    bio       String?
+
+    pets Pet[]
+
     location   Location? @relation(fields: [locationId], references: [id])
     locationId String?   @unique
 
@@ -29,6 +32,42 @@ model User {
     serviceProviderId String?          @unique
     Store             Store?           @relation(fields: [storeId], references: [id])
     storeId           String?          @unique
+}
+
+enum Species {
+    Cat
+    Dog
+    Lizard
+    Snake
+    Fish
+    Hamster
+    Rabbit
+    Ferret
+    GuineaPig
+    Horse
+    Amphibian
+    Insect
+    Rodent
+    Bird
+}
+
+enum Gender {
+    Male
+    Female
+    NotSpecified
+}
+
+model Pet {
+    id           String    @id @default(uuid())
+    name         String
+    species      Species
+    age          Int?
+    gender       Gender?
+    weight       Float?
+    lastVetVisit DateTime?
+    notes        String?
+    User         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId       String
 }
 
 model ServiceProvider {

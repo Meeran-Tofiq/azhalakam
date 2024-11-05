@@ -56,11 +56,11 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 async function create(req: Request, res: Response, next: NextFunction) {
 	logger.info("Creating user...");
 
-	if (!req.body) {
-		throw new BadRequestException("Missing body");
-	}
-
 	try {
+		if (!req.body) {
+			throw new BadRequestException("Missing body");
+		}
+
 		const token = await userService.create(req.body);
 
 		logger.info("User created successfully.");
