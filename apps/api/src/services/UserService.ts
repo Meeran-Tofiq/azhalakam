@@ -84,7 +84,6 @@ class UserService {
 					pets: true,
 					locationId: true,
 					serviceProviderId: true,
-					storeId: true,
 				},
 			});
 		} catch (error: any) {
