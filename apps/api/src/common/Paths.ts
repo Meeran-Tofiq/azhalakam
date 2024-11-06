@@ -21,4 +21,12 @@ export default {
 		Update: "/:petId/update",
 		Delete: "/:petId/delete",
 	},
+	Stores: {
+		Base: "/stores",
+		GetAll: "/all",
+		Create: "/create",
+		Get: "/:storeId",
+		Update: "/:storeId/update",
+		Delete: "/:storeId/delete",
+	},
 } as const;
