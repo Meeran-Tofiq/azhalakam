@@ -30,8 +30,7 @@ model User {
 
     ServiceProvider   ServiceProvider? @relation(fields: [serviceProviderId], references: [id])
     serviceProviderId String?          @unique
-    Store             Store?           @relation(fields: [storeId], references: [id])
-    storeId           String?          @unique
+    Store             Store?
 }
 
 enum Species {
@@ -99,27 +98,33 @@ model Availability {
     Vet        Vet?
 }
 
-model Store {
-    id             String       @id @default(uuid())
-    name           String
-    location       String
-    type           StoreType
-    availability   Availability @relation(fields: [availabilityId], references: [id])
-    availabilityId String       @unique
+enum StoreType {
+    PetStore
+    VetStore
+}
 
-    PetStore   PetStore?
-    VetStore   VetStore?
-    Location   Location? @relation(fields: [locationId], references: [id])
-    locationId String?   @unique
-    User       User?
+model Store {
+    id       String    @id @default(uuid())
+    name     String
+    type     StoreType
+    species  Species[]
+    products Product[]
+
+    availability   Availability? @relation(fields: [availabilityId], references: [id])
+    availabilityId String?       @unique
+    location       Location?     @relation(fields: [locationId], references: [id])
+    locationId     String?       @unique
+    User           User?         @relation(fields: [userId], references: [id])
+    userId         String?       @unique
+
+    PetStore PetStore?
+    VetStore VetStore?
 }
 
 model PetStore {
     id      String @id @default(uuid())
     storeId String @unique
     store   Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
-
-    products Product[]
 }
 
 model VetStore {
@@ -139,16 +144,11 @@ model Vet {
     availabilityId String       @unique
 }
 
-enum StoreType {
-    PetStore
-    VetStore
-}
-
 model Product {
-    id         String    @id @default(uuid())
-    price      Float
-    PetStore   PetStore? @relation(fields: [petStoreId], references: [id])
-    petStoreId String?
+    id      String  @id @default(uuid())
+    price   Float
+    store   Store?  @relation(fields: [storeId], references: [id])
+    storeId String?
 }
 
 model Location {
