@@ -7,12 +7,14 @@ import FormInput from '../components/FormInput';
 import useApiClient from '../hooks/useApiClient';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useAuth } from '../context/AuthContext';
 import { RootStackParamList } from '../types/types';
 
 const { height } = Dimensions.get('window');
 
 function RegistrationScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const { login } = useAuth();
   
   const { control, handleSubmit, formState: { errors }, watch } = useForm();
   const [focusedInputs, setFocusedInputs] = useState<{ [key: string]: boolean }>({});
@@ -39,6 +41,8 @@ function RegistrationScreen() {
       };
 
       const response = await apiClient.userApi.register(registerData);
+
+      await login(response);
 
       Alert.alert(
         "Registration Successful",
