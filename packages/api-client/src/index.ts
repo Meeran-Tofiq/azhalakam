@@ -1,4 +1,5 @@
 import PetApi from "./services/petApi";
+import StoreApi from "./services/storeApi";
 import UserApi, {
 	RegisterUserInput,
 	UpdateUserInput,
@@ -10,6 +11,7 @@ export default class ApiClient {
 	private baseUrl: string;
 	public userApi: UserApi;
 	public petApi: PetApi;
+	public storeApi: StoreApi;
 
 	/**
 	 * Constructs an ApiClient instance with a given base URL.
@@ -22,6 +24,7 @@ export default class ApiClient {
 		this.baseUrl = baseUrl || defaultBaseUrl;
 		this.userApi = new UserApi(this.baseUrl);
 		this.petApi = new PetApi(this.baseUrl);
+		this.storeApi = new StoreApi(this.baseUrl);
 	}
 }
 

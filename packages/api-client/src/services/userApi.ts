@@ -3,9 +3,9 @@ import userToken from "../utils/userToken";
 
 export type RegisterUserInput = Omit<
 	User,
-	"bio" | "locationId" | "serviceProviderId" | "storeId" | "id"
+	"bio" | "locationId" | "serviceProviderId" | "id"
 > &
-	Partial<Pick<User, "bio" | "locationId" | "serviceProviderId" | "storeId">>;
+	Partial<Pick<User, "bio" | "locationId" | "serviceProviderId">>;
 
 export type UpdateUserInput = Partial<Omit<User, "id">>;
 
