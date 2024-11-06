@@ -3,7 +3,6 @@ import userToken from "../utils/userToken";
 
 export default class PetApi {
 	private petUrl: String;
-	private token: String | null = null;
 
 	constructor(baseUrl: String) {
 		this.petUrl = baseUrl + "/pets";
@@ -22,7 +21,9 @@ export default class PetApi {
 			);
 
 		try {
-			const response = await fetch(`${this.petUrl}/all`);
+			const response = await fetch(`${this.petUrl}/all`, {
+				headers: { Authorization: `Bearer ${userToken.getToken()}` },
+			});
 
 			if (!response.ok) {
 				throw new Error(response.statusText);
@@ -79,7 +80,7 @@ export default class PetApi {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${this.token}`,
+					Authorization: `Bearer ${userToken.getToken()}`,
 				},
 				body: JSON.stringify(pet),
 			});
@@ -108,7 +109,6 @@ export default class PetApi {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${this.token}`,
 				},
 				body: JSON.stringify(pet),
 			});
