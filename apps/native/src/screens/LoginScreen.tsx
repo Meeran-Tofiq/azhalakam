@@ -41,7 +41,16 @@ function LoginScreen() {
         );
       }
       
-      Alert.alert("Login Successful", "Welcome back!");
+      Alert.alert(
+        "Login Successful", 
+        "Welcome back!",
+        [
+          {
+            text: "OK",
+            onPress: () => navigation.replace('MainPage')
+          }
+        ]
+      );
     } catch (error) {
       Alert.alert("Login Failed", error.message || "Invalid credentials. Please try again.");
     }
