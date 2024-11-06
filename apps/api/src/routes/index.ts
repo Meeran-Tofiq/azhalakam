@@ -41,6 +41,7 @@ storeRouter.delete(Paths.Stores.Delete, StoreRoutes.deleteOne);
 // Add UserRouter
 apiRouter.use(Paths.Users.Base, userRouter);
 apiRouter.use(Paths.Pets.Base, petRouter);
+apiRouter.use(Paths.Stores.Base, storeRouter);
 
 // **** Export default **** //
 
