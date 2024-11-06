@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import FormInput from '../components/FormInput';
 import useApiClient from '../hooks/useApiClient';
+import { useAuth } from '../context/AuthContext';
 import { RootStackParamList } from '../types/types';
 
 const { height } = Dimensions.get('window');
@@ -16,7 +17,7 @@ function LoginScreen() {
   const [focusedInputs, setFocusedInputs] = useState<{ [key: string]: boolean }>({});
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const apiClient = useApiClient();
-  
+  const { login } = useAuth();
 
   const handleFocus = (field: string) => {
     setFocusedInputs({ ...focusedInputs, [field]: true });
@@ -40,6 +41,8 @@ function LoginScreen() {
           data.password
         );
       }
+
+      await login(response);
       
       Alert.alert(
         "Login Successful", 
