@@ -22,6 +22,20 @@ export default {
 		Delete: "/:petId/delete",
 	},
 	Stores: {
+		PetStores: {
+			Base: "/:storeId/petStores",
+			Create: "/create",
+			Get: "/:petStoreId",
+			Update: "/:petStoreId/update",
+			Delete: "/:petStoreId/delete",
+		},
+		VetStores: {
+			Base: "/vetStores",
+			Create: "/create",
+			Get: "/:vetStoreId",
+			Update: "/:vetStoreId/update",
+			Delete: "/:vetStoreId/delete",
+		},
 		Base: "/stores",
 		GetAll: "/all",
 		Create: "/create",
