@@ -7,17 +7,19 @@ import FormInput from '../components/FormInput';
 import useApiClient from '../hooks/useApiClient';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useAuth } from '../context/AuthContext';
 import { RootStackParamList } from '../types/types';
 
 const { height } = Dimensions.get('window');
 
 function RegistrationScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const { login } = useAuth();
   
   const { control, handleSubmit, formState: { errors }, watch } = useForm();
   const [focusedInputs, setFocusedInputs] = useState<{ [key: string]: boolean }>({});
   const password = watch('password'); // Watch password to use it for retypePassword validation
-  const apiClient = useApiClient("http://192.168.3.241:3000/api"); // changed based on PC's IP
+  const apiClient = useApiClient();
 
   const handleFocus = (field: string) => {
     setFocusedInputs({ ...focusedInputs, [field]: true });
@@ -33,16 +35,24 @@ function RegistrationScreen() {
         username: data.username,
         firstName: data.firstName,
         lastName: data.lastName,
-        email: data.email,
+        email: data.email.toLowerCase(),
         phoneNo: data.phoneNumber,
         password: data.password,
       };
 
       const response = await apiClient.userApi.register(registerData);
 
+      await login(response);
+
       Alert.alert(
         "Registration Successful",
-        "Welcome to our app!"
+        "Welcome!",
+        [
+          {
+            text: "OK",
+            onPress: () => navigation.replace('MainPage')
+          }
+        ]
       );
     } catch (error) {
       Alert.alert("Registration Failed", error.message || "Something went wrong. Please try again.");
@@ -77,6 +87,24 @@ function RegistrationScreen() {
                         message: 'Invalid email address',
                       },
                     }
+                    : field === 'username'
+                    ? {
+                        required: 'Username is required',
+                        pattern: {
+                          value: /^[a-zA-Z0-9_-]*$/,  // Only allows letters, numbers, underscores, and hyphens
+                          message: 'Username can only contain letters, numbers, underscores, and hyphens',
+                        },
+                        minLength: {
+                          value: 3,
+                          message: 'Username must be at least 3 characters',
+                        },
+                        maxLength: {
+                          value: 20,
+                          message: 'Username must be less than 20 characters',
+                        },
+                        validate: (value: string) => 
+                          !value.includes('@') || 'Username cannot contain @ symbol',
+                      }
                   : field === 'password'
                   ? {
                       required: 'Password is required',
@@ -107,7 +135,7 @@ function RegistrationScreen() {
 
         <View style={styles.signIn}>
           <Text>Already have an account? </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text style={styles.link}>Sign In</Text>
           </TouchableOpacity>
         </View>
