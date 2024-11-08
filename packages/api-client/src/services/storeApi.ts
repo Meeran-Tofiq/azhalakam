@@ -1,12 +1,14 @@
 import { Store } from "@prisma/client";
 import userToken from "../utils/userToken";
+import PetStoreApi from "./petStoreApi";
 
 export default class StoreApi {
-	private storeUrl: String;
-	private token: String | null = null;
+	private storeUrl: string;
+	public petStoreApi: PetStoreApi;
 
-	constructor(baseUrl: String) {
+	constructor(baseUrl: string) {
 		this.storeUrl = baseUrl + "/stores";
+		this.petStoreApi = new PetStoreApi(this.storeUrl);
 	}
 
 	/**
@@ -68,7 +70,7 @@ export default class StoreApi {
 	 * belongs to. Requires a token of a user to be set.
 	 * @param store The data to create the store with.
 	 * @throws {Error} If the request fails or the response is not ok.
-	 * @returns void
+	 * @returns voids
 	 */
 	async createStore(
 		store: Omit<Store, "id" | "userId" | "availabilityId" | "locationId">
