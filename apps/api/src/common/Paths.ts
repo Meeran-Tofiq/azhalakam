@@ -30,7 +30,7 @@ export default {
 			Delete: "/:petStoreId/delete",
 		},
 		VetStores: {
-			Base: "/vetStores",
+			Base: "/:storeId/vetStores",
 			Create: "/create",
 			Get: "/:vetStoreId",
 			Update: "/:vetStoreId/update",
