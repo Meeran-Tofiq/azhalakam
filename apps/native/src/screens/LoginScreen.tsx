@@ -18,6 +18,7 @@ import useApiClient from "../hooks/useApiClient";
 import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
 import validationRules from "../validation/validationRules";
+import GradientBackground from "../components/GradientBackground";
 
 const { height } = Dimensions.get("window");
 
@@ -76,12 +77,7 @@ function LoginScreen() {
 
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
-			<LinearGradient
-				colors={["#4552CB", "#4596EA"]}
-				style={styles.topBackground}
-				start={{ x: 1, y: 0 }}
-				end={{ x: 0, y: 1 }}
-			/>
+			<GradientBackground />
 
 			<View style={styles.contentContainer}>
 				<Text style={styles.title}>Sign In</Text>
@@ -134,13 +130,6 @@ const styles = StyleSheet.create({
 	container: {
 		flexGrow: 1,
 		backgroundColor: "#F0F4F8",
-	},
-	topBackground: {
-		height: height * 0.4,
-		position: "absolute",
-		top: 0,
-		left: 0,
-		right: 0,
 	},
 	contentContainer: {
 		marginTop: height * 0.1,
