@@ -48,7 +48,9 @@ describe("UserService Unit Tests", () => {
 
 			// Mock bcrypt hash and jwt sign
 			(bcrypt.hash as jest.Mock).mockResolvedValue("hashedPassword");
-			(prismaMock.user.create as jest.Mock).mockResolvedValue({ id: "123" });
+			(prismaMock.user.create as jest.Mock).mockResolvedValue({
+				id: "123",
+			});
 			(jwt.sign as jest.Mock).mockReturnValue("token123");
 
 			const result = await userService.create(mockUser);
@@ -104,11 +106,17 @@ describe("UserService Unit Tests", () => {
 				phoneNo: "123456789",
 			};
 
-			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
+			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(
+				mockUser
+			);
 			(bcrypt.compare as jest.Mock).mockResolvedValue(true);
 			(jwt.sign as jest.Mock).mockReturnValue("token123");
 
-			const result = await userService.login("testuser", "", "password123");
+			const result = await userService.login(
+				"testuser",
+				"",
+				"password123"
+			);
 
 			expect(prismaMock.user.findUnique).toHaveBeenCalledWith({
 				where: { username: "testuser" },
@@ -134,7 +142,9 @@ describe("UserService Unit Tests", () => {
 				phoneNo: "123456789",
 			};
 
-			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
+			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(
+				mockUser
+			);
 			(bcrypt.compare as jest.Mock).mockResolvedValue(true);
 			(jwt.sign as jest.Mock).mockReturnValue("token123");
 
@@ -176,7 +186,9 @@ describe("UserService Unit Tests", () => {
 				phoneNo: "123456789",
 			};
 
-			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
+			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(
+				mockUser
+			);
 			(bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
 			await expect(
@@ -202,7 +214,9 @@ describe("UserService Unit Tests", () => {
 				id: "123",
 			};
 
-			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
+			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(
+				mockUser
+			);
 
 			const token = { userId: "123" }; // Mock JWT payload
 
@@ -236,7 +250,9 @@ describe("UserService Unit Tests", () => {
 				},
 			];
 
-			(prismaMock.user.findMany as jest.Mock).mockResolvedValue(mockUsers);
+			(prismaMock.user.findMany as jest.Mock).mockResolvedValue(
+				mockUsers
+			);
 
 			const result = await userService.getAll();
 
@@ -247,7 +263,9 @@ describe("UserService Unit Tests", () => {
 		it("should throw NotFoundException if users are not found", async () => {
 			(prismaMock.user.findMany as jest.Mock).mockResolvedValue(null);
 
-			await expect(userService.getAll()).rejects.toThrow(NotFoundException);
+			await expect(userService.getAll()).rejects.toThrow(
+				NotFoundException
+			);
 		});
 	});
 
@@ -268,7 +286,9 @@ describe("UserService Unit Tests", () => {
 				phoneNo: "123456789",
 			};
 
-			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
+			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(
+				mockUser
+			);
 			(prismaMock.user.update as jest.Mock).mockResolvedValue(mockUser);
 
 			const token = { userId: "123" };
@@ -288,9 +308,9 @@ describe("UserService Unit Tests", () => {
 			const token = { userId: "unknownId" };
 			const updatedData = { username: "updatedUser" };
 
-			await expect(userService.updateOne(updatedData, token)).rejects.toThrow(
-				NotFoundException
-			);
+			await expect(
+				userService.updateOne(updatedData, token)
+			).rejects.toThrow(NotFoundException);
 		});
 	});
 
@@ -311,7 +331,9 @@ describe("UserService Unit Tests", () => {
 				phoneNo: "123456789",
 			};
 
-			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
+			(prismaMock.user.findUnique as jest.Mock).mockResolvedValue(
+				mockUser
+			);
 			(prismaMock.user.delete as jest.Mock).mockResolvedValue(mockUser);
 
 			const token = { userId: "123" };

@@ -179,7 +179,9 @@ class UserService {
 				data: { ...updatedData },
 			});
 		} catch (error: any) {
-			throw new BadRequestException(error.message || "Failed to update user");
+			throw new BadRequestException(
+				error.message || "Failed to update user"
+			);
 		}
 	}
 
@@ -202,7 +204,9 @@ class UserService {
 				where: { id: token.userId },
 			});
 		} catch (error: any) {
-			throw new BadRequestException(error.message || "Failed to delete user");
+			throw new BadRequestException(
+				error.message || "Failed to delete user"
+			);
 		}
 	}
 

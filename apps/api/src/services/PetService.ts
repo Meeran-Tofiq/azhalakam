@@ -46,7 +46,9 @@ class PetService {
 
 			return createdPet.id;
 		} catch (error: any) {
-			throw new BadRequestException(error.message || "Failed to create pet");
+			throw new BadRequestException(
+				error.message || "Failed to create pet"
+			);
 		}
 	}
 
@@ -126,7 +128,10 @@ class PetService {
 	 * @throws {BadRequestException} If the update fails
 	 * @returns void
 	 */
-	public async updateOne(id: string, updatedData: Partial<Pet>): Promise<void> {
+	public async updateOne(
+		id: string,
+		updatedData: Partial<Pet>
+	): Promise<void> {
 		const existingPet = await this.prisma.pet.findUnique({
 			where: { id },
 		});
@@ -138,7 +143,9 @@ class PetService {
 				data: { ...updatedData },
 			});
 		} catch (error: any) {
-			throw new BadRequestException(error.message || "Failed to update pet");
+			throw new BadRequestException(
+				error.message || "Failed to update pet"
+			);
 		}
 	}
 
@@ -160,7 +167,9 @@ class PetService {
 				where: { id },
 			});
 		} catch (error: any) {
-			throw new BadRequestException(error.message || "Failed to delete pet");
+			throw new BadRequestException(
+				error.message || "Failed to delete pet"
+			);
 		}
 	}
 }

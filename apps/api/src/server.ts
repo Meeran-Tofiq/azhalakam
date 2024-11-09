@@ -49,9 +49,10 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 	}
 
 	if (err instanceof ValidationException) {
-		res
-			.status(err.status)
-			.json({ error: err.message, validationErrors: err.validationErrors });
+		res.status(err.status).json({
+			error: err.message,
+			validationErrors: err.validationErrors,
+		});
 		return;
 	} else if (err instanceof RouteError) {
 		res.status(err.status).json({ error: err.message });
@@ -59,9 +60,9 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 	}
 
 	// Default to internal server error if not handled above
-	res
-		.status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
-		.json({ error: "Internal Server Error" });
+	res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({
+		error: "Internal Server Error",
+	});
 	return;
 });
 
