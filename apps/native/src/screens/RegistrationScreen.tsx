@@ -19,6 +19,7 @@ import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
 import validationRules from "../validation/validationRules";
 import GradientBackground from "../components/GradientBackground";
+import SignInPrompt from "../components/SignInPrompt";
 
 const { height } = Dimensions.get("window");
 
@@ -128,14 +129,7 @@ function RegistrationScreen() {
 					/>
 				</View>
 
-				<View style={styles.signIn}>
-					<Text>Already have an account? </Text>
-					<TouchableOpacity
-						onPress={() => navigation.navigate("Login")}
-					>
-						<Text style={styles.link}>Sign In</Text>
-					</TouchableOpacity>
-				</View>
+				<SignInPrompt />
 			</View>
 		</ScrollView>
 	);
@@ -175,10 +169,6 @@ const styles = StyleSheet.create({
 		borderRadius: 28,
 		width: "100%",
 		paddingVertical: 15,
-	},
-	signIn: {
-		flexDirection: "row",
-		marginTop: 20,
 	},
 	link: {
 		color: "#4A90E2",

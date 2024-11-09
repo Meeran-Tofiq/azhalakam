@@ -19,6 +19,7 @@ import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
 import validationRules from "../validation/validationRules";
 import GradientBackground from "../components/GradientBackground";
+import RegisterPrompt from "../components/RegisterPrompt";
 
 const { height } = Dimensions.get("window");
 
@@ -113,14 +114,7 @@ function LoginScreen() {
 					/>
 				</View>
 
-				<View style={styles.register}>
-					<Text>Don't have an account yet? </Text>
-					<TouchableOpacity
-						onPress={() => navigation.navigate("Registration")}
-					>
-						<Text style={styles.link}>Register</Text>
-					</TouchableOpacity>
-				</View>
+				<RegisterPrompt />
 			</View>
 		</ScrollView>
 	);
@@ -160,10 +154,6 @@ const styles = StyleSheet.create({
 		borderRadius: 28,
 		width: "100%",
 		paddingVertical: 15,
-	},
-	register: {
-		flexDirection: "row",
-		marginTop: 20,
 	},
 	link: {
 		color: "#4A90E2",
