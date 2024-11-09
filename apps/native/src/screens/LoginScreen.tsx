@@ -65,7 +65,7 @@ function LoginScreen() {
 					onPress: () => navigation.replace("MainPage"),
 				},
 			]);
-		} catch (error) {
+		} catch (error: any) {
 			Alert.alert(
 				"Login Failed",
 				error.message || "Invalid credentials. Please try again."

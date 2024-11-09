@@ -66,7 +66,7 @@ function RegistrationScreen() {
 					onPress: () => navigation.replace("MainPage"),
 				},
 			]);
-		} catch (error) {
+		} catch (error: any) {
 			Alert.alert(
 				"Registration Failed",
 				error.message || "Something went wrong. Please try again."
