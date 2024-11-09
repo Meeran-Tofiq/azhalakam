@@ -14,7 +14,7 @@ export default class PetApi {
 	 * @throws {Error} If no token is provided, if the request fails, or if the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of all pets.
 	 */
-	async getAllPetsOfUser() {
+	async getAllPetsOfUser(): Promise<{ pets: Pet[] }> {
 		if (!userToken.getToken())
 			throw new Error(
 				"No token provided for this request. Requires a token of a user to be set."
@@ -41,7 +41,7 @@ export default class PetApi {
 	 * @throws {Error} If no pet is provided, if the request fails, or if the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the pet.
 	 */
-	async getPetFromId(petId: string) {
+	async getPetFromId(petId: string): Promise<{ pet: Pet }> {
 		if (!petId) throw new Error("No pet provided for this request.");
 
 		try {
@@ -69,7 +69,7 @@ export default class PetApi {
 	 * @throws {Error} If the request fails or the response is not ok.
 	 * @returns void
 	 */
-	async createPet(pet: Omit<Pet, "id" | "userId">) {
+	async createPet(pet: Omit<Pet, "id" | "userId">): Promise<{ petId: string }> {
 		if (!userToken.getToken())
 			throw new Error(
 				"No token provided for this request. Requires a token of a user to be set."
@@ -88,6 +88,8 @@ export default class PetApi {
 			if (!response.ok) {
 				throw new Error(response.statusText);
 			}
+
+            return await response.json();
 		} catch (error) {
 			throw error;
 		}
