@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import {
+	View,
+	Text,
+	TextInput,
+	StyleSheet,
+	KeyboardTypeOptions,
+} from "react-native";
 import { Controller } from "react-hook-form";
 
 interface FormInputProps {
@@ -12,7 +18,7 @@ interface FormInputProps {
 	onFocus: () => void;
 	onBlur: () => void;
 	secureTextEntry?: boolean;
-	keyboardType?: string;
+	keyboardType?: KeyboardTypeOptions;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
