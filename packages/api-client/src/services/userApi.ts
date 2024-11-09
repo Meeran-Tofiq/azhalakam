@@ -43,7 +43,9 @@ export default class UserApi {
 	 */
 	async getUserFromToken(): Promise<{ user: User }> {
 		if (!userToken.getToken())
-			throw new Error("No token provided for this authenticated request.");
+			throw new Error(
+				"No token provided for this authenticated request."
+			);
 
 		try {
 			const response = await fetch(`${this.userUrl}/me`, {
@@ -172,7 +174,9 @@ export default class UserApi {
 	 */
 	async updateUser(user: UpdateUserInput) {
 		if (!userToken.getToken())
-			throw new Error("No token provided for this authenticated request.");
+			throw new Error(
+				"No token provided for this authenticated request."
+			);
 
 		try {
 			const response = await fetch(`${this.userUrl}/me/update`, {
@@ -202,7 +206,9 @@ export default class UserApi {
 	 */
 	async deleteUser() {
 		if (!userToken.getToken())
-			throw new Error("No token provided for this authenticated request.");
+			throw new Error(
+				"No token provided for this authenticated request."
+			);
 
 		try {
 			const response = await fetch(`${this.userUrl}/me/delete`, {

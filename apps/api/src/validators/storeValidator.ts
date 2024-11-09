@@ -25,7 +25,10 @@ export const createStoreValidator = [
 		.optional()
 		.isString()
 		.withMessage("Location id must be a string"),
-	body("userId").optional().isString().withMessage("User id must be a string"),
+	body("userId")
+		.optional()
+		.isString()
+		.withMessage("User id must be a string"),
 	body("species")
 		.optional()
 		.isArray()
@@ -57,7 +60,10 @@ export const updateStoreValidator = [
 		.optional()
 		.isString()
 		.withMessage("Location id must be a string"),
-	body("userId").optional().isString().withMessage("User id must be a string"),
+	body("userId")
+		.optional()
+		.isString()
+		.withMessage("User id must be a string"),
 	body("species")
 		.optional()
 		.isArray()

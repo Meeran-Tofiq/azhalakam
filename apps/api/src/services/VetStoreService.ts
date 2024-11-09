@@ -153,7 +153,8 @@ class VetStoreService {
 		const existingVetStore = await this.prisma.vetStore.findUnique({
 			where: { id },
 		});
-		if (!existingVetStore) throw new NotFoundException("Vet store not found");
+		if (!existingVetStore)
+			throw new NotFoundException("Vet store not found");
 
 		try {
 			await this.prisma.vetStore.delete({
@@ -207,11 +208,15 @@ class VetStoreService {
 		if (!serviceIds) return undefined;
 
 		const connect = serviceIds
-			.filter((id) => !existingServices.find((service) => service.id === id))
+			.filter(
+				(id) => !existingServices.find((service) => service.id === id)
+			)
 			.map((id) => ({ id }));
 
 		const disconnect = serviceIds
-			.filter((id) => existingServices.find((service) => service.id === id))
+			.filter((id) =>
+				existingServices.find((service) => service.id === id)
+			)
 			.map((id) => ({ id }));
 
 		return {

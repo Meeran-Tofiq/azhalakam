@@ -18,7 +18,8 @@ export default class VetStoreApi {
 		vetStoreId: string
 	): Promise<{ vetStore: VetStore }> {
 		if (!storeId) throw new Error("No store provided for this request.");
-		if (!vetStoreId) throw new Error("No vet store provided for this request.");
+		if (!vetStoreId)
+			throw new Error("No vet store provided for this request.");
 
 		try {
 			const response = await fetch(
@@ -55,13 +56,16 @@ export default class VetStoreApi {
 		if (!storeId) throw new Error("No store provided for this request.");
 
 		try {
-			const response = await fetch(`${this.getVetStoreUrl(storeId)}/create`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(vetStore),
-			});
+			const response = await fetch(
+				`${this.getVetStoreUrl(storeId)}/create`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(vetStore),
+				}
+			);
 
 			if (!response.ok) {
 				throw new Error(response.statusText);
@@ -87,7 +91,8 @@ export default class VetStoreApi {
 		vetStore: Partial<Omit<VetStore, "id">>
 	) {
 		if (!storeId) throw new Error("No store provided for this request.");
-		if (!vetStoreId) throw new Error("No vet store provided for this request.");
+		if (!vetStoreId)
+			throw new Error("No vet store provided for this request.");
 
 		try {
 			const response = await fetch(
@@ -120,7 +125,8 @@ export default class VetStoreApi {
 	 */
 	async deleteVetStore(storeId: string, vetStoreId: string) {
 		if (!storeId) throw new Error("No store provided for this request.");
-		if (!vetStoreId) throw new Error("No vet store provided for this request.");
+		if (!vetStoreId)
+			throw new Error("No vet store provided for this request.");
 
 		try {
 			const response = await fetch(

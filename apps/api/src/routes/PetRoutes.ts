@@ -80,7 +80,10 @@ async function create(req: Request, res: Response, next: NextFunction) {
 			throw new BadRequestException("Missing body");
 		}
 
-		const petId = await petService.create(req.decodedToken.userId, req.body);
+		const petId = await petService.create(
+			req.decodedToken.userId,
+			req.body
+		);
 
 		logger.info("Pet created successfully.");
 		res.status(HttpStatusCodes.CREATED).json({ petId });

@@ -18,7 +18,8 @@ export default class PetStoreApi {
 		petStoreId: string
 	): Promise<{ petStore: PetStore }> {
 		if (!storeId) throw new Error("No store provided for this request.");
-		if (!petStoreId) throw new Error("No pet store provided for this request.");
+		if (!petStoreId)
+			throw new Error("No pet store provided for this request.");
 
 		try {
 			const response = await fetch(
@@ -55,13 +56,16 @@ export default class PetStoreApi {
 		if (!storeId) throw new Error("No store provided for this request.");
 
 		try {
-			const response = await fetch(`${this.getPetStoreUrl(storeId)}/create`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(petStore),
-			});
+			const response = await fetch(
+				`${this.getPetStoreUrl(storeId)}/create`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(petStore),
+				}
+			);
 
 			if (!response.ok) {
 				throw new Error(response.statusText);
@@ -87,7 +91,8 @@ export default class PetStoreApi {
 		petStore: Partial<Omit<PetStore, "id">>
 	) {
 		if (!storeId) throw new Error("No store provided for this request.");
-		if (!petStoreId) throw new Error("No pet store provided for this request.");
+		if (!petStoreId)
+			throw new Error("No pet store provided for this request.");
 
 		try {
 			const response = await fetch(
@@ -120,7 +125,8 @@ export default class PetStoreApi {
 	 */
 	async deletePetStore(storeId: string, petStoreId: string) {
 		if (!storeId) throw new Error("No store provided for this request.");
-		if (!petStoreId) throw new Error("No pet store provided for this request.");
+		if (!petStoreId)
+			throw new Error("No pet store provided for this request.");
 
 		try {
 			const response = await fetch(

@@ -21,8 +21,8 @@ This is a capstone project made by [Meeran Saman Jalal](https://github.com/Meera
 
 This is a monorepo built using `turborepo`. The basic structure is simple:
 
-- `apps/`: Applications like the mobile frontend and the backend are stored in the `apps/` dir.
-- `packages/`: Everything in `packages/` is a shared dependency between at least two applications.
+-   `apps/`: Applications like the mobile frontend and the backend are stored in the `apps/` dir.
+-   `packages/`: Everything in `packages/` is a shared dependency between at least two applications.
 
 ## Getting Started with Development/Contributing
 

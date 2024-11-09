@@ -6,12 +6,12 @@ import VetStoreApi from "./vetStoreApi";
 export default class StoreApi {
 	private storeUrl: string;
 	public petStoreApi: PetStoreApi;
-    public vetStoreApi: VetStoreApi;
+	public vetStoreApi: VetStoreApi;
 
 	constructor(baseUrl: string) {
 		this.storeUrl = baseUrl + "/stores";
 		this.petStoreApi = new PetStoreApi(this.storeUrl);
-        this.vetStoreApi = new VetStoreApi(this.storeUrl);
+		this.vetStoreApi = new VetStoreApi(this.storeUrl);
 	}
 
 	/**

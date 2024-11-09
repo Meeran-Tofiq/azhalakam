@@ -97,7 +97,8 @@ class PetStoreService {
 		const existingPetStore = await this.prisma.petStore.findUnique({
 			where: { id },
 		});
-		if (!existingPetStore) throw new NotFoundException("Pet store not found");
+		if (!existingPetStore)
+			throw new NotFoundException("Pet store not found");
 
 		try {
 			await this.prisma.petStore.update({
@@ -122,7 +123,8 @@ class PetStoreService {
 		const existingPetStore = await this.prisma.petStore.findUnique({
 			where: { id },
 		});
-		if (!existingPetStore) throw new NotFoundException("Pet store not found");
+		if (!existingPetStore)
+			throw new NotFoundException("Pet store not found");
 
 		try {
 			await this.prisma.petStore.delete({

@@ -17,7 +17,12 @@ export const createUserValidator = [
 		.withMessage(
 			"Username can only contain letters, numbers, underscores, and hyphens."
 		),
-	body("email").exists().trim().escape().isEmail().withMessage("Invalid email"),
+	body("email")
+		.exists()
+		.trim()
+		.escape()
+		.isEmail()
+		.withMessage("Invalid email"),
 	body("password")
 		.exists()
 		.trim()

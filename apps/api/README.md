@@ -2,7 +2,6 @@
 
 This project was created with [express-generator-typescript](https://github.com/seanpmaxwell/express-generator-typescript).
 
-
 ## Available Scripts
 
 ### `npm run dev` or `npm run dev:hot` (hot reloading)
@@ -29,7 +28,6 @@ Build the project for production.
 
 Run the production build (Must be built first).
 
-
 ## Additional Notes
 
-- If `npm run dev` gives you issues with bcrypt on MacOS you may need to run: `npm rebuild bcrypt --build-from-source`. 
+-   If `npm run dev` gives you issues with bcrypt on MacOS you may need to run: `npm rebuild bcrypt --build-from-source`.

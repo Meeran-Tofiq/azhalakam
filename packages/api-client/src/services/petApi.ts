@@ -69,7 +69,9 @@ export default class PetApi {
 	 * @throws {Error} If the request fails or the response is not ok.
 	 * @returns void
 	 */
-	async createPet(pet: Omit<Pet, "id" | "userId">): Promise<{ petId: string }> {
+	async createPet(
+		pet: Omit<Pet, "id" | "userId">
+	): Promise<{ petId: string }> {
 		if (!userToken.getToken())
 			throw new Error(
 				"No token provided for this request. Requires a token of a user to be set."
@@ -89,7 +91,7 @@ export default class PetApi {
 				throw new Error(response.statusText);
 			}
 
-            return await response.json();
+			return await response.json();
 		} catch (error) {
 			throw error;
 		}

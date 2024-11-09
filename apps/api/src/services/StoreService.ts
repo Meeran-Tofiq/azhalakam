@@ -40,7 +40,9 @@ class StoreService {
 
 			return createdStore.id;
 		} catch (error: any) {
-			throw new BadRequestException(error.message || "Failed to create store");
+			throw new BadRequestException(
+				error.message || "Failed to create store"
+			);
 		}
 	}
 
@@ -127,7 +129,9 @@ class StoreService {
 				data: { ...updatedData },
 			});
 		} catch (error: any) {
-			throw new BadRequestException(error.message || "Failed to update store");
+			throw new BadRequestException(
+				error.message || "Failed to update store"
+			);
 		}
 	}
 
@@ -149,7 +153,9 @@ class StoreService {
 				where: { id },
 			});
 		} catch (error: any) {
-			throw new BadRequestException(error.message || "Failed to delete store");
+			throw new BadRequestException(
+				error.message || "Failed to delete store"
+			);
 		}
 	}
 }
