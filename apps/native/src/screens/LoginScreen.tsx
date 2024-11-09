@@ -17,6 +17,9 @@ import FormInput from "../components/FormInput";
 import useApiClient from "../hooks/useApiClient";
 import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
+import validationRules from "../validation/validationRules";
+import GradientBackground from "../components/GradientBackground";
+import RegisterPrompt from "../components/RegisterPrompt";
 
 const { height } = Dimensions.get("window");
 
@@ -65,7 +68,7 @@ function LoginScreen() {
 					onPress: () => navigation.replace("MainPage"),
 				},
 			]);
-		} catch (error) {
+		} catch (error: any) {
 			Alert.alert(
 				"Login Failed",
 				error.message || "Invalid credentials. Please try again."
@@ -75,12 +78,7 @@ function LoginScreen() {
 
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
-			<LinearGradient
-				colors={["#4552CB", "#4596EA"]}
-				style={styles.topBackground}
-				start={{ x: 1, y: 0 }}
-				end={{ x: 0, y: 1 }}
-			/>
+			<GradientBackground />
 
 			<View style={styles.contentContainer}>
 				<Text style={styles.title}>Sign In</Text>
@@ -90,9 +88,7 @@ function LoginScreen() {
 						control={control}
 						name="usernameOrEmail"
 						label="Username or Email"
-						rules={{
-							required: "Username or Email is required",
-						}}
+						rules={validationRules.usernameOrEmail}
 						errors={errors}
 						focused={focusedInputs["usernameOrEmail"]}
 						onFocus={() => handleFocus("usernameOrEmail")}
@@ -103,9 +99,7 @@ function LoginScreen() {
 						control={control}
 						name="password"
 						label="Password"
-						rules={{
-							required: "Password is required",
-						}}
+						rules={validationRules.password}
 						errors={errors}
 						focused={focusedInputs["password"]}
 						onFocus={() => handleFocus("password")}
@@ -120,14 +114,7 @@ function LoginScreen() {
 					/>
 				</View>
 
-				<View style={styles.register}>
-					<Text>Don't have an account yet? </Text>
-					<TouchableOpacity
-						onPress={() => navigation.navigate("Registration")}
-					>
-						<Text style={styles.link}>Register</Text>
-					</TouchableOpacity>
-				</View>
+				<RegisterPrompt />
 			</View>
 		</ScrollView>
 	);
@@ -137,13 +124,6 @@ const styles = StyleSheet.create({
 	container: {
 		flexGrow: 1,
 		backgroundColor: "#F0F4F8",
-	},
-	topBackground: {
-		height: height * 0.4,
-		position: "absolute",
-		top: 0,
-		left: 0,
-		right: 0,
 	},
 	contentContainer: {
 		marginTop: height * 0.1,
@@ -174,10 +154,6 @@ const styles = StyleSheet.create({
 		borderRadius: 28,
 		width: "100%",
 		paddingVertical: 15,
-	},
-	register: {
-		flexDirection: "row",
-		marginTop: 20,
 	},
 	link: {
 		color: "#4A90E2",

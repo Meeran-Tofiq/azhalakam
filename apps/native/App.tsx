@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { Button } from "@repo/ui";
 import Navigation from "./src/navigation/Navigation";
 
 export default function Native() {
