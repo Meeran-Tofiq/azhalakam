@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
+import validationRules from "../validation/validationRules";
 
 const { height } = Dimensions.get("window");
 
@@ -29,12 +30,10 @@ function RegistrationScreen() {
 		control,
 		handleSubmit,
 		formState: { errors },
-		watch,
 	} = useForm();
 	const [focusedInputs, setFocusedInputs] = useState<{
 		[key: string]: boolean;
 	}>({});
-	const password = watch("password"); // Watch password to use it for retypePassword validation
 	const apiClient = useApiClient();
 
 	const handleFocus = (field: string) => {
@@ -105,62 +104,9 @@ function RegistrationScreen() {
 								field.slice(1).replace(/([A-Z])/g, " $1")
 							}
 							rules={
-								field === "email"
-									? {
-											required: "Email is required",
-											pattern: {
-												value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
-												message:
-													"Invalid email address",
-											},
-										}
-									: field === "username"
-										? {
-												required:
-													"Username is required",
-												pattern: {
-													value: /^[a-zA-Z0-9_-]*$/, // Only allows letters, numbers, underscores, and hyphens
-													message:
-														"Username can only contain letters, numbers, underscores, and hyphens",
-												},
-												minLength: {
-													value: 3,
-													message:
-														"Username must be at least 3 characters",
-												},
-												maxLength: {
-													value: 20,
-													message:
-														"Username must be less than 20 characters",
-												},
-												validate: (value: string) =>
-													!value.includes("@") ||
-													"Username cannot contain @ symbol",
-											}
-										: field === "password"
-											? {
-													required:
-														"Password is required",
-													minLength: {
-														value: 8,
-														message:
-															"Password must be at least 8 characters",
-													},
-												}
-											: field === "retypePassword"
-												? {
-														required:
-															"Please retype the password",
-														validate: (
-															value: any
-														) =>
-															value ===
-																password ||
-															"Passwords do not match",
-													}
-												: {
-														required: `${field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, " $1")} is required`,
-													}
+								validationRules[
+									field as keyof typeof validationRules
+								]
 							}
 							errors={errors}
 							focused={focusedInputs[field]}

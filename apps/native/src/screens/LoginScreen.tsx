@@ -17,6 +17,7 @@ import FormInput from "../components/FormInput";
 import useApiClient from "../hooks/useApiClient";
 import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
+import validationRules from "../validation/validationRules";
 
 const { height } = Dimensions.get("window");
 
@@ -90,9 +91,7 @@ function LoginScreen() {
 						control={control}
 						name="usernameOrEmail"
 						label="Username or Email"
-						rules={{
-							required: "Username or Email is required",
-						}}
+						rules={validationRules.usernameOrEmail}
 						errors={errors}
 						focused={focusedInputs["usernameOrEmail"]}
 						onFocus={() => handleFocus("usernameOrEmail")}
@@ -103,9 +102,7 @@ function LoginScreen() {
 						control={control}
 						name="password"
 						label="Password"
-						rules={{
-							required: "Password is required",
-						}}
+						rules={validationRules.password}
 						errors={errors}
 						focused={focusedInputs["password"]}
 						onFocus={() => handleFocus("password")}
