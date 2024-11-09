@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/types";
 import NextButton from "../components/NextButton";
+import { SkipButton } from "../components/SkipButton";
 
 const WelcomeScreen = () => {
 	const navigation =
@@ -44,12 +45,7 @@ const WelcomeScreen = () => {
 
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity
-				onPress={skipOnboarding}
-				style={styles.skipButton}
-			>
-				<Text style={styles.skipText}>Skip</Text>
-			</TouchableOpacity>
+			<SkipButton skipText="Skip" onPress={skipOnboarding}></SkipButton>
 
 			<Image source={pages[currentPage].image} style={styles.image} />
 
@@ -114,16 +110,6 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		backgroundColor: "#efa94f",
 		marginHorizontal: 5,
-	},
-	skipButton: {
-		position: "absolute",
-		top: 40,
-		right: 20,
-	},
-	skipText: {
-		marginTop: 12,
-		fontSize: 18,
-		color: "#4652cc",
 	},
 });
 
