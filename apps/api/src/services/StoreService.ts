@@ -61,8 +61,8 @@ class StoreService {
 					products: true,
 					availability: true,
 					location: true,
-					PetStore: true,
-					VetStore: true,
+					petStore: true,
+					vetStore: true,
 				},
 			});
 		} catch (error: any) {
@@ -91,8 +91,8 @@ class StoreService {
 					products: true,
 					availability: true,
 					location: true,
-					PetStore: true,
-					VetStore: true,
+					petStore: true,
+					vetStore: true,
 				},
 			});
 		} catch (error) {
