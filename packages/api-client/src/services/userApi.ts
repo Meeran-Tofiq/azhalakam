@@ -21,7 +21,7 @@ export default class UserApi {
 	 * @throws {Error} If the request fails or the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of all users.
 	 */
-	async getAll() {
+	async getAll(): Promise<{ users: User[] }> {
 		try {
 			const response = await fetch(`${this.userUrl}/all`);
 
@@ -41,7 +41,7 @@ export default class UserApi {
 	 * @throws {Error} If the request fails or the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the user.
 	 */
-	async getUserFromToken() {
+	async getUserFromToken(): Promise<{ user: User }> {
 		if (!userToken.getToken())
 			throw new Error("No token provided for this authenticated request.");
 
@@ -70,7 +70,7 @@ export default class UserApi {
 	 * @throws {Error} If the registration request fails or the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the registered user.
 	 */
-	async register(user: RegisterUserInput) {
+	async register(user: RegisterUserInput): Promise<{ token: string }> {
 		try {
 			const response = await fetch(`${this.userUrl}/create`, {
 				method: "POST",
@@ -101,7 +101,10 @@ export default class UserApi {
 	 * @throws {Error} If the request fails or the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the user and a token.
 	 */
-	async loginWithEmail(email: string, password: string) {
+	async loginWithEmail(
+		email: string,
+		password: string
+	): Promise<{ token: string }> {
 		try {
 			const response = await fetch(`${this.userUrl}/login`, {
 				method: "POST",
@@ -134,7 +137,10 @@ export default class UserApi {
 	 * @throws {Error} If the request fails or the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the user and a token.
 	 */
-	async loginWithUsername(username: string, password: string) {
+	async loginWithUsername(
+		username: string,
+		password: string
+	): Promise<{ token: string }> {
 		try {
 			const response = await fetch(`${this.userUrl}/login`, {
 				method: "POST",
