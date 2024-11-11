@@ -146,9 +146,11 @@ model Vet {
 }
 
 model Product {
-    id        String @id @default(uuid())
-    price     Float
-    avgRating Float?
+    id          String  @id @default(uuid())
+    name        String
+    description String?
+    price       Float
+    avgRating   Float?
 
     store   Store?   @relation(fields: [storeId], references: [id])
     storeId String?
