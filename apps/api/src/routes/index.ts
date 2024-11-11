@@ -6,6 +6,7 @@ import PetRoutes from "./PetRoutes";
 import StoreRoutes from "./StoreRoutes";
 import PetStoreRoutes from "./PetStoreRoutes";
 import VetStoreRoutes from "./VetStoreRoutes";
+import ProductRoutes from "./ProductRoutes";
 
 // **** Variables **** //
 
@@ -59,10 +60,18 @@ vetStoreRouter.post(Paths.Stores.VetStores.Create, ...VetStoreRoutes.create);
 vetStoreRouter.put(Paths.Stores.VetStores.Update, ...VetStoreRoutes.update);
 vetStoreRouter.delete(Paths.Stores.VetStores.Delete, VetStoreRoutes.deleteOne);
 
+// Product routes
+productRouter.post(Paths.Products.Create, ...ProductRoutes.create);
+productRouter.get(Paths.Products.GetAll, ProductRoutes.getAll);
+productRouter.get(Paths.Products.Get, ProductRoutes.getOne);
+productRouter.put(Paths.Products.Update, ...ProductRoutes.update);
+productRouter.delete(Paths.Products.Delete, ProductRoutes.deleteOne);
+
 // Add routes to apiRouter
 apiRouter.use(Paths.Users.Base, userRouter);
 apiRouter.use(Paths.Pets.Base, petRouter);
 apiRouter.use(Paths.Stores.Base, storeRouter);
+apiRouter.use(Paths.Products.Base, productRouter);
 
 // **** Export default **** //
 
