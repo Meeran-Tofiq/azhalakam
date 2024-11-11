@@ -19,8 +19,9 @@ const petRouter = Router();
 const storeRouter = Router();
 const petStoreRouter = Router({ mergeParams: true });
 const vetStoreRouter = Router({ mergeParams: true });
+const productRouter = Router();
 
-// Get all users
+// User routes
 userRouter.get(Paths.Users.GetAll, UserRoutes.getAll);
 userRouter.get(Paths.Users.Get, UserRoutes.getOne);
 userRouter.post(Paths.Users.Login, ...UserRoutes.login);
@@ -42,7 +43,7 @@ storeRouter.get(Paths.Stores.Get, StoreRoutes.getOne);
 storeRouter.put(Paths.Stores.Update, ...StoreRoutes.update);
 storeRouter.delete(Paths.Stores.Delete, StoreRoutes.deleteOne);
 
-// Add PetStoreRouter to StoreRouter
+// Add nested routes to StoreRouter
 storeRouter.use(Paths.Stores.PetStores.Base, petStoreRouter); // register the nested pet store routes within stores.
 storeRouter.use(Paths.Stores.VetStores.Base, vetStoreRouter); // register the nested vet store routes within stores.
 
@@ -58,7 +59,7 @@ vetStoreRouter.post(Paths.Stores.VetStores.Create, ...VetStoreRoutes.create);
 vetStoreRouter.put(Paths.Stores.VetStores.Update, ...VetStoreRoutes.update);
 vetStoreRouter.delete(Paths.Stores.VetStores.Delete, VetStoreRoutes.deleteOne);
 
-// Add UserRouter
+// Add routes to apiRouter
 apiRouter.use(Paths.Users.Base, userRouter);
 apiRouter.use(Paths.Pets.Base, petRouter);
 apiRouter.use(Paths.Stores.Base, storeRouter);
