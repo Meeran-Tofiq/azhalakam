@@ -47,7 +47,7 @@ export default class StoreApi {
 	 * @throws {Error} If no store is provided, if the request fails, or if the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the store.
 	 */
-	async getStoreFromId(storeId: string): Promise<{ store: Store }> {
+	async getStoreFromId(storeId: string): Promise<{ store: Store } & any> {
 		if (!storeId) throw new Error("No store provided for this request.");
 
 		try {
