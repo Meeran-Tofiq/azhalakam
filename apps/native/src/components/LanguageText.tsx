@@ -14,7 +14,7 @@ const LanguageText: React.FC<LanguageTextProps> = ({
 	translationKey,
 	...props
 }) => {
-	const isRtl = useLanguageDirection();
+	const { isRtl } = useLanguageDirection();
 	const { t } = useTranslation();
 
 	// Combine the provided style with the direction-specific styling
