@@ -3,12 +3,16 @@ import { StatusBar } from "expo-status-bar";
 import Navigation from "./src/navigation/Navigation";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./src/i18n";
+import { LanguageDirectionProvider } from "./src/context/LanguageDirectionContext";
 
 export default function Native() {
+	i18n.changeLanguage("ckb");
 	return (
 		<I18nextProvider i18n={i18n}>
-			<Navigation />
-			<StatusBar style="auto" />
+			<LanguageDirectionProvider>
+				<Navigation />
+				<StatusBar style="auto" />
+			</LanguageDirectionProvider>
 		</I18nextProvider>
 	);
 }
