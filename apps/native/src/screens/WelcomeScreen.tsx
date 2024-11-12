@@ -5,28 +5,38 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/types";
 import NextButton from "../components/NextButton";
 import { SkipButton } from "../components/SkipButton";
+import LanguageRowView from "../components/LanguageView";
+import { useTranslation } from "react-i18next";
+import TranslationKeys from "../types/translations";
 
 const WelcomeScreen = () => {
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
+	const { t } = useTranslation();
+
 	const [currentPage, setCurrentPage] = useState(0);
+	const images = [
+		require("../../assets/Welcome_Image_1.png"),
+		require("../../assets/Welcome_Image_2.png"),
+		require("../../assets/Welcome_Image_3.png"),
+	];
 
 	const pages = [
 		{
-			image: require("../../assets/Welcome_Image_1.png"),
-			title: "Welcome to Pet Care",
-			text: "All types of services for your pet in one place, instantly searchable.",
+			title: t("onboarding.0.title"),
+			description: t("onboarding.0.description"),
+			image: images[0],
 		},
 		{
-			image: require("../../assets/Welcome_Image_2.png"),
-			title: "Proven experts",
-			text: "We interview every specialist before they get to work.",
+			title: t("onboarding.1.title"),
+			description: t("onboarding.1.description"),
+			image: images[1],
 		},
 		{
-			image: require("../../assets/Welcome_Image_3.png"),
-			title: "Reliable reviews",
-			text: "A review can be left only by a user who used the service.",
+			title: t("onboarding.2.title"),
+			description: t("onboarding.2.description"),
+			image: images[2],
 		},
 	];
 
@@ -45,14 +55,16 @@ const WelcomeScreen = () => {
 
 	return (
 		<View style={styles.container}>
-			<SkipButton skipText="Skip" onPress={skipOnboarding}></SkipButton>
+			<LanguageRowView style={styles.skipContainer}>
+				<SkipButton onPress={skipOnboarding}></SkipButton>
+			</LanguageRowView>
 
 			<Image source={pages[currentPage].image} style={styles.image} />
 
 			<Text style={styles.title}>{pages[currentPage].title}</Text>
-			<Text style={styles.text}>{pages[currentPage].text}</Text>
+			<Text style={styles.text}>{pages[currentPage].description}</Text>
 
-			<View style={styles.pagination}>
+			<LanguageRowView style={styles.pagination}>
 				{pages.map((_, index) => (
 					<View
 						key={index}
@@ -62,7 +74,7 @@ const WelcomeScreen = () => {
 						]}
 					/>
 				))}
-			</View>
+			</LanguageRowView>
 
 			<NextButton
 				onPress={nextPage}
@@ -73,6 +85,10 @@ const WelcomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
+	skipContainer: {
+		width: "100%",
+		justifyContent: "flex-end",
+	},
 	container: {
 		flex: 1,
 		justifyContent: "center",

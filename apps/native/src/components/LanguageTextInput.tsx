@@ -7,7 +7,7 @@ const LanguageTextInput: React.FC<TextInputProps> = ({
 	style,
 	...props
 }) => {
-	const isRtl = useLanguageDirection();
+	const { isRtl } = useLanguageDirection();
 
 	// Combine the provided style with the direction-specific styling
 	const combinedStyle = StyleSheet.flatten([

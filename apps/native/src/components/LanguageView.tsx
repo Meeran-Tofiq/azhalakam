@@ -18,12 +18,12 @@ const LanguageRowView: React.FC<ViewProps> = ({
 	children,
 	...props
 }) => {
-	const isRtl = useLanguageDirection();
+	const { isRtl } = useLanguageDirection();
 
 	// Combine the provided style with the direction-specific styling
 	const combinedStyle = StyleSheet.flatten([
 		style,
-		isRtl ? styles.rtlRowContainer : {},
+		isRtl ? styles.rtlRowContainer : styles.ltrRowContainer,
 	]);
 
 	return (
@@ -37,6 +37,10 @@ const styles = StyleSheet.create({
 	rtlRowContainer: {
 		flexDirection: "row-reverse",
 		textAlign: "right",
+	},
+	ltrRowContainer: {
+		flexDirection: "row",
+		textAlign: "left",
 	},
 });
 

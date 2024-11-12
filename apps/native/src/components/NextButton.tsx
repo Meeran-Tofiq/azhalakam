@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
+import LanguageButton from "./LanguageButton";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -11,15 +12,12 @@ interface NextButtonProps {
 
 const NextButton: React.FC<NextButtonProps> = ({ onPress, isLastPage }) => {
 	return (
-		<TouchableOpacity
-			onPress={onPress}
+		<LanguageButton
+			title={isLastPage ? "getStarted" : "next"}
 			style={styles.button}
-			accessibilityRole="button"
-		>
-			<Text style={styles.buttonText}>
-				{isLastPage ? "Get started" : "Next"}
-			</Text>
-		</TouchableOpacity>
+			textStyle={styles.buttonText}
+			onPress={onPress}
+		/>
 	);
 };
 

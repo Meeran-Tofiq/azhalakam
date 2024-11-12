@@ -16,8 +16,8 @@ const RegisterPrompt: React.FC<RegisterPromptProps> = ({ onPress }) => {
 
 	return (
 		<NavigationPrompt
-			linkText="Sign up"
-			message="Don't have an account yet?"
+			linkText="register"
+			message="registerPrompt"
 			onPress={onPress || (() => navigation.navigate("Registration"))}
 		/>
 	);
