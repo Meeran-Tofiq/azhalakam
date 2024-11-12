@@ -2,6 +2,26 @@ import TranslationKeys from "../types/translations";
 
 const en: TranslationKeys = {
 	greeting: "Hello",
+	onboarding: [
+		{
+			title: "Welcome to Pet Care",
+			description:
+				"All types of services for your pet in one place, instantly searchable.",
+		},
+		{
+			title: "Proven experts",
+			description:
+				"We interview every specialist before they get to work.",
+		},
+		{
+			title: "Reliable reviews",
+			description:
+				"A review can be left only by a user who used the service.",
+		},
+	],
+
+	next: "Next",
+	getStarted: "Get Started!",
 
 	usernameOrEmail: "Username or Email",
 	username: "Username",

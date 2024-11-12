@@ -1,7 +1,16 @@
+interface onboarding {
+	title: string;
+	description: string;
+}
+
 export default interface TranslationKeys {
 	greeting: string;
+	onboarding: onboarding[];
 
-    usernameOrEmail: string;
+	next: string;
+	getStarted: string;
+
+	usernameOrEmail: string;
 	username: string;
 	firstName: string;
 	lastName: string;

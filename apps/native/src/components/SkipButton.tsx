@@ -1,8 +1,10 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import LanguageText from "./LanguageText";
+import { useTranslation } from "react-i18next";
 
 interface SkipButtonProps {
-	skipText: string;
+	skipText?: string;
 	onPress: () => void;
 }
 
@@ -12,7 +14,11 @@ export const SkipButton: React.FC<SkipButtonProps> = ({
 }) => {
 	return (
 		<TouchableOpacity onPress={onPress} style={styles.skipButton}>
-			<Text style={styles.skipText}>{skipText}</Text>
+			{skipText ? (
+				<Text style={styles.skipText}>{skipText}</Text>
+			) : (
+				<LanguageText translationKey={"skip"} style={styles.skipText} />
+			)}
 		</TouchableOpacity>
 	);
 };
@@ -23,9 +29,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		paddingHorizontal: 15,
 		paddingVertical: 10,
-		position: "absolute",
-		right: 20,
-		top: 40,
 		zIndex: 1,
 	},
 	skipText: {

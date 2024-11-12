@@ -2,6 +2,24 @@ import TranslationKeys from "../types/translations";
 
 const ar: TranslationKeys = {
 	greeting: "مرحبا",
+	onboarding: [
+		{
+			title: "مرحبًا بك في رعاية الحيوانات الأليفة",
+			description:
+				"جميع أنواع الخدمات لحيوانك الأليف في مكان واحد، يمكن البحث عنها فورًا.",
+		},
+		{
+			title: "خبراء موثوقون",
+			description: "نجري مقابلات مع كل متخصص قبل أن يبدأ العمل.",
+		},
+		{
+			title: "مراجعات موثوقة",
+			description: "يمكن للمستخدم الذي استخدم الخدمة فقط ترك مراجعة.",
+		},
+	],
+
+	next: "التالي",
+	getStarted: "!ابدأ",
 
 	usernameOrEmail: "اسم المستخدم او البريد الإلكتروني",
 	username: "اسم المستخدم",
