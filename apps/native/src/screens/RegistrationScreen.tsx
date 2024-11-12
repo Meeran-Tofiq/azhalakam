@@ -20,8 +20,20 @@ import { RootStackParamList } from "../types/types";
 import validationRules from "../validation/validationRules";
 import GradientBackground from "../components/GradientBackground";
 import SignInPrompt from "../components/SignInPrompt";
+import LanguageText from "../components/LanguageText";
+import TranslationKeys from "../types/translations";
+import LanguageButton from "../components/LanguageButton";
 
 const { height } = Dimensions.get("window");
+const inputs: (keyof TranslationKeys)[] = [
+	"username",
+	"firstName",
+	"lastName",
+	"email",
+	"phoneNumber",
+	"password",
+	"retypePassword",
+];
 
 function RegistrationScreen() {
 	const navigation =
@@ -80,22 +92,17 @@ function RegistrationScreen() {
 			<GradientBackground />
 
 			<View style={styles.contentContainer}>
-				<Text style={styles.title}>Registration</Text>
+				<LanguageText
+					translationKey="registration"
+					style={styles.title}
+				/>
 
 				<View style={styles.formContainer}>
-					{[
-						"username",
-						"firstName",
-						"lastName",
-						"email",
-						"phoneNumber",
-						"password",
-						"retypePassword",
-					].map((field, index) => (
+					{inputs.map((field, index) => (
 						<FormInput
 							key={index}
 							control={control}
-							name={field}
+							name={field as keyof TranslationKeys}
 							label={
 								field.charAt(0).toUpperCase() +
 								field.slice(1).replace(/([A-Z])/g, " $1")
@@ -122,9 +129,9 @@ function RegistrationScreen() {
 						/>
 					))}
 
-					<Button
-						title="Sign Up"
-						buttonStyle={styles.button}
+					<LanguageButton
+						title="register"
+						style={styles.button}
 						onPress={handleSubmit(onSubmit)}
 					/>
 				</View>

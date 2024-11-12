@@ -15,8 +15,8 @@ const SignInPrompt: React.FC<SignInPromptProps> = ({ onPress }) => {
 
 	return (
 		<NavigationPrompt
-			linkText="Sign in"
-			message="Already have an account?"
+			linkText="signIn"
+			message="signInPrompt"
 			onPress={onPress || (() => navigation.navigate("Login"))}
 		/>
 	);

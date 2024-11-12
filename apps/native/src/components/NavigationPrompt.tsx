@@ -1,10 +1,13 @@
 // src/components/NavigationPrompt.tsx
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import TranslationKeys from "../types/translations";
+import LanguageText from "./LanguageText";
+import LanguageRowView from "./LanguageView";
 
 interface NavigationPromptProps {
-	message: string;
-	linkText: string;
+	message: keyof TranslationKeys;
+	linkText: keyof TranslationKeys;
 	onPress: () => void;
 }
 
@@ -14,12 +17,12 @@ const NavigationPrompt: React.FC<NavigationPromptProps> = ({
 	onPress,
 }) => {
 	return (
-		<View style={styles.container}>
-			<Text>{message} </Text>
+		<LanguageRowView style={styles.container}>
+			<LanguageText translationKey={message} />
 			<TouchableOpacity onPress={onPress}>
-				<Text style={styles.link}>{linkText}</Text>
+				<LanguageText translationKey={linkText} style={styles.link} />
 			</TouchableOpacity>
-		</View>
+		</LanguageRowView>
 	);
 };
 
@@ -32,6 +35,7 @@ const styles = StyleSheet.create({
 	link: {
 		color: "#4652cc",
 		fontWeight: "bold",
+		marginHorizontal: 5,
 	},
 });
 

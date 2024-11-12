@@ -20,6 +20,8 @@ import { RootStackParamList } from "../types/types";
 import validationRules from "../validation/validationRules";
 import GradientBackground from "../components/GradientBackground";
 import RegisterPrompt from "../components/RegisterPrompt";
+import LanguageText from "../components/LanguageText";
+import LanguageButton from "../components/LanguageButton";
 
 const { height } = Dimensions.get("window");
 
@@ -81,7 +83,7 @@ function LoginScreen() {
 			<GradientBackground />
 
 			<View style={styles.contentContainer}>
-				<Text style={styles.title}>Sign In</Text>
+				<LanguageText translationKey={"signIn"} style={styles.title} />
 
 				<View style={styles.formContainer}>
 					<FormInput
@@ -107,9 +109,9 @@ function LoginScreen() {
 						secureTextEntry={true}
 					/>
 
-					<Button
-						title="Sign In"
-						buttonStyle={styles.button}
+					<LanguageButton
+						title="signIn"
+						style={styles.button}
 						onPress={handleSubmit(onSubmit)}
 					/>
 				</View>

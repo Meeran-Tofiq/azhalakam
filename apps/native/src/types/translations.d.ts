@@ -1,8 +1,21 @@
 export default interface TranslationKeys {
 	greeting: string;
-    registerPrompt: string;
-    register: string,
-    signInPrompt: string;
-    signIn: string;
-    skip: string;
+
+    usernameOrEmail: string;
+	username: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	phoneNumber: string;
+	password: string;
+	retypePassword: string;
+
+	registerPrompt: string;
+	register: string;
+	registration: string;
+
+	signInPrompt: string;
+	signIn: string;
+
+	skip: string;
 }
