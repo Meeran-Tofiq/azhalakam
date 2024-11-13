@@ -57,8 +57,7 @@ function RegistrationScreen() {
 			};
 
 			const response = await apiClient.userApi.register(registerData);
-
-			await login(response);
+			await login(registerData);
 
 			Alert.alert("Registration Successful", "Welcome!", [
 				{
