@@ -24,7 +24,7 @@ const MainPage = () => {
 	const [showSearch, setShowSearch] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const searchWidth = useRef(new Animated.Value(40)).current;
-	const { user, logout } = useAuth();
+	const { user } = useAuth();
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
