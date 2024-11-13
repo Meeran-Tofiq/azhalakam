@@ -2887,7 +2887,7 @@
 "@repo/typescript-config@file:packages/typescript-config":
   version "0.0.0"
   dependencies:
-    "@repo/typescript-config" "file:../../.cache/yarn/v6/npm-@repo-typescript-config-0.0.0-373b2c34-4bad-4d94-bee7-d9b76526b115-1731151689155/node_modules/@repo/typescript-config"
+    "@repo/typescript-config" "file:../../../AppData/Local/Yarn/Cache/v6/npm-@repo-typescript-config-0.0.0-09e3493d-decd-414b-a3d2-4ca78f535c0d-1731159517370/node_modules/@repo/typescript-config"
 
 "@rnx-kit/chromium-edge-launcher@^1.0.0":
   version "1.0.0"
@@ -4053,6 +4053,36 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
+"api-client@file:packages/api-client":
+  version "0.0.0"
+  dependencies:
+    "@prisma/client" "^5.20.0"
+    api-client "file:../../../AppData/Local/Yarn/Cache/v6/npm-api-client-0.0.0-11ca2ab7-c252-4a43-b392-6ec85e20f6a6-1731159517371/node_modules/api-client"
+    prisma "^5.20.0"
+
+"api@file:apps/api":
+  version "0.0.0"
+  dependencies:
+    "@prisma/client" "^5.20.0"
+    api "file:../../../AppData/Local/Yarn/Cache/v6/npm-api-0.0.0-44bfb2ca-7186-4134-8cbb-9a30303eee8a-1731159517373/node_modules/api"
+    bcryptjs "^2.4.3"
+    cookie-parser "^1.4.6"
+    dotenv "^16.4.5"
+    express "^4.21.0"
+    express-async-errors "^3.1.1"
+    express-validator "^7.2.0"
+    helmet "^8.0.0"
+    inserturlparams "^2.0.4"
+    jet-logger "^2.0.1"
+    jet-paths "^1.0.9"
+    jsonfile "^6.1.0"
+    jsonwebtoken "^9.0.2"
+    module-alias "^2.2.3"
+    moment "^2.30.1"
+    morgan "^1.10.0"
+    pg "^8.13.0"
+    prisma "^5.20.0"
+
 appdirsjs@^1.2.4:
   version "1.2.7"
   resolved "https://registry.npmjs.org/appdirsjs/-/appdirsjs-1.2.7.tgz"
@@ -4896,6 +4926,15 @@ cliui@^6.0.0:
     string-width "^4.2.0"
     strip-ansi "^6.0.0"
     wrap-ansi "^6.2.0"
+
+cliui@^7.0.2:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/cliui/-/cliui-7.0.4.tgz#a0265ee655476fc807aea9df3df8df7783808b4f"
+  integrity sha512-OcRE68cOsVMXp1Yvonl/fzkQOyjLSu/8bhPDfQt0e0/Eb283TKP20Fs2MqoPsr9SwA595rRCA+QMzYc9nBP+JQ==
+  dependencies:
+    string-width "^4.2.0"
+    strip-ansi "^6.0.0"
+    wrap-ansi "^7.0.0"
 
 cliui@^8.0.1:
   version "8.0.1"
@@ -10778,6 +10817,14 @@ react-native-size-matters@^0.3.1:
   resolved "https://registry.npmjs.org/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz"
   integrity sha512-mKOfBLIBFBcs9br1rlZDvxD5+mAl8Gfr5CounwJtxI6Z82rGrMO+Kgl9EIg3RMVf3G855a85YVqHJL2f5EDRlw==
 
+react-native-vector-icons@^10.2.0:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-10.2.0.tgz#f438f2ca16f7d6be658fd6ec8f0d2b7e2132b91c"
+  integrity sha512-n5HGcxUuVaTf9QJPs/W22xQpC2Z9u0nb0KgLPnVltP8vdUvOp6+R26gF55kilP/fV4eL4vsAHUqUjewppJMBOQ==
+  dependencies:
+    prop-types "^15.7.2"
+    yargs "^16.1.1"
+
 react-native-web@^0.19.10, react-native-web@~0.19.10:
   version "0.19.12"
   resolved "https://registry.npmjs.org/react-native-web/-/react-native-web-0.19.12.tgz"
@@ -13192,6 +13239,11 @@ yargs-parser@^18.1.2:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
+yargs-parser@^20.2.2:
+  version "20.2.9"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.9.tgz#2eb7dc3b0289718fc295f362753845c41a0c94ee"
+  integrity sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==
+
 yargs-parser@^21.1.1:
   version "21.1.1"
   resolved "https://registry.npmjs.org/yargs-parser/-/yargs-parser-21.1.1.tgz"
@@ -13213,6 +13265,19 @@ yargs@^15.1.0:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^18.1.2"
+
+yargs@^16.1.1:
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-16.2.0.tgz#1c82bf0f6b6a66eafce7ef30e376f49a12477f66"
+  integrity sha512-D1mvvtDG0L5ft/jGWkLpG1+m0eQxOfaBvTNELraWj22wSVUMWxZUvYgJYcKh6jGGIkJFhH4IZPQhR4TKpc8mBw==
+  dependencies:
+    cliui "^7.0.2"
+    escalade "^3.1.1"
+    get-caller-file "^2.0.5"
+    require-directory "^2.1.1"
+    string-width "^4.2.0"
+    y18n "^5.0.5"
+    yargs-parser "^20.2.2"
 
 yargs@^17.3.1, yargs@^17.6.2:
   version "17.7.2"
