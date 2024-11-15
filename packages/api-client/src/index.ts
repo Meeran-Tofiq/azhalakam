@@ -1,11 +1,7 @@
-import { assert } from "console";
 import PetApi from "./services/petApi";
 import ProductApi from "./services/productApi";
 import StoreApi from "./services/storeApi";
-import UserApi, {
-	RegisterUserInput,
-	UpdateUserInput,
-} from "./services/userApi";
+import UserApi from "./services/userApi";
 
 const defaultBaseUrl = "http://localhost:3000/api";
 
@@ -31,5 +27,3 @@ export default class ApiClient {
 		this.productsApi = new ProductApi(this.baseUrl);
 	}
 }
-
-export type { RegisterUserInput, UpdateUserInput };

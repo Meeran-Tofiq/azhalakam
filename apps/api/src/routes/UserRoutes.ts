@@ -3,7 +3,6 @@ import UserServiceFactory from "@src/services/UserService";
 
 import prismaClient from "@src/common/PrismaClient";
 import { NextFunction, Request, Response } from "express";
-import { User } from "@prisma/client";
 import {
 	BadRequestException,
 	UnauthorizedException,
@@ -14,6 +13,7 @@ import {
 	loginValidator,
 	updateUserValidator,
 } from "@src/validators/userValidator";
+import { GetAllUsersResponse } from "@src/types/User";
 
 // **** Variables **** //
 
@@ -25,7 +25,7 @@ const userService = UserServiceFactory.create(prismaClient);
  * Get all users.
  */
 async function getAll(_: Request, res: Response, next: NextFunction) {
-	let users: Partial<User>[];
+	let users: GetAllUsersResponse;
 	logger.info("Getting all users...");
 
 	try {
@@ -61,10 +61,10 @@ async function create(req: Request, res: Response, next: NextFunction) {
 			throw new BadRequestException("Missing body");
 		}
 
-		const token = await userService.create(req.body);
+		const { token, user } = await userService.create(req.body);
 
 		logger.info("User created successfully.");
-		res.status(HttpStatusCodes.CREATED).json({ token });
+		res.status(HttpStatusCodes.CREATED).json({ token, user });
 	} catch (error) {
 		next(error);
 	}
@@ -76,10 +76,16 @@ async function update(req: Request, res: Response, next: NextFunction) {
 	try {
 		if (!req.decodedToken)
 			throw new UnauthorizedException("Invalid or missing token");
-		await userService.updateOne(req.body, req.decodedToken);
+		const user = await userService.updateOne({
+			updateData: req.body,
+			token: req.decodedToken,
+		});
 
 		logger.info("User updated successfully.");
-		res.status(HttpStatusCodes.OK).json("User updated successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			user,
+			message: "User updated successfully.",
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -91,10 +97,13 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 	try {
 		if (!req.decodedToken)
 			throw new UnauthorizedException("Invalid or missing token");
-		await userService.deleteOne(req.decodedToken);
+		const user = await userService.deleteOne({ token: req.decodedToken });
 
 		logger.info("User deleted successfully.");
-		res.status(HttpStatusCodes.OK).json("User deleted successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			message: "User deleted successfully.",
+			user,
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -104,12 +113,12 @@ async function login(req: Request, res: Response, next: NextFunction) {
 	logger.info("Logging in...");
 
 	try {
-		const token = await userService.login(
-			req.body.username,
-			req.body.email,
-			req.body.password
-		);
-		res.status(HttpStatusCodes.OK).json({ token });
+		const { token, user } = await userService.login({
+			username: req.body.username,
+			email: req.body.email,
+			password: req.body.password,
+		});
+		res.status(HttpStatusCodes.OK).json({ token, user });
 	} catch (error) {
 		next(error);
 	}
