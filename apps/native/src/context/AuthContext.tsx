@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LoginUserResponse, UserWithoutPassword } from "@api-types/User";
-
+import useApiClient from "src/hooks/useApiClient";
 type AuthContextType = {
 	isAuthenticated: boolean;
 	user: UserWithoutPassword | null;
@@ -18,10 +18,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState<UserWithoutPassword | null>(null);
 	const [token, setToken] = useState<string | null>(null);
+	const apiClient = useApiClient();
 
 	useEffect(() => {
 		checkAuthState();
 	}, []);
+
+	useEffect(() => {
+		if (token) apiClient.setUserToken(token);
+	}, [token]);
 
 	const checkAuthState = async () => {
 		try {
@@ -29,6 +34,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			if (userData) {
 				const parsedUserData: LoginUserResponse = JSON.parse(userData);
 				setUser(parsedUserData.user);
+				setToken(parsedUserData.token);
 				setIsAuthenticated(true);
 			}
 		} catch (error) {
