@@ -1,7 +1,17 @@
-import { Store } from "@prisma/client";
 import userToken from "../utils/userToken";
 import PetStoreApi from "./petStoreApi";
 import VetStoreApi from "./vetStoreApi";
+import {
+	CreateStoreInputs,
+	CreateStoreResponse,
+	DeleteStoreInputs,
+	DeleteStoreResponse,
+	GetAllUserStoresResponse,
+	GetStoreInputs,
+	GetStoreResponse,
+	UpdateStoreInputs,
+	UpdateStoreResponse,
+} from "@app/api/types/Store";
 
 export default class StoreApi {
 	private storeUrl: string;
@@ -20,7 +30,7 @@ export default class StoreApi {
 	 * @throws {Error} If no token is provided, if the request fails, or if the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of all stores.
 	 */
-	async getAllStoresOfUser(): Promise<{ stores: Store[] }> {
+	async getAllStoresOfUser(): Promise<GetAllUserStoresResponse> {
 		if (!userToken.getToken())
 			throw new Error(
 				"No token provided for this request. Requires a token of a user to be set."
@@ -43,15 +53,15 @@ export default class StoreApi {
 
 	/**
 	 * Asynchronously fetches a store with the given id.
-	 * Requires either a store object with an id, or a storeId string.
-	 * @throws {Error} If no store is provided, if the request fails, or if the response is not ok.
+	 * @param id The id of the store to retrieve.
+	 * @throws {Error} If no store id is provided, if the request fails, or if the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the store.
 	 */
-	async getStoreFromId(storeId: string): Promise<{ store: Store } & any> {
-		if (!storeId) throw new Error("No store provided for this request.");
+	async getStoreFromId({ id }: GetStoreInputs): Promise<GetStoreResponse> {
+		if (!id) throw new Error("No store provided for this request.");
 
 		try {
-			const response = await fetch(`${this.storeUrl}/${storeId}`, {
+			const response = await fetch(`${this.storeUrl}/${id}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
@@ -75,9 +85,9 @@ export default class StoreApi {
 	 * @throws {Error} If the request fails or the response is not ok.
 	 * @returns voids
 	 */
-	async createStore(
-		store: Omit<Store, "id" | "userId" | "availabilityId" | "locationId">
-	): Promise<{ storeId: string }> {
+	async createStore({
+		store,
+	}: CreateStoreInputs): Promise<CreateStoreResponse> {
 		if (!userToken.getToken())
 			throw new Error(
 				"No token provided for this request. Requires a token of a user to be set."
@@ -106,21 +116,24 @@ export default class StoreApi {
 	/**
 	 * Asynchronously updates a store with the given id with the given data.
 	 * Requires a token of a user to be set.
-	 * @param storeId The id of the store to update.
+	 * @param id The id of the store to update.
 	 * @param store The data to update the store with.
 	 * @throws {Error} If the request fails or the response is not ok.
 	 * @returns The updated store.
 	 */
-	async updateStore(storeId: string, store: Partial<Omit<Store, "id">>) {
-		if (!storeId) throw new Error("No store provided for this request.");
+	async updateStore({
+		id,
+		updateData,
+	}: UpdateStoreInputs): Promise<UpdateStoreResponse> {
+		if (!id) throw new Error("No store provided for this request.");
 
 		try {
-			const response = await fetch(`${this.storeUrl}/${storeId}/update`, {
+			const response = await fetch(`${this.storeUrl}/${id}/update`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(store),
+				body: JSON.stringify(updateData),
 			});
 
 			if (!response.ok) {
@@ -135,15 +148,15 @@ export default class StoreApi {
 
 	/**
 	 * Asynchronously deletes a store with the given id.
-	 * @param storeId The id of the store to delete.
+	 * @param id The id of the store to delete.
 	 * @throws {Error} If no store ID is provided, if the request fails, or if the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the deleted store.
 	 */
-	async deleteStore(storeId: string) {
-		if (!storeId) throw new Error("No store provided for this request.");
+	async deleteStore({ id }: DeleteStoreInputs): Promise<DeleteStoreResponse> {
+		if (!id) throw new Error("No store provided for this request.");
 
 		try {
-			const response = await fetch(`${this.storeUrl}/${storeId}/delete`, {
+			const response = await fetch(`${this.storeUrl}/${id}/delete`, {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",

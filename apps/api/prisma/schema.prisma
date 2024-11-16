@@ -31,7 +31,7 @@ model User {
     serviceProvider   ServiceProvider? @relation(fields: [serviceProviderId], references: [id])
     serviceProviderId String?          @unique
     store             Store?
-    Review            Review[]
+    reviews           Review[]
 }
 
 enum Species {
@@ -66,7 +66,7 @@ model Pet {
     weight       Float?
     lastVetVisit DateTime?
     notes        String?
-    User         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId       String
 }
 
@@ -74,7 +74,7 @@ model ServiceProvider {
     id       String    @id @default(uuid())
     services Service[]
     rating   Float?
-    User     User?
+    user     User?
 }
 
 model Service {
@@ -86,7 +86,7 @@ model Service {
     provider   ServiceProvider? @relation(fields: [providerId], references: [id])
     providerId String
 
-    VetStore   VetStore? @relation(fields: [vetStoreId], references: [id])
+    vetStore   VetStore? @relation(fields: [vetStoreId], references: [id])
     vetStoreId String?
 }
 
@@ -95,8 +95,8 @@ model Availability {
     daysOfWeek String[]
     from       DateTime
     to         DateTime
-    Store      Store?
-    Vet        Vet?
+    store      Store?
+    vet        Vet?
 }
 
 enum StoreType {
@@ -162,9 +162,9 @@ model Review {
     rating  Float
     content String
 
-    user      User     @relation(fields: [userId], references: [id])
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId    String
-    Product   Product? @relation(fields: [productId], references: [id])
+    product   Product? @relation(fields: [productId], references: [id])
     productId String?
 }
 

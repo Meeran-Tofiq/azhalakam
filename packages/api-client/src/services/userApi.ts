@@ -1,13 +1,14 @@
-import { User } from "@prisma/client";
 import userToken from "../utils/userToken";
-
-export type RegisterUserInput = Omit<
-	User,
-	"bio" | "locationId" | "serviceProviderId" | "id"
-> &
-	Partial<Pick<User, "bio" | "locationId" | "serviceProviderId">>;
-
-export type UpdateUserInput = Partial<Omit<User, "id">>;
+import {
+	CreateUserInputs,
+	CreateUserResponse,
+	DeleteUserResponse,
+	GetAllUsersResponse,
+	GetUserResponse,
+	LoginUserResponse,
+	UpdateUserInputs,
+	UpdateUserResponse,
+} from "@app/api/types/User";
 
 export default class UserApi {
 	private userUrl: String;
@@ -21,7 +22,7 @@ export default class UserApi {
 	 * @throws {Error} If the request fails or the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of all users.
 	 */
-	async getAll(): Promise<{ users: User[] }> {
+	async getAll(): Promise<{ users: GetAllUsersResponse }> {
 		try {
 			const response = await fetch(`${this.userUrl}/all`);
 
@@ -41,7 +42,7 @@ export default class UserApi {
 	 * @throws {Error} If the request fails or the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the user.
 	 */
-	async getUserFromToken(): Promise<{ user: User }> {
+	async getUserFromToken(): Promise<{ user: GetUserResponse }> {
 		if (!userToken.getToken())
 			throw new Error(
 				"No token provided for this authenticated request."
@@ -72,7 +73,7 @@ export default class UserApi {
 	 * @throws {Error} If the registration request fails or the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the registered user.
 	 */
-	async register(user: RegisterUserInput): Promise<{ token: string }> {
+	async register(user: CreateUserInputs): Promise<CreateUserResponse> {
 		try {
 			const response = await fetch(`${this.userUrl}/create`, {
 				method: "POST",
@@ -87,6 +88,7 @@ export default class UserApi {
 			}
 
 			const json = await response.json();
+			console.log(json);
 			userToken.setToken(json.token);
 
 			return json;
@@ -106,7 +108,7 @@ export default class UserApi {
 	async loginWithEmail(
 		email: string,
 		password: string
-	): Promise<{ token: string }> {
+	): Promise<LoginUserResponse> {
 		try {
 			const response = await fetch(`${this.userUrl}/login`, {
 				method: "POST",
@@ -142,7 +144,7 @@ export default class UserApi {
 	async loginWithUsername(
 		username: string,
 		password: string
-	): Promise<{ token: string }> {
+	): Promise<LoginUserResponse> {
 		try {
 			const response = await fetch(`${this.userUrl}/login`, {
 				method: "POST",
@@ -172,7 +174,7 @@ export default class UserApi {
 	 * @throws {Error} If the request fails or the response is not successful.
 	 * @returns A Promise that resolves with the JSON data of the updated user.
 	 */
-	async updateUser(user: UpdateUserInput) {
+	async updateUser(user: UpdateUserInputs): Promise<UpdateUserResponse> {
 		if (!userToken.getToken())
 			throw new Error(
 				"No token provided for this authenticated request."
@@ -204,7 +206,7 @@ export default class UserApi {
 	 * @throws {Error} If the request fails or the response is not successful.
 	 * @returns A Promise that resolves with the JSON data of the deleted user.
 	 */
-	async deleteUser() {
+	async deleteUser(): Promise<DeleteUserResponse> {
 		if (!userToken.getToken())
 			throw new Error(
 				"No token provided for this authenticated request."
