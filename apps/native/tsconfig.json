@@ -1,6 +1,7 @@
 {
 	"extends": "expo/tsconfig.base",
 	"compilerOptions": {
+		"baseUrl": ".",
 		"target": "esnext",
 		"module": "commonjs",
 		"jsx": "react-native",
@@ -8,6 +9,9 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"types": ["jest", "react", "react-native"]
+		"types": ["jest", "react", "react-native"],
+		"paths": {
+			"@api-types/*": ["../../apps/api/dist/src/types/*"]
+		}
 	}
 }
