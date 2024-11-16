@@ -1,17 +1,11 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-type User = {
-	username: string;
-	firstName: string;
-	lastName: string;
-	email: string;
-	phoneNo: string;
-};
+import { LoginUserResponse, UserWithoutPassword } from "@api-types/User";
 
 type AuthContextType = {
 	isAuthenticated: boolean;
-	user: User | null;
+	user: UserWithoutPassword | null;
+	token: string | null;
 	login: (userData: any) => Promise<void>;
 	logout: () => Promise<void>;
 	loading: boolean;
@@ -22,7 +16,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [loading, setLoading] = useState(true);
-	const [user, setUser] = useState<User | null>(null);
+	const [user, setUser] = useState<UserWithoutPassword | null>(null);
+	const [token, setToken] = useState<string | null>(null);
 
 	useEffect(() => {
 		checkAuthState();
@@ -32,8 +27,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		try {
 			const userData = await AsyncStorage.getItem("userData");
 			if (userData) {
-				const parsedUserData = JSON.parse(userData);
-				setUser(parsedUserData);
+				const parsedUserData: LoginUserResponse = JSON.parse(userData);
+				setUser(parsedUserData.user);
 				setIsAuthenticated(true);
 			}
 		} catch (error) {
@@ -45,12 +40,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 	const login = async (userData: any) => {
 		try {
-			const userToStore = {
+			const userToStore: UserWithoutPassword = {
 				username: userData.username || userData.user?.username,
 				firstName: userData.firstName || userData.user?.firstName,
 				lastName: userData.lastName || userData.user?.lastName,
 				email: userData.email || userData.user?.email,
 				phoneNo: userData.phoneNo || userData.user?.phoneNo,
+				bio: userData.bio || userData.user?.bio,
+				id: userData.id || userData.user?.id,
+				location: userData.location || userData.user?.location,
+				locationId: userData.locationId || userData.user?.locationId,
+				pets: userData.pets || userData.user?.pets,
+				serviceProvider:
+					userData.serviceProvider || userData.user?.serviceProvider,
+				serviceProviderId:
+					userData.serviceProviderId ||
+					userData.user?.serviceProviderId,
+				store: userData.store || userData.user?.store,
 			};
 
 			await AsyncStorage.setItem("userData", JSON.stringify(userToStore));
@@ -80,6 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				user,
 				login,
 				logout,
+				token,
 				loading,
 			}}
 		>
