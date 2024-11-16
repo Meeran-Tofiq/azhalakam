@@ -128,8 +128,6 @@ class VetStoreService {
 			services: serviceIds,
 		};
 
-		console.log("data", data);
-
 		try {
 			await this.prisma.vetStore.update({
 				where: { id },

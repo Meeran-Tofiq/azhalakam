@@ -12,7 +12,8 @@
 		"prisma:generate": "yarn workspace api prisma generate",
 		"prisma:migrate": "yarn workspace api prisma migrate dev",
 		"prisma:update-db": "yarn run prisma:generate && yarn run prisma:migrate",
-		"api:dev": "yarn workspace api dev"
+		"api:dev": "yarn workspace api dev",
+		"native:dev": "yarn workspace native dev"
 	},
 	"devDependencies": {
 		"prettier": "^3.1.1",

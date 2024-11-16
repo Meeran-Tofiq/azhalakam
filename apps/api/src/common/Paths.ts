@@ -43,4 +43,12 @@ export default {
 		Update: "/:storeId/update",
 		Delete: "/:storeId/delete",
 	},
+	Products: {
+		Base: "/products",
+		GetAll: "/page/:page",
+		Get: "/:productId",
+		Create: "/create",
+		Update: "/:productId/update",
+		Delete: "/:productId/delete",
+	},
 } as const;

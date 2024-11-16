@@ -17,8 +17,23 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
+import validationRules from "../validation/validationRules";
+import GradientBackground from "../components/GradientBackground";
+import SignInPrompt from "../components/SignInPrompt";
+import LanguageText from "../components/LanguageText";
+import TranslationKeys from "../types/translations";
+import LanguageButton from "../components/LanguageButton";
 
 const { height } = Dimensions.get("window");
+const inputs: (keyof TranslationKeys)[] = [
+	"username",
+	"firstName",
+	"lastName",
+	"email",
+	"phoneNumber",
+	"password",
+	"retypePassword",
+];
 
 function RegistrationScreen() {
 	const navigation =
@@ -29,12 +44,10 @@ function RegistrationScreen() {
 		control,
 		handleSubmit,
 		formState: { errors },
-		watch,
 	} = useForm();
 	const [focusedInputs, setFocusedInputs] = useState<{
 		[key: string]: boolean;
 	}>({});
-	const password = watch("password"); // Watch password to use it for retypePassword validation
 	const apiClient = useApiClient();
 
 	const handleFocus = (field: string) => {
@@ -65,7 +78,7 @@ function RegistrationScreen() {
 					onPress: () => navigation.replace("MainPage"),
 				},
 			]);
-		} catch (error) {
+		} catch (error: any) {
 			Alert.alert(
 				"Registration Failed",
 				error.message || "Something went wrong. Please try again."
@@ -75,91 +88,28 @@ function RegistrationScreen() {
 
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
-			<LinearGradient
-				colors={["#4552CB", "#4596EA"]}
-				style={styles.topBackground}
-				start={{ x: 1, y: 0 }}
-				end={{ x: 0, y: 1 }}
-			/>
+			<GradientBackground />
 
 			<View style={styles.contentContainer}>
-				<Text style={styles.title}>Registration</Text>
+				<LanguageText
+					translationKey="registration"
+					style={styles.title}
+				/>
 
 				<View style={styles.formContainer}>
-					{[
-						"username",
-						"firstName",
-						"lastName",
-						"email",
-						"phoneNumber",
-						"password",
-						"retypePassword",
-					].map((field, index) => (
+					{inputs.map((field, index) => (
 						<FormInput
 							key={index}
 							control={control}
-							name={field}
+							name={field as keyof TranslationKeys}
 							label={
 								field.charAt(0).toUpperCase() +
 								field.slice(1).replace(/([A-Z])/g, " $1")
 							}
 							rules={
-								field === "email"
-									? {
-											required: "Email is required",
-											pattern: {
-												value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
-												message:
-													"Invalid email address",
-											},
-										}
-									: field === "username"
-										? {
-												required:
-													"Username is required",
-												pattern: {
-													value: /^[a-zA-Z0-9_-]*$/, // Only allows letters, numbers, underscores, and hyphens
-													message:
-														"Username can only contain letters, numbers, underscores, and hyphens",
-												},
-												minLength: {
-													value: 3,
-													message:
-														"Username must be at least 3 characters",
-												},
-												maxLength: {
-													value: 20,
-													message:
-														"Username must be less than 20 characters",
-												},
-												validate: (value: string) =>
-													!value.includes("@") ||
-													"Username cannot contain @ symbol",
-											}
-										: field === "password"
-											? {
-													required:
-														"Password is required",
-													minLength: {
-														value: 8,
-														message:
-															"Password must be at least 8 characters",
-													},
-												}
-											: field === "retypePassword"
-												? {
-														required:
-															"Please retype the password",
-														validate: (
-															value: any
-														) =>
-															value ===
-																password ||
-															"Passwords do not match",
-													}
-												: {
-														required: `${field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, " $1")} is required`,
-													}
+								validationRules[
+									field as keyof typeof validationRules
+								]
 							}
 							errors={errors}
 							focused={focusedInputs[field]}
@@ -178,21 +128,14 @@ function RegistrationScreen() {
 						/>
 					))}
 
-					<Button
-						title="Sign Up"
-						buttonStyle={styles.button}
+					<LanguageButton
+						title="register"
+						style={styles.button}
 						onPress={handleSubmit(onSubmit)}
 					/>
 				</View>
 
-				<View style={styles.signIn}>
-					<Text>Already have an account? </Text>
-					<TouchableOpacity
-						onPress={() => navigation.navigate("Login")}
-					>
-						<Text style={styles.link}>Sign In</Text>
-					</TouchableOpacity>
-				</View>
+				<SignInPrompt />
 			</View>
 		</ScrollView>
 	);
@@ -202,13 +145,6 @@ const styles = StyleSheet.create({
 	container: {
 		flexGrow: 1,
 		backgroundColor: "#F0F4F8",
-	},
-	topBackground: {
-		height: height * 0.4,
-		position: "absolute",
-		top: 0,
-		left: 0,
-		right: 0,
 	},
 	contentContainer: {
 		marginTop: height * 0.1,
@@ -239,10 +175,6 @@ const styles = StyleSheet.create({
 		borderRadius: 28,
 		width: "100%",
 		paddingVertical: 15,
-	},
-	signIn: {
-		flexDirection: "row",
-		marginTop: 20,
 	},
 	link: {
 		color: "#4A90E2",

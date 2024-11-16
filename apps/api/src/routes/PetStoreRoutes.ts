@@ -28,7 +28,6 @@ const petStoreService = PetStoreServiceFactory.create(prismaClient);
  */
 async function getOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Getting specific pet store...");
-	console.log(req.params);
 
 	try {
 		const petStore = await petStoreService.getOne(req.params.petStoreId);
@@ -48,7 +47,6 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
  */
 async function create(req: Request, res: Response, next: NextFunction) {
 	logger.info("Creating pet store...");
-	console.log(req.params);
 
 	try {
 		const petStoreId = await petStoreService.create(

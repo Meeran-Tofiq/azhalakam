@@ -1,19 +1,27 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, KeyboardTypeOptions } from "react-native";
 import { Controller } from "react-hook-form";
+import TranslationKeys from "../types/translations";
+import LanguageText from "./LanguageText";
+import LanguageTextInput from "./LanguageTextInput";
+import { useTranslation } from "react-i18next";
 
 interface FormInputProps {
 	control: any;
-	name: string;
-	label: string;
+	name: keyof TranslationKeys | string;
+	label: keyof TranslationKeys | string;
 	rules?: any;
 	errors: any;
 	focused: boolean;
 	onFocus: () => void;
 	onBlur: () => void;
 	secureTextEntry?: boolean;
-	keyboardType?: string;
+	keyboardType?: KeyboardTypeOptions;
 }
+
+const isTranslationKey = (key: string): key is keyof TranslationKeys => {
+	return (key as keyof TranslationKeys) !== undefined;
+};
 
 const FormInput: React.FC<FormInputProps> = ({
 	control,
@@ -27,24 +35,39 @@ const FormInput: React.FC<FormInputProps> = ({
 	secureTextEntry,
 	keyboardType,
 }) => {
+	const { t } = useTranslation();
+
 	return (
 		<View>
-			<Text style={styles.label}>{label}</Text>
+			{/* Show translated text if it is passed a translation key, else show a normal text with a label */}
+			{isTranslationKey(name) ? (
+				<LanguageText
+					translationKey={name as keyof TranslationKeys}
+					style={styles.label}
+				/>
+			) : (
+				<Text style={styles.label}>{label}</Text>
+			)}
+
 			<Controller
 				control={control}
 				name={name}
 				rules={rules}
 				render={({ field: { onChange, value } }) => (
 					<View>
-						<TextInput
+						<LanguageTextInput
 							style={[
 								styles.input,
 								focused && styles.inputFocused,
-								errors[name] && { borderBottomColor: "red" }, // Red border if error
+								errors[name] && {
+									borderBottomColor: "red",
+								}, // Red border if error
 							]}
 							onFocus={onFocus}
 							onBlur={onBlur}
-							placeholder={label}
+							placeholder={
+								isTranslationKey(name) ? t(name) : label
+							}
 							value={value}
 							onChangeText={onChange}
 							secureTextEntry={secureTextEntry}
@@ -68,10 +91,11 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 	input: {
-		width: "100%",
 		borderBottomColor: "#f0f0f8",
 		borderBottomWidth: 1,
 		marginBottom: 15,
+		width: "100%",
+		flex: 1,
 	},
 	inputFocused: {
 		borderBottomColor: "#4552CB",
