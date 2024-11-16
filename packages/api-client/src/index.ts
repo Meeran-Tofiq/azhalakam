@@ -2,6 +2,7 @@ import PetApi from "./services/petApi";
 import ProductApi from "./services/productApi";
 import StoreApi from "./services/storeApi";
 import UserApi from "./services/userApi";
+import userToken from "./utils/userToken";
 
 const defaultBaseUrl = "http://localhost:3000/api";
 
@@ -25,5 +26,9 @@ export default class ApiClient {
 		this.petApi = new PetApi(this.baseUrl);
 		this.storeApi = new StoreApi(this.baseUrl);
 		this.productsApi = new ProductApi(this.baseUrl);
+	}
+
+	public setUserToken(token: string) {
+		userToken.setToken(token);
 	}
 }
