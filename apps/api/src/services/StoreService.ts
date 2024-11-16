@@ -1,6 +1,18 @@
 import { BadRequestException, NotFoundException } from "@src/common/classes";
-import { Store, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import prismaClient from "@src/common/PrismaClient";
+import {
+	CreateStoreInputs,
+	CreateStoreResponse,
+	DeleteStoreInputs,
+	DeleteStoreResponse,
+	GetAllUserStoresInputs,
+	GetAllUserStoresResponse,
+	GetStoreInputs,
+	GetStoreResponse,
+	UpdateStoreInputs,
+	UpdateStoreResponse,
+} from "@src/types/Store";
 
 // **** Variables **** //
 
@@ -26,19 +38,26 @@ class StoreService {
 	 * @throws {BadRequestException} If the creation fails
 	 * @returns The id of the created store
 	 */
-	public async create(
-		userId: string,
-		store: Omit<Store, "id">
-	): Promise<string> {
+	public async create({
+		userId,
+		store,
+	}: CreateStoreInputs): Promise<CreateStoreResponse> {
 		try {
 			const createdStore = await this.prisma.store.create({
 				data: {
 					...store,
 					userId,
 				},
+				include: {
+					products: true,
+					availability: true,
+					location: true,
+					petStore: true,
+					vetStore: true,
+				},
 			});
 
-			return createdStore.id;
+			return { storeId: createdStore.id, store: createdStore };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to create store"
@@ -53,8 +72,8 @@ class StoreService {
 	 * @throws {NotFoundException} If no store is found with the given id
 	 * @returns The found store
 	 */
-	public async getOne(id: string): Promise<Partial<Store>> {
-		let store: Partial<Store> | null;
+	public async getOne({ id }: GetStoreInputs): Promise<GetStoreResponse> {
+		let store: GetStoreResponse | null;
 
 		try {
 			store = await this.prisma.store.findUnique({
@@ -83,8 +102,10 @@ class StoreService {
 	 * @throws {NotFoundException} If no stores are found for the given user
 	 * @returns An array of the found stores
 	 */
-	public async getAllStoresOfUser(userId: string): Promise<Partial<Store>[]> {
-		let stores: Partial<Store>[];
+	public async getAllStoresOfUser({
+		userId,
+	}: GetAllUserStoresInputs): Promise<GetAllUserStoresResponse> {
+		let stores: GetAllUserStoresResponse | null;
 
 		try {
 			stores = await this.prisma.store.findMany({
@@ -109,25 +130,34 @@ class StoreService {
 	/**
 	 * Updates a store with the given id with the given data
 	 * @param id The id of the store to update
-	 * @param updatedData The data to update the store with
+	 * @param updateData The data to update the store with
 	 * @throws {NotFoundException} If no store is found with the given id
 	 * @throws {BadRequestException} If the update fails
 	 * @returns void
 	 */
-	public async updateOne(
-		id: string,
-		updatedData: Partial<Store>
-	): Promise<void> {
+	public async updateOne({
+		id,
+		updateData,
+	}: UpdateStoreInputs): Promise<UpdateStoreResponse> {
 		const existingStore = await this.prisma.store.findUnique({
 			where: { id },
 		});
 		if (!existingStore) throw new NotFoundException("Store not found");
 
 		try {
-			await this.prisma.store.update({
+			const store = await this.prisma.store.update({
 				where: { id },
-				data: { ...updatedData },
+				data: { ...updateData },
+				include: {
+					products: true,
+					availability: true,
+					location: true,
+					petStore: true,
+					vetStore: true,
+				},
 			});
+
+			return store;
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to update store"
@@ -142,16 +172,27 @@ class StoreService {
 	 * @throws {BadRequestException} If the deletion fails
 	 * @returns void
 	 */
-	public async deleteOne(id: string): Promise<void> {
+	public async deleteOne({
+		id,
+	}: DeleteStoreInputs): Promise<DeleteStoreResponse> {
 		const existingStore = await this.prisma.store.findUnique({
 			where: { id },
 		});
 		if (!existingStore) throw new NotFoundException("Store not found");
 
 		try {
-			await this.prisma.store.delete({
+			const store = await this.prisma.store.delete({
 				where: { id },
+				include: {
+					products: true,
+					availability: true,
+					location: true,
+					petStore: true,
+					vetStore: true,
+				},
 			});
+
+			return store;
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to delete store"

@@ -39,7 +39,9 @@ async function getAllUserStores(
 			throw new UnauthorizedException("Invalid or missing token");
 		}
 
-		stores = await storeService.getAllStoresOfUser(req.decodedToken.userId);
+		stores = await storeService.getAllStoresOfUser({
+			userId: req.decodedToken.userId,
+		});
 
 		logger.info("All stores retrieved successfully.");
 		res.status(HttpStatusCodes.OK).json({ stores });
@@ -58,7 +60,7 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Getting specific store...");
 
 	try {
-		const store = await storeService.getOne(req.params.storeId);
+		const store = await storeService.getOne({ id: req.params.storeId });
 
 		logger.info("Store retrieved successfully.");
 		res.status(HttpStatusCodes.OK).json({ store });
@@ -84,10 +86,10 @@ async function create(req: Request, res: Response, next: NextFunction) {
 			throw new BadRequestException("Missing body");
 		}
 
-		const storeId = await storeService.create(
-			req.decodedToken.userId,
-			req.body
-		);
+		const storeId = await storeService.create({
+			userId: req.decodedToken.userId,
+			store: req.body,
+		});
 
 		logger.info("Store created successfully.");
 		res.status(HttpStatusCodes.CREATED).json({ storeId });
@@ -106,10 +108,16 @@ async function update(req: Request, res: Response, next: NextFunction) {
 	logger.info("Updating store...");
 
 	try {
-		await storeService.updateOne(req.params.storeId, req.body);
+		const store = await storeService.updateOne({
+			id: req.params.storeId,
+			updateData: req.body,
+		});
 
 		logger.info("Store updated successfully.");
-		res.status(HttpStatusCodes.OK).json("Store updated successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			message: "Store updated successfully.",
+			store,
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -125,10 +133,13 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Deleting store...");
 
 	try {
-		await storeService.deleteOne(req.params.storeId);
+		const store = await storeService.deleteOne({ id: req.params.storeId });
 
 		logger.info("Store deleted successfully.");
-		res.status(HttpStatusCodes.OK).json("Store deleted successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			message: "Store deleted successfully.",
+			store,
+		});
 	} catch (error) {
 		next(error);
 	}
