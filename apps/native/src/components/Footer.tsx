@@ -1,9 +1,10 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet, Text, Image } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/types";
+import LanguageRowView from "./LanguageView";
 
 const Footer = () => {
 	const navigation =
@@ -15,7 +16,7 @@ const Footer = () => {
 	};
 
 	return (
-		<View style={styles.footer}>
+		<LanguageRowView style={styles.footer}>
 			<TouchableOpacity
 				onPress={() => navigation.navigate("MainPage")}
 				style={styles.iconButton}
@@ -65,7 +66,7 @@ const Footer = () => {
 					Profile
 				</Text>
 			</TouchableOpacity>
-		</View>
+		</LanguageRowView>
 	);
 };
 
