@@ -1,10 +1,18 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, Text, Image } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import { ImageSourcePropType, StyleSheet } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/types";
 import LanguageRowView from "./LanguageView";
+import FooterIcon from "./FooterIcon";
+
+interface FooterPage {
+	pageName: string;
+	pageText: string;
+	image: ImageSourcePropType | string;
+}
+
+const homeIcon: ImageSourcePropType = require("../../assets/home-icon.png");
 
 const Footer = () => {
 	const navigation =
@@ -15,57 +23,35 @@ const Footer = () => {
 		return route.name === page ? "#4552CB" : "#BBC3CE";
 	};
 
+	const footerPages: FooterPage[] = [
+		{
+			pageName: "MainPage",
+			pageText: "Home",
+			image: homeIcon,
+		},
+		{
+			pageName: "AppointmentsScreen",
+			pageText: "Appointments",
+			image: "calendar-outline",
+		},
+		{
+			pageName: "ProfileScreen",
+			pageText: "Profile",
+			image: "person-outline",
+		},
+	];
+
 	return (
 		<LanguageRowView style={styles.footer}>
-			<TouchableOpacity
-				onPress={() => navigation.navigate("MainPage")}
-				style={styles.iconButton}
-			>
-				<Image
-					source={require("../../assets/home-icon.png")}
-					style={[
-						styles.iconButton,
-						{ tintColor: getColor("MainPage") },
-					]}
-					resizeMode="contain"
-				/>
-				<Text
-					style={[styles.iconText, { color: getColor("MainPage") }]}
-				>
-					Home
-				</Text>
-			</TouchableOpacity>
-			<TouchableOpacity
-				onPress={() => navigation.navigate("Appointments")}
-				style={styles.iconButton}
-			>
-				<Icon
-					name="calendar-outline"
-					size={24}
-					color={getColor("Appointments")}
-				/>
-				<Text
-					style={[
-						styles.iconText,
-						{ color: getColor("Appointments") },
-					]}
-				>
-					Appointments
-				</Text>
-			</TouchableOpacity>
-			<TouchableOpacity
-				onPress={() => navigation.navigate("Profile")}
-				style={styles.iconButton}
-			>
-				<Icon
-					name="person-outline"
-					size={24}
-					color={getColor("Profile")}
-				/>
-				<Text style={[styles.iconText, { color: getColor("Profile") }]}>
-					Profile
-				</Text>
-			</TouchableOpacity>
+			{footerPages.map(({ pageName, pageText, image }) => (
+				<FooterIcon
+					key={pageName}
+					pageText={pageText}
+					onPress={() => navigation.navigate(pageName)}
+					color={getColor(pageName)}
+					image={image}
+				></FooterIcon>
+			))}
 		</LanguageRowView>
 	);
 };
@@ -78,14 +64,6 @@ const styles = StyleSheet.create({
 		backgroundColor: "#FFFFFF",
 		borderTopWidth: 1,
 		borderTopColor: "#E0E0E0",
-	},
-	iconButton: {
-		alignItems: "center",
-	},
-	iconText: {
-		fontSize: 12,
-		color: "#BBC3CE",
-		marginTop: 4,
 	},
 });
 
