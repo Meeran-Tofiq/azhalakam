@@ -13,6 +13,7 @@ import {
 	createStoreValidator,
 	updateStoreValidator,
 } from "@src/validators/storeValidator";
+import { GetAllUserStoresResponse } from "@src/types/Store";
 
 // **** Variables **** //
 
@@ -31,7 +32,7 @@ async function getAllUserStores(
 	res: Response,
 	next: NextFunction
 ) {
-	let stores: Partial<Store>[];
+	let stores: GetAllUserStoresResponse;
 	logger.info("Getting all stores...");
 
 	try {
@@ -86,13 +87,13 @@ async function create(req: Request, res: Response, next: NextFunction) {
 			throw new BadRequestException("Missing body");
 		}
 
-		const storeId = await storeService.create({
+		const { store, storeId } = await storeService.create({
 			userId: req.decodedToken.userId,
 			store: req.body,
 		});
 
 		logger.info("Store created successfully.");
-		res.status(HttpStatusCodes.CREATED).json({ storeId });
+		res.status(HttpStatusCodes.CREATED).json({ store, storeId });
 	} catch (error) {
 		next(error);
 	}
