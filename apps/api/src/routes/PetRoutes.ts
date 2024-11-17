@@ -27,7 +27,6 @@ const petService = PetServiceFactory.create(prismaClient);
  * @param next
  */
 async function getAllUserPets(req: Request, res: Response, next: NextFunction) {
-	let pets: Partial<Pet>[];
 	logger.info("Getting all pets...");
 
 	try {
@@ -35,10 +34,12 @@ async function getAllUserPets(req: Request, res: Response, next: NextFunction) {
 			throw new UnauthorizedException("Invalid or missing token");
 		}
 
-		pets = await petService.getAllUserPets(req.decodedToken.userId);
+		const data = await petService.getAllUserPets({
+			userId: req.decodedToken.userId,
+		});
 
 		logger.info("All pets retrieved successfully.");
-		res.status(HttpStatusCodes.OK).json({ pets });
+		res.status(HttpStatusCodes.OK).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -54,10 +55,10 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Getting specific pet...");
 
 	try {
-		const pet = await petService.getOne(req.params.petId);
+		const data = await petService.getOne({ id: req.params.petId });
 
 		logger.info("Pet retrieved successfully.");
-		res.status(HttpStatusCodes.OK).json({ pet });
+		res.status(HttpStatusCodes.OK).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -80,13 +81,13 @@ async function create(req: Request, res: Response, next: NextFunction) {
 			throw new BadRequestException("Missing body");
 		}
 
-		const petId = await petService.create(
-			req.decodedToken.userId,
-			req.body
-		);
+		const data = await petService.create({
+			userId: req.decodedToken.userId,
+			pet: req.body,
+		});
 
 		logger.info("Pet created successfully.");
-		res.status(HttpStatusCodes.CREATED).json({ petId });
+		res.status(HttpStatusCodes.CREATED).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -102,10 +103,16 @@ async function update(req: Request, res: Response, next: NextFunction) {
 	logger.info("Updating pet...");
 
 	try {
-		await petService.updateOne(req.params.petId, req.body);
+		const data = await petService.updateOne({
+			id: req.params.petId,
+			updateData: req.body,
+		});
 
 		logger.info("Pet updated successfully.");
-		res.status(HttpStatusCodes.OK).json("Pet updated successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			message: "Pet updated successfully.",
+			...data,
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -121,10 +128,13 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Deleting pet...");
 
 	try {
-		await petService.deleteOne(req.params.petId);
+		const data = await petService.deleteOne({ id: req.params.petId });
 
 		logger.info("Pet deleted successfully.");
-		res.status(HttpStatusCodes.OK).json("Pet deleted successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			message: "Pet deleted successfully.",
+			...data,
+		});
 	} catch (error) {
 		next(error);
 	}
