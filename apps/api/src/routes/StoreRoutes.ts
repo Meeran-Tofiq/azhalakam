@@ -61,10 +61,10 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Getting specific store...");
 
 	try {
-		const store = await storeService.getOne({ id: req.params.storeId });
+		const data = await storeService.getOne({ id: req.params.storeId });
 
 		logger.info("Store retrieved successfully.");
-		res.status(HttpStatusCodes.OK).json({ store });
+		res.status(HttpStatusCodes.OK).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -109,7 +109,7 @@ async function update(req: Request, res: Response, next: NextFunction) {
 	logger.info("Updating store...");
 
 	try {
-		const store = await storeService.updateOne({
+		const data = await storeService.updateOne({
 			id: req.params.storeId,
 			updateData: req.body,
 		});
@@ -117,7 +117,7 @@ async function update(req: Request, res: Response, next: NextFunction) {
 		logger.info("Store updated successfully.");
 		res.status(HttpStatusCodes.OK).json({
 			message: "Store updated successfully.",
-			store,
+			...data,
 		});
 	} catch (error) {
 		next(error);
@@ -134,12 +134,12 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Deleting store...");
 
 	try {
-		const store = await storeService.deleteOne({ id: req.params.storeId });
+		const data = await storeService.deleteOne({ id: req.params.storeId });
 
 		logger.info("Store deleted successfully.");
 		res.status(HttpStatusCodes.OK).json({
 			message: "Store deleted successfully.",
-			store,
+			...data,
 		});
 	} catch (error) {
 		next(error);

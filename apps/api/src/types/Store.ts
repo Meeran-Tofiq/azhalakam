@@ -35,12 +35,12 @@ export type GetStoreInputs = {
 	id: string;
 };
 
-export type GetStoreResponse = StoreWithIncludes;
+export type GetStoreResponse = { store: StoreWithIncludes };
 
 export type GetAllUserStoresInputs = {
 	userId: string;
 };
-export type GetAllUserStoresResponse = StoreWithIncludes[];
+export type GetAllUserStoresResponse = { stores: StoreWithIncludes[] };
 
 // Update store types
 
@@ -57,11 +57,11 @@ export type UpdateStoreInputs = {
 		| "vetStore"
 	>;
 };
-export type UpdateStoreResponse = StoreWithIncludes;
+export type UpdateStoreResponse = { store: StoreWithIncludes };
 
 // Delete store types
 
 export type DeleteStoreInputs = {
 	id: string;
 };
-export type DeleteStoreResponse = StoreWithIncludes;
+export type DeleteStoreResponse = { store: StoreWithIncludes };

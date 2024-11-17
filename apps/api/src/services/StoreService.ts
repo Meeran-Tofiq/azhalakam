@@ -73,10 +73,8 @@ class StoreService {
 	 * @returns The found store
 	 */
 	public async getOne({ id }: GetStoreInputs): Promise<GetStoreResponse> {
-		let store: GetStoreResponse | null;
-
 		try {
-			store = await this.prisma.store.findUnique({
+			const store = await this.prisma.store.findUnique({
 				where: { id },
 				include: {
 					products: true,
@@ -86,13 +84,13 @@ class StoreService {
 					vetStore: true,
 				},
 			});
+
+			if (!store) throw new NotFoundException("Store not found.");
+
+			return { store };
 		} catch (error: any) {
 			throw new BadRequestException("Failed to get store");
 		}
-
-		if (!store) throw new NotFoundException("Store not found.");
-
-		return store;
 	}
 
 	/**
@@ -105,10 +103,8 @@ class StoreService {
 	public async getAllStoresOfUser({
 		userId,
 	}: GetAllUserStoresInputs): Promise<GetAllUserStoresResponse> {
-		let stores: GetAllUserStoresResponse | null;
-
 		try {
-			stores = await this.prisma.store.findMany({
+			const stores = await this.prisma.store.findMany({
 				where: { userId },
 				include: {
 					products: true,
@@ -118,13 +114,13 @@ class StoreService {
 					vetStore: true,
 				},
 			});
+
+			if (!stores) throw new NotFoundException("Stores not found.");
+
+			return { stores };
 		} catch (error) {
 			throw new BadRequestException("Failed to get stores");
 		}
-
-		if (!stores) throw new NotFoundException("Stores not found.");
-
-		return stores;
 	}
 
 	/**
@@ -157,7 +153,7 @@ class StoreService {
 				},
 			});
 
-			return store;
+			return { store };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to update store"
@@ -192,7 +188,7 @@ class StoreService {
 				},
 			});
 
-			return store;
+			return { store };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to delete store"
