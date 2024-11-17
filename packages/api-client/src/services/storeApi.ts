@@ -11,6 +11,8 @@ import {
 	GetStoreResponse,
 	UpdateStoreInputs,
 	UpdateStoreResponse,
+	GetAllStoresOfPageInputs,
+	GetAllStoresOfPageResponse,
 } from "@api-types/Store";
 
 export default class StoreApi {
@@ -75,6 +77,29 @@ export default class StoreApi {
 			return await response.json();
 		} catch (error) {
 			throw error;
+		}
+	}
+
+	async getAllStoresOfPage({
+		page,
+	}: GetAllStoresOfPageInputs): Promise<GetAllStoresOfPageResponse> {
+		if (page < 1) page = 1;
+
+		try {
+			const response = await fetch(`${this.storeUrl}/all?page=${page}`, {
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error(response.statusText);
+			}
+
+			return await response.json();
+		} catch (error) {
+			throw new Error("Failed to get stores");
 		}
 	}
 

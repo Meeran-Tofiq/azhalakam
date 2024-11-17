@@ -1,4 +1,4 @@
-import { Availability, Prisma, Store } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 export type StoreWithIncludes = Prisma.StoreGetPayload<{
 	include: {
@@ -36,6 +36,11 @@ export type GetStoreInputs = {
 };
 
 export type GetStoreResponse = { store: StoreWithIncludes };
+
+export type GetAllStoresOfPageInputs = {
+	page: number;
+};
+export type GetAllStoresOfPageResponse = { stores: StoreWithIncludes[] };
 
 export type GetAllUserStoresInputs = {
 	userId: string;

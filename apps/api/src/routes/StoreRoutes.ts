@@ -3,7 +3,6 @@ import StoreServiceFactory from "@src/services/StoreService";
 
 import prismaClient from "@src/common/PrismaClient";
 import { NextFunction, Request, Response } from "express";
-import { Store } from "@prisma/client";
 import {
 	BadRequestException,
 	UnauthorizedException,
@@ -13,7 +12,6 @@ import {
 	createStoreValidator,
 	updateStoreValidator,
 } from "@src/validators/storeValidator";
-import { GetAllUserStoresResponse } from "@src/types/Store";
 
 // **** Variables **** //
 
@@ -32,20 +30,19 @@ async function getAllUserStores(
 	res: Response,
 	next: NextFunction
 ) {
-	let stores: GetAllUserStoresResponse;
-	logger.info("Getting all stores...");
+	logger.info("Getting all user stores...");
 
 	try {
 		if (!req.decodedToken) {
 			throw new UnauthorizedException("Invalid or missing token");
 		}
 
-		stores = await storeService.getAllStoresOfUser({
+		const data = await storeService.getAllStoresOfUser({
 			userId: req.decodedToken.userId,
 		});
 
 		logger.info("All stores retrieved successfully.");
-		res.status(HttpStatusCodes.OK).json({ stores });
+		res.status(HttpStatusCodes.OK).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -64,6 +61,21 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 		const data = await storeService.getOne({ id: req.params.storeId });
 
 		logger.info("Store retrieved successfully.");
+		res.status(HttpStatusCodes.OK).json({ ...data });
+	} catch (error) {
+		next(error);
+	}
+}
+
+async function getAll(req: Request, res: Response, next: NextFunction) {
+	logger.info("Getting all stores...");
+
+	try {
+		const data = await storeService.getAllOfPage({
+			page: Number(req.query.page) || 1,
+		});
+
+		logger.info("Stores retrieved successfully.");
 		res.status(HttpStatusCodes.OK).json({ ...data });
 	} catch (error) {
 		next(error);
@@ -150,6 +162,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 
 export default {
 	getAllUserStores,
+	getAll,
 	getOne,
 	create: [createStoreValidator, create],
 	update: [updateStoreValidator, update],
