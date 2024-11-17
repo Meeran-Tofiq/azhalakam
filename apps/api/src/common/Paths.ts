@@ -45,7 +45,7 @@ export default {
 	},
 	Products: {
 		Base: "/products",
-		GetAll: "/page/:page",
+		GetAll: "/all",
 		Get: "/:productId",
 		Create: "/create",
 		Update: "/:productId/update",

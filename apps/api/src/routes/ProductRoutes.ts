@@ -20,7 +20,7 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 
 	try {
 		const products = await productService.getAll(
-			Number(req.params.page),
+			Number(req.query.page),
 			req.body.storeId ? String(req.body.storeId) : undefined
 		);
 
