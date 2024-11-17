@@ -11,7 +11,7 @@ import {
 	GetStoreResponse,
 	UpdateStoreInputs,
 	UpdateStoreResponse,
-} from "@app/api/types/Store";
+} from "@api-types/Store";
 
 export default class StoreApi {
 	private storeUrl: string;
