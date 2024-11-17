@@ -1,13 +1,18 @@
-import {
-	BadRequestException,
-	ForbiddenException,
-	NotFoundException,
-	UnauthorizedException,
-} from "@src/common/classes";
-import { Pet, PrismaClient } from "@prisma/client";
+import { BadRequestException, NotFoundException } from "@src/common/classes";
+import { PrismaClient } from "@prisma/client";
 import prismaClient from "@src/common/PrismaClient";
-import EnvVars from "@src/common/EnvVars";
-import CustomJwtPayload from "@src/types/TokenPayload";
+import {
+	CreatePetInputs,
+	CreatePetResponse,
+	DeletePetInputs,
+	DeletePetResponse,
+	GetAllUserPetsInputs,
+	GetAllUserPetsResponse,
+	GetPetInputs,
+	GetPetResponse,
+	UpdatePetInputs,
+	UpdatePetResponse,
+} from "@src/types/Pet";
 
 // **** Variables **** //
 
@@ -32,10 +37,10 @@ class PetService {
 	 * @throws {BadRequestException} If the creation fails
 	 * @returns The id of the created pet
 	 */
-	public async create(
-		userId: string,
-		pet: Omit<Pet, "id" | "userId">
-	): Promise<string> {
+	public async create({
+		userId,
+		pet,
+	}: CreatePetInputs): Promise<CreatePetResponse> {
 		try {
 			const createdPet = await this.prisma.pet.create({
 				data: {
@@ -44,7 +49,7 @@ class PetService {
 				},
 			});
 
-			return createdPet.id;
+			return { pet: createdPet };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to create pet"
@@ -59,31 +64,18 @@ class PetService {
 	 * @throws {NotFoundException} If no pet is found with the given id
 	 * @returns The found pet
 	 */
-	public async getOne(id: string): Promise<Partial<Pet>> {
-		let pet: Partial<Pet> | null;
-
+	public async getOne({ id }: GetPetInputs): Promise<GetPetResponse> {
 		try {
-			pet = await this.prisma.pet.findUnique({
+			const pet = await this.prisma.pet.findUnique({
 				where: { id },
-				select: {
-					name: true,
-					age: true,
-					gender: true,
-					lastVetVisit: true,
-					notes: true,
-					species: true,
-					weight: true,
-					id: true,
-					userId: false,
-				},
 			});
+
+			if (!pet) throw new NotFoundException("Pet not found.");
+
+			return { pet };
 		} catch (error: any) {
 			throw new BadRequestException("Failed to get pet");
 		}
-
-		if (!pet) throw new NotFoundException("Pet not found.");
-
-		return pet;
 	}
 
 	/**
@@ -93,31 +85,20 @@ class PetService {
 	 * @throws {NotFoundException} If no pets are found for the given user
 	 * @returns An array of the found pets
 	 */
-	public async getAllUserPets(userId: string): Promise<Partial<Pet>[]> {
-		let pets: Partial<Pet>[];
-
+	public async getAllUserPets({
+		userId,
+	}: GetAllUserPetsInputs): Promise<GetAllUserPetsResponse> {
 		try {
-			pets = await this.prisma.pet.findMany({
+			const pets = await this.prisma.pet.findMany({
 				where: { userId },
-				select: {
-					name: true,
-					age: true,
-					gender: true,
-					lastVetVisit: true,
-					notes: true,
-					species: true,
-					weight: true,
-					id: true,
-					userId: false,
-				},
 			});
+
+			if (!pets) throw new NotFoundException("Pets not found.");
+
+			return { pets };
 		} catch (error) {
 			throw new BadRequestException("Failed to get pets");
 		}
-
-		if (!pets) throw new NotFoundException("Pets not found.");
-
-		return pets;
 	}
 
 	/**
@@ -128,20 +109,22 @@ class PetService {
 	 * @throws {BadRequestException} If the update fails
 	 * @returns void
 	 */
-	public async updateOne(
-		id: string,
-		updatedData: Partial<Pet>
-	): Promise<void> {
+	public async updateOne({
+		id,
+		updateData,
+	}: UpdatePetInputs): Promise<UpdatePetResponse> {
 		const existingPet = await this.prisma.pet.findUnique({
 			where: { id },
 		});
 		if (!existingPet) throw new NotFoundException("Pet not found");
 
 		try {
-			await this.prisma.pet.update({
+			const pet = await this.prisma.pet.update({
 				where: { id },
-				data: { ...updatedData },
+				data: { ...updateData },
 			});
+
+			return { pet };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to update pet"
@@ -156,16 +139,20 @@ class PetService {
 	 * @throws {BadRequestException} If the deletion fails
 	 * @returns void
 	 */
-	public async deleteOne(id: string): Promise<void> {
+	public async deleteOne({
+		id,
+	}: DeletePetInputs): Promise<DeletePetResponse> {
 		const existingPet = await this.prisma.pet.findUnique({
 			where: { id },
 		});
 		if (!existingPet) throw new NotFoundException("Pet not found");
 
 		try {
-			await this.prisma.pet.delete({
+			const pet = await this.prisma.pet.delete({
 				where: { id },
 			});
+
+			return { pet };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to delete pet"

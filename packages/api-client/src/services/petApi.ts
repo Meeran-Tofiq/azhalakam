@@ -1,5 +1,15 @@
-import { Pet } from "@prisma/client";
 import userToken from "../utils/userToken";
+import {
+	CreatePetInputs,
+	CreatePetResponse,
+	DeletePetInputs,
+	DeletePetResponse,
+	GetAllUserPetsResponse,
+	GetPetInputs,
+	GetPetResponse,
+	UpdatePetInputs,
+	UpdatePetResponse,
+} from "@api-types/Pet";
 
 export default class PetApi {
 	private petUrl: String;
@@ -14,7 +24,7 @@ export default class PetApi {
 	 * @throws {Error} If no token is provided, if the request fails, or if the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of all pets.
 	 */
-	async getAllPetsOfUser(): Promise<{ pets: Pet[] }> {
+	async getAllPetsOfUser(): Promise<GetAllUserPetsResponse> {
 		if (!userToken.getToken())
 			throw new Error(
 				"No token provided for this request. Requires a token of a user to be set."
@@ -37,15 +47,15 @@ export default class PetApi {
 
 	/**
 	 * Asynchronously fetches a pet with the given id.
-	 * Requires either a pet object with an id, or a petId string.
+	 * @param id The id of the pet to retrieve
 	 * @throws {Error} If no pet is provided, if the request fails, or if the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the pet.
 	 */
-	async getPetFromId(petId: string): Promise<{ pet: Pet }> {
-		if (!petId) throw new Error("No pet provided for this request.");
+	async getPetFromId({ id }: GetPetInputs): Promise<GetPetResponse> {
+		if (!id) throw new Error("No pet provided for this request.");
 
 		try {
-			const response = await fetch(`${this.petUrl}/${petId}`, {
+			const response = await fetch(`${this.petUrl}/${id}`, {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
@@ -63,15 +73,15 @@ export default class PetApi {
 	}
 
 	/**
-	 * Asynchronously creates a new pet and assigns it to the user that the token provided
-	 * belongs to. Requires a token of a user to be set.
-	 * @param pet The data to create the pet with.
-	 * @throws {Error} If the request fails or the response is not ok.
-	 * @returns void
+	 * Asynchronously creates a new pet for the current user.
+	 * Requires a valid authentication token to be provided for the request.
+	 * @param pet The data to create the pet with, excluding the userId.
+	 * @throws {Error} If no token is provided, if the request fails, or if the response is not ok.
+	 * @returns A Promise that resolves with the JSON data of the created pet.
 	 */
-	async createPet(
-		pet: Omit<Pet, "id" | "userId">
-	): Promise<{ petId: string }> {
+	async createPet({
+		pet,
+	}: Omit<CreatePetInputs, "userId">): Promise<CreatePetResponse> {
 		if (!userToken.getToken())
 			throw new Error(
 				"No token provided for this request. Requires a token of a user to be set."
@@ -99,22 +109,24 @@ export default class PetApi {
 
 	/**
 	 * Asynchronously updates a pet with the given id with the given data.
-	 * Requires a token of a user to be set.
-	 * @param petId The id of the pet to update.
-	 * @param pet The data to update the pet with.
-	 * @throws {Error} If the request fails or the response is not ok.
-	 * @returns The updated pet.
+	 * @param id The id of the pet to update
+	 * @param updateData The data to update the pet with
+	 * @throws {Error} If no pet is provided, if the request fails, or if the response is not ok.
+	 * @returns A Promise that resolves with the JSON data of the updated pet.
 	 */
-	async updatePet(petId: string, pet: Partial<Omit<Pet, "id">>) {
-		if (!petId) throw new Error("No pet provided for this request.");
+	async updatePet({
+		id,
+		updateData,
+	}: UpdatePetInputs): Promise<UpdatePetResponse> {
+		if (!id) throw new Error("No pet provided for this request.");
 
 		try {
-			const response = await fetch(`${this.petUrl}/${petId}/update`, {
+			const response = await fetch(`${this.petUrl}/${id}/update`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(pet),
+				body: JSON.stringify(updateData),
 			});
 
 			if (!response.ok) {
@@ -129,15 +141,15 @@ export default class PetApi {
 
 	/**
 	 * Asynchronously deletes a pet with the given id.
-	 * @param petId The id of the pet to delete.
-	 * @throws {Error} If no pet ID is provided, if the request fails, or if the response is not ok.
+	 * @param id The id of the pet to delete
+	 * @throws {Error} If no pet is provided, if the request fails, or if the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the deleted pet.
 	 */
-	async deletePet(petId: string) {
-		if (!petId) throw new Error("No pet provided for this request.");
+	async deletePet({ id }: DeletePetInputs): Promise<DeletePetResponse> {
+		if (!id) throw new Error("No pet provided for this request.");
 
 		try {
-			const response = await fetch(`${this.petUrl}/${petId}/delete`, {
+			const response = await fetch(`${this.petUrl}/${id}/delete`, {
 				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",

@@ -8,7 +8,7 @@ import {
 	LoginUserResponse,
 	UpdateUserInputs,
 	UpdateUserResponse,
-} from "@app/api/types/User";
+} from "@api-types/User";
 
 export default class UserApi {
 	private userUrl: String;

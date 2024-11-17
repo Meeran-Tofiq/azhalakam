@@ -8,7 +8,7 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"paths": {
-			"@app/api/types/*": ["../../apps/api/dist/src/types/*"]
+			"@api-types/*": ["../../apps/api/dist/src/types/*"]
 		},
 		"outDir": "dist"
 	},
