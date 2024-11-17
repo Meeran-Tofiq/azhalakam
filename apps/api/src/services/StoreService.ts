@@ -134,11 +134,15 @@ class StoreService {
 	 */
 	public async getAllOfPage({
 		page,
+		storeType,
 	}: GetAllStoresOfPageInputs): Promise<GetAllStoresOfPageResponse> {
 		if (page < 1) page = 1;
 
 		try {
 			const stores = await this.prisma.store.findMany({
+				where: {
+					type: storeType,
+				},
 				take: this.storePageLimit,
 				skip: (page - 1) * this.storePageLimit,
 				orderBy: {

@@ -82,16 +82,20 @@ export default class StoreApi {
 
 	async getAllStoresOfPage({
 		page,
+		storeType,
 	}: GetAllStoresOfPageInputs): Promise<GetAllStoresOfPageResponse> {
 		if (page < 1) page = 1;
 
 		try {
-			const response = await fetch(`${this.storeUrl}/all?page=${page}`, {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-				},
-			});
+			const response = await fetch(
+				`${this.storeUrl}/all?page=${page}&storeType=${storeType}`,
+				{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			);
 
 			if (!response.ok) {
 				throw new Error(response.statusText);

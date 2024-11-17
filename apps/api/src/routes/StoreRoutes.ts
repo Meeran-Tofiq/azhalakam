@@ -12,6 +12,7 @@ import {
 	createStoreValidator,
 	updateStoreValidator,
 } from "@src/validators/storeValidator";
+import { $Enums } from "@prisma/client";
 
 // **** Variables **** //
 
@@ -73,6 +74,9 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 	try {
 		const data = await storeService.getAllOfPage({
 			page: Number(req.query.page) || 1,
+			storeType: req.query.storeType
+				? (req.query.storeType as $Enums.StoreType)
+				: undefined,
 		});
 
 		logger.info("Stores retrieved successfully.");

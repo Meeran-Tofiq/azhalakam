@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { $Enums, Prisma } from "@prisma/client";
 
 export type StoreWithIncludes = Prisma.StoreGetPayload<{
 	include: {
@@ -39,6 +39,7 @@ export type GetStoreResponse = { store: StoreWithIncludes };
 
 export type GetAllStoresOfPageInputs = {
 	page: number;
+	storeType?: $Enums.StoreType;
 };
 export type GetAllStoresOfPageResponse = { stores: StoreWithIncludes[] };
 
