@@ -48,6 +48,16 @@ const MainPage = () => {
 		}
 	};
 
+	const handleServicePress = (label: string) => {
+		switch (label) {
+			case "My Store":
+				navigation.navigate("MyStore");
+				break;
+			default:
+				console.log("Service Pressed", `You pressed ${label}`);
+		}
+	};
+
 	const services = [
 		{ image: require("../../assets/my-pets.png"), label: "My Pets" },
 		{ image: require("../../assets/grooming.png"), label: "Grooming" },
@@ -57,7 +67,7 @@ const MainPage = () => {
 			image: require("../../assets/info-graphics.png"),
 			label: "Info-graphics",
 		},
-		{ image: require("../../assets/training.png"), label: "Training" },
+		{ image: require("../../assets/my-store.png"), label: "My Store" },
 		{ image: require("../../assets/pet-taxi.png"), label: "Pet Taxi" },
 		{ image: require("../../assets/pet-date.png"), label: "Pet Date" },
 		{ image: require("../../assets/adoption.png"), label: "Adoption" },
@@ -111,6 +121,7 @@ const MainPage = () => {
 							key={index}
 							image={service.image}
 							label={service.label}
+							onPress={() => handleServicePress(service.label)}
 						/>
 					))}
 				</View>
