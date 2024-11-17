@@ -105,11 +105,13 @@ enum StoreType {
 }
 
 model Store {
-    id       String    @id @default(uuid())
-    name     String
-    type     StoreType
-    species  Species[]
-    products Product[]
+    id        String    @id @default(uuid())
+    name      String
+    type      StoreType
+    avgRating Float?
+    species   Species[]
+    products  Product[]
+    reviews   Review[]
 
     availability   Availability? @relation(fields: [availabilityId], references: [id])
     availabilityId String?       @unique
@@ -166,6 +168,8 @@ model Review {
     userId    String
     product   Product? @relation(fields: [productId], references: [id])
     productId String?
+    Store     Store?   @relation(fields: [storeId], references: [id])
+    storeId   String?
 }
 
 model Location {

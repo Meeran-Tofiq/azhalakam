@@ -38,7 +38,8 @@ petRouter.put(Paths.Pets.Update, ...PetRoutes.update);
 petRouter.delete(Paths.Pets.Delete, PetRoutes.deleteOne);
 
 // Store routes
-storeRouter.get(Paths.Stores.GetAll, StoreRoutes.getAllUserStores);
+storeRouter.get(Paths.Stores.GetAllOfUser, StoreRoutes.getAllUserStores);
+storeRouter.get(Paths.Stores.GetAll, StoreRoutes.getAll);
 storeRouter.post(Paths.Stores.Create, ...StoreRoutes.create);
 storeRouter.get(Paths.Stores.Get, StoreRoutes.getOne);
 storeRouter.put(Paths.Stores.Update, ...StoreRoutes.update);

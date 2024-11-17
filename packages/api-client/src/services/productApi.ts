@@ -9,7 +9,7 @@ export default class ProductApi {
 
 	async getAllProductsAtPage(page: number): Promise<{ products: Product[] }> {
 		try {
-			const response = await fetch(`${this.productUrl}/page/${page}`);
+			const response = await fetch(`${this.productUrl}/all?page=${page}`);
 
 			if (!response.ok) {
 				throw new Error(response.statusText);

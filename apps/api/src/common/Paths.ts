@@ -38,6 +38,7 @@ export default {
 		},
 		Base: "/stores",
 		GetAll: "/all",
+		GetAllOfUser: "/user/:userId",
 		Create: "/create",
 		Get: "/:storeId",
 		Update: "/:storeId/update",
@@ -45,7 +46,7 @@ export default {
 	},
 	Products: {
 		Base: "/products",
-		GetAll: "/page/:page",
+		GetAll: "/all",
 		Get: "/:productId",
 		Create: "/create",
 		Update: "/:productId/update",

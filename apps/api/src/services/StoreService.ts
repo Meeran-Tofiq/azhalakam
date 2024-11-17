@@ -6,6 +6,8 @@ import {
 	CreateStoreResponse,
 	DeleteStoreInputs,
 	DeleteStoreResponse,
+	GetAllStoresOfPageInputs,
+	GetAllStoresOfPageResponse,
 	GetAllUserStoresInputs,
 	GetAllUserStoresResponse,
 	GetStoreInputs,
@@ -24,6 +26,7 @@ export default class StoreServiceFactory {
 
 class StoreService {
 	private prisma: PrismaClient;
+	private storePageLimit: number = 15;
 
 	constructor(prisma: PrismaClient) {
 		this.prisma = prisma;
@@ -117,6 +120,42 @@ class StoreService {
 
 			if (!stores) throw new NotFoundException("Stores not found.");
 
+			return { stores };
+		} catch (error) {
+			throw new BadRequestException("Failed to get stores");
+		}
+	}
+
+	/**
+	 * Retrieves all stores in the given page, or of page 1 if page is not given
+	 * @param page The page to retrieve, defaults to 1
+	 * @throws {BadRequestException} If the query fails
+	 * @returns An array of the stores in the given page
+	 */
+	public async getAllOfPage({
+		page,
+		storeType,
+	}: GetAllStoresOfPageInputs): Promise<GetAllStoresOfPageResponse> {
+		if (page < 1) page = 1;
+
+		try {
+			const stores = await this.prisma.store.findMany({
+				where: {
+					type: storeType,
+				},
+				take: this.storePageLimit,
+				skip: (page - 1) * this.storePageLimit,
+				orderBy: {
+					avgRating: "desc",
+				},
+				include: {
+					products: true,
+					availability: true,
+					location: true,
+					petStore: true,
+					vetStore: true,
+				},
+			});
 			return { stores };
 		} catch (error) {
 			throw new BadRequestException("Failed to get stores");
