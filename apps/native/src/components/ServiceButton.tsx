@@ -4,10 +4,11 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 type ServiceButtonProps = {
 	image: any;
 	label: string;
+	onPress: () => void;
 };
 
-const ServiceButton: React.FC<ServiceButtonProps> = ({ image, label }) => (
-	<TouchableOpacity style={styles.serviceButton}>
+const ServiceButton: React.FC<ServiceButtonProps> = ({ image, label, onPress }) => (
+	<TouchableOpacity style={styles.serviceButton} onPress={onPress}>
 		<View style={styles.iconCircle}>
 			<Image
 				source={image}
