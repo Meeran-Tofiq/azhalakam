@@ -1,6 +1,16 @@
 import { BadRequestException, NotFoundException } from "@src/common/classes";
 import { PetStore, PrismaClient } from "@prisma/client";
 import prismaClient from "@src/common/PrismaClient";
+import {
+	CreatePetStoreInputs,
+	CreatePetStoreResponse,
+	DeletePetStoreInputs,
+	DeletePetStoreResponse,
+	GetPetStoreInputs,
+	GetPetStoreResponse,
+	UpdatePetStoreInputs,
+	UpdatePetStoreResponse,
+} from "@src/types/PetStore";
 
 // **** Variables **** //
 
@@ -25,10 +35,10 @@ class PetStoreService {
 	 * @throws {BadRequestException} If the creation fails
 	 * @returns The id of the created petStore
 	 */
-	public async create(
-		storeId: string,
-		petStore: Omit<PetStore, "id" | "storeId"> | null
-	): Promise<string> {
+	public async create({
+		storeId,
+		petStore,
+	}: CreatePetStoreInputs): Promise<CreatePetStoreResponse> {
 		try {
 			const storeExists = await this.prisma.store.findUnique({
 				where: {
@@ -51,7 +61,7 @@ class PetStoreService {
 				},
 			});
 
-			return createdPetStore.id;
+			return { petStore: createdPetStore };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to create pet store"
@@ -66,20 +76,20 @@ class PetStoreService {
 	 * @throws {NotFoundException} If no petStore is found with the given id
 	 * @returns The found petStore
 	 */
-	public async getOne(id: string): Promise<Partial<PetStore>> {
-		let petStore: Partial<PetStore> | null;
-
+	public async getOne({
+		id,
+	}: GetPetStoreInputs): Promise<GetPetStoreResponse> {
 		try {
-			petStore = await this.prisma.petStore.findUnique({
+			const petStore = await this.prisma.petStore.findUnique({
 				where: { id },
 			});
+
+			if (!petStore) throw new NotFoundException("Pet store not found.");
+
+			return { petStore };
 		} catch (error: any) {
 			throw new BadRequestException("Failed to get pet store");
 		}
-
-		if (!petStore) throw new NotFoundException("Pet store not found.");
-
-		return petStore;
 	}
 
 	/**
@@ -90,10 +100,10 @@ class PetStoreService {
 	 * @throws {BadRequestException} If the update fails
 	 * @returns void
 	 */
-	public async updateOne(
-		id: string,
-		updatedData: Partial<Omit<PetStore, "id">>
-	): Promise<void> {
+	public async updateOne({
+		id,
+		updateData,
+	}: UpdatePetStoreInputs): Promise<UpdatePetStoreResponse> {
 		const existingPetStore = await this.prisma.petStore.findUnique({
 			where: { id },
 		});
@@ -101,10 +111,12 @@ class PetStoreService {
 			throw new NotFoundException("Pet store not found");
 
 		try {
-			await this.prisma.petStore.update({
+			const petStore = await this.prisma.petStore.update({
 				where: { id },
-				data: { ...updatedData },
+				data: { ...updateData },
 			});
+
+			return { petStore };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to update pet store"
@@ -119,7 +131,9 @@ class PetStoreService {
 	 * @throws {BadRequestException} If the deletion fails
 	 * @returns void
 	 */
-	public async deleteOne(id: string): Promise<void> {
+	public async deleteOne({
+		id,
+	}: DeletePetStoreInputs): Promise<DeletePetStoreResponse> {
 		const existingPetStore = await this.prisma.petStore.findUnique({
 			where: { id },
 		});
@@ -127,9 +141,11 @@ class PetStoreService {
 			throw new NotFoundException("Pet store not found");
 
 		try {
-			await this.prisma.petStore.delete({
+			const petStore = await this.prisma.petStore.delete({
 				where: { id },
 			});
+
+			return { petStore };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to delete pet store"

@@ -30,10 +30,12 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Getting specific pet store...");
 
 	try {
-		const petStore = await petStoreService.getOne(req.params.petStoreId);
+		const data = await petStoreService.getOne({
+			id: req.params.petStoreId,
+		});
 
 		logger.info("Pet store retrieved successfully.");
-		res.status(HttpStatusCodes.OK).json({ petStore });
+		res.status(HttpStatusCodes.OK).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -49,13 +51,13 @@ async function create(req: Request, res: Response, next: NextFunction) {
 	logger.info("Creating pet store...");
 
 	try {
-		const petStoreId = await petStoreService.create(
-			req.params.storeId,
-			req.body
-		);
+		const data = await petStoreService.create({
+			storeId: req.params.storeId,
+			petStore: req.body,
+		});
 
 		logger.info("Pet store created successfully.");
-		res.status(HttpStatusCodes.CREATED).json({ petStoreId });
+		res.status(HttpStatusCodes.CREATED).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -71,10 +73,16 @@ async function update(req: Request, res: Response, next: NextFunction) {
 	logger.info("Updating petStore...");
 
 	try {
-		await petStoreService.updateOne(req.params.petStoreId, req.body);
+		const data = await petStoreService.updateOne({
+			id: req.params.petStoreId,
+			updateData: req.body,
+		});
 
 		logger.info("Pet store updated successfully.");
-		res.status(HttpStatusCodes.OK).json("PetStore updated successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			message: "Pet store updated successfully.",
+			...data,
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -90,10 +98,15 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Deleting pet store...");
 
 	try {
-		await petStoreService.deleteOne(req.params.petStoreId);
+		const data = await petStoreService.deleteOne({
+			id: req.params.petStoreId,
+		});
 
 		logger.info("Pet store deleted successfully.");
-		res.status(HttpStatusCodes.OK).json("Pet store deleted successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			message: "Pet store deleted successfully.",
+			...data,
+		});
 	} catch (error) {
 		next(error);
 	}
