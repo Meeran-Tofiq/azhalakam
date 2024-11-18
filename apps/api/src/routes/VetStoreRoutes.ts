@@ -3,11 +3,6 @@ import VetStoreServiceFactory from "@src/services/VetStoreService";
 
 import prismaClient from "@src/common/PrismaClient";
 import { NextFunction, Request, Response } from "express";
-import { VetStore } from "@prisma/client";
-import {
-	BadRequestException,
-	UnauthorizedException,
-} from "@src/common/classes";
 import logger from "jet-logger";
 import {
 	createVetStoreValidator,
@@ -30,10 +25,12 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Getting specific vet store...");
 
 	try {
-		const vetStore = await vetStoreService.getOne(req.params.vetStoreId);
+		const data = await vetStoreService.getOne({
+			id: req.params.vetStoreId,
+		});
 
 		logger.info("Vet store retrieved successfully.");
-		res.status(HttpStatusCodes.OK).json({ vetStore });
+		res.status(HttpStatusCodes.OK).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -49,13 +46,13 @@ async function create(req: Request, res: Response, next: NextFunction) {
 	logger.info("Creating vet store...");
 
 	try {
-		const vetStoreId = await vetStoreService.create(
-			req.params.storeId,
-			req.body
-		);
+		const data = await vetStoreService.create({
+			storeId: req.params.storeId,
+			vetStore: req.body,
+		});
 
 		logger.info("Vet store created successfully.");
-		res.status(HttpStatusCodes.CREATED).json({ vetStoreId });
+		res.status(HttpStatusCodes.CREATED).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -71,10 +68,16 @@ async function update(req: Request, res: Response, next: NextFunction) {
 	logger.info("Updating vetStore...");
 
 	try {
-		await vetStoreService.updateOne(req.params.vetStoreId, req.body);
+		const data = await vetStoreService.updateOne({
+			id: req.params.vetStoreId,
+			updateData: req.body,
+		});
 
 		logger.info("Vet store updated successfully.");
-		res.status(HttpStatusCodes.OK).json("VetStore updated successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			message: "VetStore updated successfully.",
+			...data,
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -90,10 +93,15 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Deleting vet store...");
 
 	try {
-		await vetStoreService.deleteOne(req.params.vetStoreId);
+		const data = await vetStoreService.deleteOne({
+			id: req.params.vetStoreId,
+		});
 
 		logger.info("Vet store deleted successfully.");
-		res.status(HttpStatusCodes.OK).json("Vet store deleted successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			message: "Vet store deleted successfully.",
+			...data,
+		});
 	} catch (error) {
 		next(error);
 	}
