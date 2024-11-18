@@ -13,7 +13,8 @@ import { RootStackParamList } from "../types/types";
 import { useAuth } from "../context/AuthContext";
 import useApiClient from "../hooks/useApiClient";
 import Icon from "react-native-vector-icons/Ionicons";
-import BackButton from "src/components/BackButton";
+import BackButton from "../components/BackButton";
+import GenericButton from "../components/GenericButton";
 
 const MyStoreScreen = () => {
 	const navigation =
@@ -47,11 +48,11 @@ const MyStoreScreen = () => {
 			[
 				{
 					text: "Pet Store",
-					onPress: () => navigation.navigate("CreateStore", { type: "PetStore" }),
+					onPress: () => navigation.navigate("PetStoreCreation"),
 				},
 				{
 					text: "Vet Store",
-					onPress: () => navigation.navigate("CreateStore", { type: "VetStore" }),
+					onPress: () => navigation.navigate("VetStoreCreation"),
 				},
 				{
 					text: "Cancel",
@@ -64,7 +65,7 @@ const MyStoreScreen = () => {
 	if (loading) {
 		return (
 			<View style={styles.loadingContainer}>
-				<Text>Loading...</Text> 
+				<Text>Loading...</Text>
 			</View>
 		);
 	}
@@ -75,21 +76,25 @@ const MyStoreScreen = () => {
 				<BackButton />
 				<Text style={styles.headerTitle}>My Store</Text>
 				{store ? (
-					<TouchableOpacity
+					<GenericButton
 						style={styles.headerButton}
-						onPress={() => navigation.navigate("StoreDetails", { storeId: store.id })}
+						onPress={() =>
+							navigation.navigate("StoreDetails", {
+								storeId: store.id,
+							})
+						}
+						label="View Store"
 					>
 						<Icon name="eye" size={24} color="#fff" />
-						<Text style={styles.headerButtonText}>View Store</Text>
-					</TouchableOpacity>
+					</GenericButton>
 				) : (
-					<TouchableOpacity
+					<GenericButton
 						style={styles.headerButton}
 						onPress={handleCreateStore}
+						label="Create Store"
 					>
 						<Icon name="add" size={24} color="#fff" />
-						<Text style={styles.headerButtonText}>Create Store</Text>
-					</TouchableOpacity>
+					</GenericButton>
 				)}
 			</View>
 
@@ -140,12 +145,11 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: "bold",
 		color: "#1F2937",
-        flex: 1
+		flex: 1,
 	},
 	headerButton: {
 		flexDirection: "row",
 		alignItems: "center",
-		backgroundColor: "#FFCF6F",
 		padding: 10,
 		borderRadius: 10,
 	},
