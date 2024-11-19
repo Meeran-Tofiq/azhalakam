@@ -4,28 +4,24 @@ import { Text } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome6";
 import LanguageRowView from "src/components/LanguageView";
 import PetCard from "src/components/PetCard";
-import { useAuth } from "src/context/AuthContext";
 import useApiClient from "src/hooks/useApiClient";
 import { GetAllUserPetsResponse } from "../../../api/dist/src/types/Pet";
 
 export default function MyPetsScreen() {
-	const [hasPets, setHasPets] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 	const [pets, setPets] = useState<GetAllUserPetsResponse["pets"]>();
 	const apiClient = useApiClient();
 
 	async function getAllPets() {
 		const data = await apiClient.petApi.getAllPetsOfUser();
 		setPets(data.pets);
+		setIsLoading(false);
 	}
 
 	useEffect(() => {
+		setIsLoading(true);
 		getAllPets();
 	}, []);
-	const { user } = useAuth();
-
-	if ((!user || user?.pets.length === 0) && hasPets) {
-		setHasPets(false);
-	}
 
 	return (
 		<View style={styles.container}>
@@ -35,7 +31,7 @@ export default function MyPetsScreen() {
 				<Icon name="plus" style={styles.headerButton} />
 			</LanguageRowView>
 
-			{pets ? (
+			{isLoading ? null : pets ? (
 				<View style={styles.cardsContainer}>
 					{pets.map((pet) => (
 						<PetCard pet={pet} key={pet.id} />
