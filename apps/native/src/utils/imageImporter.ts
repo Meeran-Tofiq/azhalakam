@@ -16,7 +16,7 @@ const hamster: Image = require("../../assets/animals/hamster.jpg");
 const horse: Image = require("../../assets/animals/horse.jpg");
 const insect: Image = require("../../assets/animals/insect.jpg");
 const lizard: Image = require("../../assets/animals/lizard.jpg");
-const mouse: Image = require("../../assets/animals/mouse.jpg");
+const rodent: Image = require("../../assets/animals/rodent.jpg");
 const snake: Image = require("../../assets/animals/snake.jpg");
 const rabbit: Image = require("../../assets/animals/rabbit.jpg");
 
@@ -33,7 +33,7 @@ const images = {
 	horse,
 	amphibian,
 	insect,
-	mouse,
+	rodent,
 	bird,
 };
 
