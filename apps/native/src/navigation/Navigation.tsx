@@ -10,6 +10,7 @@ import { AuthProvider, useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
 import MyPetsScreen from "src/screens/MyPetsScreen";
 import AddPetScreen from "src/screens/AddPetScreen";
+import PetDetailsScreen from "src/screens/PetDetailsScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -48,6 +49,10 @@ const NavigationContent = () => {
 					<Stack.Screen name="MainPage" component={MainPage} />
 					<Stack.Screen name="MyPets" component={MyPetsScreen} />
 					<Stack.Screen name="AddPet" component={AddPetScreen} />
+					<Stack.Screen
+						name="PetDetails"
+						component={PetDetailsScreen}
+					/>
 				</>
 			)}
 		</Stack.Navigator>
