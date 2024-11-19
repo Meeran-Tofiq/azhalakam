@@ -4,6 +4,5 @@ export type RootStackParamList = {
 	Login: undefined;
 	MainPage: undefined;
 	MyStore: undefined;
-	PetStoreCreation: undefined;
-	VetStoreCreation: undefined;
+	StoreCreation: undefined;
 };
