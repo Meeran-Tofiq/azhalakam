@@ -12,6 +12,7 @@ import {
 import { Text } from "react-native-elements";
 import { RootStackParamList } from "src/types/types";
 import images from "src/utils/imageImporter";
+import BackgroundImageWithTextOnTop from "./BackgroundImageWithTextOnTop";
 
 const speciesColors = {
 	dog: "#FF6F61",
@@ -53,6 +54,13 @@ export default function PetCard({ pet }: PetCardProps) {
 			speciesColors[
 				pet.species.toLowerCase() as keyof typeof speciesColors
 			];
+	console.log(capitalizeFirstLetter(pet.species));
+
+	const texts = [`Name: ${pet.name}`];
+	if (pet.species)
+		texts.push(
+			`${capitalizeFirstLetter(pet.species?.toLocaleLowerCase().replace("-", " "))}`
+		);
 
 	return (
 		<TouchableOpacity
@@ -68,63 +76,28 @@ export default function PetCard({ pet }: PetCardProps) {
 				})
 			}
 		>
-			<ImageBackground
-				source={imageSource}
-				style={[styles.backgroundImage, { borderColor: speciesColor }]}
-			>
-				<LinearGradient
-					colors={["rgba(0, 0, 0, 0.4)", "rgba(0, 0, 0, 0)"]}
-					style={styles.gradient}
-					start={{ x: 0, y: 0 }}
-					end={{ x: 1, y: 0 }}
-				/>
-				<View style={styles.overlay}>
-					<Text style={[styles.petInfoText, { color: speciesColor }]}>
-						{"NAME: " + pet.name}
-					</Text>
-					{pet.species && (
-						<Text
-							style={[
-								styles.petInfoText,
-								{ color: speciesColor },
-							]}
-						>
-							{"SPECIES: " +
-								capitalizeFirstLetter(
-									pet.species
-										?.toLocaleLowerCase()
-										.replace("-", " ")
-								)}
-						</Text>
-					)}
-				</View>
-			</ImageBackground>
+			<BackgroundImageWithTextOnTop
+				imageSource={imageSource}
+				texts={texts}
+				shouldHaveOverlay={true}
+				backgroundImageStyle={[
+					styles.backgroundImage,
+					{ borderColor: speciesColor },
+				]}
+				textStyle={[styles.petInfoText, { color: speciesColor }]}
+			/>
 		</TouchableOpacity>
 	);
 }
 
 const styles = StyleSheet.create({
 	backgroundImage: {
-		width: "100%",
-		height: 150,
 		borderRadius: 30,
 		overflow: "hidden",
 		borderWidth: 2,
 	},
-	overlay: {
-		...StyleSheet.absoluteFillObject,
-		padding: 15,
-		justifyContent: "flex-end",
-	},
-	gradient: {
-		...StyleSheet.absoluteFillObject,
-	},
 	petInfoText: {
-		backgroundColor: "rgba(255, 255, 255, 0.85)",
-		padding: 5,
-		borderRadius: 15,
 		marginBottom: 5,
-		textAlign: "center",
-		maxWidth: "40%",
+		marginHorizontal: 0,
 	},
 });

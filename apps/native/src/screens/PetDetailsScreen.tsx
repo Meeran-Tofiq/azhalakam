@@ -1,6 +1,8 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
+import { BackgroundImage } from "react-native-elements/dist/config";
+import BackgroundImageWithTextOnTop from "src/components/BackgroundImageWithTextOnTop";
 import GradientBackground from "src/components/GradientBackground";
 import Header from "src/components/Header";
 import { RootStackParamList } from "src/types/types";
@@ -31,6 +33,14 @@ export default function PetDetailsScreen() {
 		{ data: formattedDateOfLastVisit, title: "Last Vet Visit: " },
 	];
 
+	const textsOnBackgroundImage = [
+		"Name: " + pet.name,
+		"Species: " +
+			capitalizeFirstLetter(
+				pet.species?.toLocaleLowerCase().replace("-", " ")
+			),
+	];
+
 	return (
 		<>
 			<View style={styles.container}>
@@ -38,24 +48,13 @@ export default function PetDetailsScreen() {
 				<Header title={pet.name} textStyle={{ color: "white" }} />
 
 				<View style={styles.contentContainer}>
-					<ImageBackground
-						source={imageSource}
-						style={styles.backgroundImage}
-					>
-						<Text style={[styles.imageText, { color }]}>
-							{"NAME: " + pet.name}
-						</Text>
-						{pet.species && (
-							<Text style={[styles.imageText, { color }]}>
-								{"SPECIES: " +
-									capitalizeFirstLetter(
-										pet.species
-											?.toLocaleLowerCase()
-											.replace("-", " ")
-									)}
-							</Text>
-						)}
-					</ImageBackground>
+					<BackgroundImageWithTextOnTop
+						imageSource={imageSource}
+						shouldHaveOverlay={false}
+						backgroundImageStyle={{ height: 200 }}
+						textStyle={{ color: color }}
+						texts={textsOnBackgroundImage}
+					/>
 
 					<View style={styles.infoContainer}>
 						{petInformation.map((info) => (
