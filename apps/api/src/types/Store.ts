@@ -61,7 +61,7 @@ export type UpdateStoreInputs = {
 		| "location"
 		| "petStore"
 		| "vetStore"
-	>;
+	> & { locationId: string };
 };
 export type UpdateStoreResponse = { store: StoreWithIncludes };
 
