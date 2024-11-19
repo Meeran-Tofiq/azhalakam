@@ -7,6 +7,7 @@ import {
 	GetAllProductsInputs,
 	GetAllProductsResponse,
 	GetProductInputs,
+	GetProductResponse,
 	UpdateProductInputs,
 	UpdateProductResponse,
 } from "@api-types/Product";
@@ -65,9 +66,15 @@ export default class ProductApi {
 		}
 	}
 
+	/**
+	 * Asynchronously fetches a product with the given id.
+	 * @param id The id of the product to retrieve
+	 * @throws {Error} If no product is provided, if the request fails, or if the response is not ok.
+	 * @returns A Promise that resolves with the JSON data of the product.
+	 */
 	async getProductFromId({
 		id,
-	}: GetProductInputs): Promise<GetAllProductsResponse> {
+	}: GetProductInputs): Promise<GetProductResponse> {
 		if (!id) throw new Error("No product provided for this request.");
 
 		try {

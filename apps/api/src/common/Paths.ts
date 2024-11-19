@@ -52,4 +52,11 @@ export default {
 		Update: "/:productId/update",
 		Delete: "/:productId/delete",
 	},
+	Locations: {
+		Base: "/locations",
+		Create: "/create",
+		Get: "/:locationId",
+		Update: "/:locationId/update",
+		Delete: "/:locationId/delete",
+	},
 } as const;
