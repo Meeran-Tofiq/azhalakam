@@ -42,24 +42,7 @@ const MyStoreScreen = () => {
 	};
 
 	const handleCreateStore = () => {
-		Alert.alert(
-			"Create Store",
-			"Do you want to create a Pet Store or a Vet Store?",
-			[
-				{
-					text: "Pet Store",
-					onPress: () => navigation.navigate("PetStoreCreation"),
-				},
-				{
-					text: "Vet Store",
-					onPress: () => navigation.navigate("VetStoreCreation"),
-				},
-				{
-					text: "Cancel",
-					style: "cancel",
-				},
-			]
-		);
+		navigation.navigate("StoreCreation");
 	};
 
 	if (loading) {
@@ -153,11 +136,6 @@ const styles = StyleSheet.create({
 		padding: 10,
 		borderRadius: 10,
 	},
-	headerButtonText: {
-		marginLeft: 5,
-		color: "#fff",
-		fontWeight: "600",
-	},
 	storeContainer: {
 		alignItems: "center",
 	},
@@ -194,16 +172,6 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		color: "#4B5563",
 		marginBottom: 20,
-	},
-	createButton: {
-		backgroundColor: "#FFCF6F",
-		padding: 15,
-		borderRadius: 10,
-	},
-	createButtonText: {
-		color: "#fff",
-		fontSize: 16,
-		fontWeight: "600",
 	},
 	loadingContainer: {
 		flex: 1,
