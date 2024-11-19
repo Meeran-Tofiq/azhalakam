@@ -9,8 +9,7 @@ import MainPage from "../screens/MainPage";
 import { AuthProvider, useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
 import MyStoreScreen from "../screens/MyStoreScreen";
-import PetStoreCreationScreen from "../screens/PetStoreCreationScreen";
-import VetStoreCreationScreen from "../screens/VetStoreCreationScreen";
+import StoreCreationScreen from "../screens/StoreCreationScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -48,14 +47,7 @@ const NavigationContent = () => {
 				<>
 					<Stack.Screen name="MainPage" component={MainPage} />
 					<Stack.Screen name="MyStore" component={MyStoreScreen} />
-					<Stack.Screen
-						name="PetStoreCreation"
-						component={PetStoreCreationScreen}
-					/>
-					<Stack.Screen
-						name="VetStoreCreation"
-						component={VetStoreCreationScreen}
-					/>
+					<Stack.Screen name="StoreCreation" component={StoreCreationScreen} />
 				</>
 			)}
 		</Stack.Navigator>
