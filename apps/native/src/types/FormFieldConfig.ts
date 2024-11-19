@@ -5,6 +5,7 @@ type FormFieldConfig = {
 	label: string;
 	secureTextEntry?: boolean;
 	keyboardType?: KeyboardTypeOptions;
+	dropDownOptions?: { label: string; value: string }[];
 };
 
 export default FormFieldConfig;

@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { useCallback, useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome6";
-import LanguageRowView from "src/components/LanguageView";
 import PetCard from "src/components/PetCard";
 import useApiClient from "src/hooks/useApiClient";
 import { GetAllUserPetsResponse } from "../../../api/dist/src/types/Pet";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "src/types/types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Header from "src/components/Header";
@@ -24,30 +22,35 @@ export default function MyPetsScreen() {
 		setIsLoading(false);
 	}
 
-	useEffect(() => {
-		setIsLoading(true);
-		getAllPets();
-	}, []);
+	useFocusEffect(
+		useCallback(() => {
+			getAllPets();
+
+			return () => {};
+		}, [])
+	);
 
 	return (
 		<View style={styles.container}>
 			<Header title="My Pets" />
 
 			{isLoading ? null : pets ? (
-				<View style={styles.cardsContainer}>
-					{pets.map((pet) => (
-						<PetCard pet={pet} key={pet.id} />
-					))}
+				<ScrollView>
+					<View style={styles.cardsContainer}>
+						{pets.map((pet) => (
+							<PetCard pet={pet} key={pet.id} />
+						))}
 
-					<Button
-						title={"+ Add Pet"}
-						buttonStyle={styles.addPetButton}
-						titleStyle={styles.addPetButtonText}
-						onPress={() => {
-							navigation.navigate("AddPet");
-						}}
-					/>
-				</View>
+						<Button
+							title={"+ Add Pet"}
+							buttonStyle={styles.addPetButton}
+							titleStyle={styles.addPetButtonText}
+							onPress={() => {
+								navigation.navigate("AddPet");
+							}}
+						/>
+					</View>
+				</ScrollView>
 			) : (
 				<View style={styles.noPetsTextContainer}>
 					<Text style={styles.noPetsText}>
