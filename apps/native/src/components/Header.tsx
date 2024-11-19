@@ -1,17 +1,25 @@
 import Icon from "react-native-vector-icons/FontAwesome6";
 import LanguageRowView from "./LanguageView";
 import { Text } from "react-native-elements";
-import { StyleSheet } from "react-native";
+import {
+	ImageStyle,
+	StyleProp,
+	StyleSheet,
+	TextStyle,
+	ViewStyle,
+} from "react-native";
 
 interface HeaderProps {
 	title: string;
+	headerStyle?: StyleProp<ViewStyle>;
+	textStyle?: StyleProp<TextStyle>;
 }
 
-export default function Header({ title }: HeaderProps) {
+export default function Header({ title, headerStyle, textStyle }: HeaderProps) {
 	return (
-		<LanguageRowView style={styles.header}>
+		<LanguageRowView style={[styles.header, headerStyle]}>
 			<Icon name="arrow-left-long" style={styles.backButton} />
-			<Text style={styles.headerText}>{title}</Text>
+			<Text style={[styles.headerText, textStyle]}>{title}</Text>
 		</LanguageRowView>
 	);
 }
@@ -23,8 +31,6 @@ const styles = StyleSheet.create({
 		width: "100%",
 		alignItems: "center",
 		justifyContent: "center",
-		borderBottomColor: "#aaa",
-		borderBottomWidth: 1,
 	},
 	headerText: {
 		fontSize: 20,
