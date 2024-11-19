@@ -6,7 +6,7 @@ type AuthContextType = {
 	isAuthenticated: boolean;
 	user: UserWithoutPassword | null;
 	token: string | null;
-	login: (userData: any) => Promise<void>;
+	login: (userData: LoginUserResponse) => Promise<void>;
 	logout: () => Promise<void>;
 	loading: boolean;
 };
