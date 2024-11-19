@@ -5,4 +5,10 @@ export type RootStackParamList = {
 	MainPage: undefined;
 	MyStore: undefined;
 	StoreCreation: undefined;
+	StoreDetails: {
+		storeId: string;
+	};
+	StoreEdit: {
+		storeId: string;
+	};
 };
