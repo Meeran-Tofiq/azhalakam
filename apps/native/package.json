@@ -17,6 +17,7 @@
 		"@react-navigation/native": "^6.1.18",
 		"@react-navigation/native-stack": "^6.11.0",
 		"@repo/ui": "*",
+		"date-fns": "^4.1.0",
 		"expo": "^52.0.7",
 		"expo-constants": "~17.0.3",
 		"expo-linear-gradient": "~14.0.1",
