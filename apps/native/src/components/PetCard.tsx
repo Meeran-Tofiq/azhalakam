@@ -1,12 +1,16 @@
 import { PetWithIncludes } from "@api-types/Pet";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
 import {
 	ImageBackground,
 	ImageSourcePropType,
 	StyleSheet,
+	TouchableOpacity,
 	View,
 } from "react-native";
 import { Text } from "react-native-elements";
+import { RootStackParamList } from "src/types/types";
 import images from "src/utils/imageImporter";
 
 const speciesColors = {
@@ -31,10 +35,13 @@ function capitalizeFirstLetter(val: string) {
 }
 
 interface PetCardProps {
-	pet: Partial<PetWithIncludes>;
+	pet: PetWithIncludes;
 }
 
 export default function PetCard({ pet }: PetCardProps) {
+	const navigation =
+		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
 	let imageSource: ImageSourcePropType = {};
 	if (pet.species)
 		imageSource =
@@ -48,32 +55,51 @@ export default function PetCard({ pet }: PetCardProps) {
 			];
 
 	return (
-		<ImageBackground
-			source={imageSource}
-			style={[styles.backgroundImage, { borderColor: speciesColor }]}
+		<TouchableOpacity
+			style={{
+				justifyContent: "center",
+				alignItems: "center",
+			}}
+			onPress={() =>
+				navigation.navigate("PetDetails", {
+					pet,
+					imageSource,
+					color: speciesColor,
+				})
+			}
 		>
-			<LinearGradient
-				colors={["rgba(0, 0, 0, 0.4)", "rgba(0, 0, 0, 0)"]}
-				style={styles.gradient}
-				start={{ x: 0, y: 0 }}
-				end={{ x: 1, y: 0 }}
-			/>
-			<View style={styles.overlay}>
-				<Text style={[styles.petInfoText, { color: speciesColor }]}>
-					{"NAME: " + pet.name}
-				</Text>
-				{pet.species && (
+			<ImageBackground
+				source={imageSource}
+				style={[styles.backgroundImage, { borderColor: speciesColor }]}
+			>
+				<LinearGradient
+					colors={["rgba(0, 0, 0, 0.4)", "rgba(0, 0, 0, 0)"]}
+					style={styles.gradient}
+					start={{ x: 0, y: 0 }}
+					end={{ x: 1, y: 0 }}
+				/>
+				<View style={styles.overlay}>
 					<Text style={[styles.petInfoText, { color: speciesColor }]}>
-						{"SPECIES: " +
-							capitalizeFirstLetter(
-								pet.species
-									?.toLocaleLowerCase()
-									.replace("-", " ")
-							)}
+						{"NAME: " + pet.name}
 					</Text>
-				)}
-			</View>
-		</ImageBackground>
+					{pet.species && (
+						<Text
+							style={[
+								styles.petInfoText,
+								{ color: speciesColor },
+							]}
+						>
+							{"SPECIES: " +
+								capitalizeFirstLetter(
+									pet.species
+										?.toLocaleLowerCase()
+										.replace("-", " ")
+								)}
+						</Text>
+					)}
+				</View>
+			</ImageBackground>
+		</TouchableOpacity>
 	);
 }
 
