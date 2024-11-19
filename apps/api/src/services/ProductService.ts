@@ -1,6 +1,18 @@
 import { BadRequestException, NotFoundException } from "@src/common/classes";
 import { Product, PrismaClient, Prisma, Review } from "@prisma/client";
 import prismaClient from "@src/common/PrismaClient";
+import {
+	CreateProductInputs,
+	CreateProductResponse,
+	DeleteProductInputs,
+	DeleteProductResponse,
+	GetAllProductsInputs,
+	GetAllProductsResponse,
+	GetProductInputs,
+	GetProductResponse,
+	UpdateProductInputs,
+	UpdateProductResponse,
+} from "@src/types/Product";
 
 // **** Variables **** //
 
@@ -27,24 +39,30 @@ class ProductService {
 	 * @throws {BadRequestException} If the query fails
 	 * @returns An array of the products in the given page
 	 */
-	public async getAll(page: number, storeId?: string): Promise<Product[]> {
+	public async getAll({
+		page,
+		storeId,
+	}: GetAllProductsInputs): Promise<GetAllProductsResponse> {
 		if (page < 1) page = 1;
 
-		let productFindManyArgs: Prisma.ProductFindManyArgs = {
-			take: this.productPageLimit,
-			skip: (page - 1) * this.productPageLimit,
-			orderBy: {
-				avgRating: "desc",
-			},
-		};
+		try {
+			const products = await this.prisma.product.findMany({
+				where: { storeId },
+				take: this.productPageLimit,
+				skip: (page - 1) * this.productPageLimit,
+				orderBy: {
+					avgRating: "desc",
+				},
+				include: {
+					store: true,
+					reviews: true,
+				},
+			});
 
-		if (storeId) {
-			productFindManyArgs.where = {
-				storeId,
-			};
+			return { products };
+		} catch (error) {
+			throw new BadRequestException("Failed to get products");
 		}
-
-		return this.prisma.product.findMany(productFindManyArgs);
 	}
 
 	/**
@@ -53,11 +71,10 @@ class ProductService {
 	 * @throws {BadRequestException} If the creation fails
 	 * @returns The id of the created product
 	 */
-	public async create(
-		product: Prisma.ProductCreateInput & { storeId: string }
-	): Promise<string> {
-		const { storeId, ...productInfo } = product;
-
+	public async create({
+		product,
+	}: CreateProductInputs): Promise<CreateProductResponse> {
+		const { storeId, ...createData } = product;
 		try {
 			const storeExists = await this.prisma.store.findUnique({
 				where: {
@@ -71,16 +88,20 @@ class ProductService {
 
 			const createdProduct = await this.prisma.product.create({
 				data: {
-					...productInfo,
+					...createData,
 					store: {
 						connect: {
 							id: storeId,
 						},
 					},
 				},
+				include: {
+					reviews: true,
+					store: true,
+				},
 			});
 
-			return createdProduct.id;
+			return { product: createdProduct };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to create product"
@@ -95,23 +116,22 @@ class ProductService {
 	 * @throws {NotFoundException} If no product is found with the given id
 	 * @returns The found product
 	 */
-	public async getOne(id: string): Promise<Partial<Product>> {
-		let product: Partial<Product> | null;
-
+	public async getOne({ id }: GetProductInputs): Promise<GetProductResponse> {
 		try {
-			product = await this.prisma.product.findUnique({
+			const product = await this.prisma.product.findUnique({
 				where: { id },
 				include: {
 					reviews: true,
+					store: true,
 				},
 			});
+
+			if (!product) throw new NotFoundException("Product not found.");
+
+			return { product };
 		} catch (error: any) {
 			throw new BadRequestException("Failed to get product");
 		}
-
-		if (!product) throw new NotFoundException("Product not found.");
-
-		return product;
 	}
 
 	/**
@@ -122,12 +142,10 @@ class ProductService {
 	 * @throws {BadRequestException} If the update fails
 	 * @returns void
 	 */
-	public async updateOne(
-		id: string,
-		updatedData: Partial<Omit<Product, "id" | "storeId">> & {
-			reviewIds?: string[];
-		}
-	): Promise<void> {
+	public async updateOne({
+		id,
+		updateData,
+	}: UpdateProductInputs): Promise<UpdateProductResponse> {
 		try {
 			const existingProduct = await this.prisma.product.findUnique({
 				where: { id },
@@ -139,7 +157,7 @@ class ProductService {
 			if (!existingProduct)
 				throw new NotFoundException("Product not found");
 
-			const { reviewIds, ...productUpdateInfo } = updatedData;
+			const { reviewIds, ...productUpdateInfo } = updateData;
 
 			const reviews = this.getReviewConnections(
 				existingProduct?.reviews || [],
@@ -151,10 +169,16 @@ class ProductService {
 				reviews,
 			};
 
-			await this.prisma.product.update({
+			const product = await this.prisma.product.update({
 				where: { id },
 				data,
+				include: {
+					reviews: true,
+					store: true,
+				},
 			});
+
+			return { product };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to update product"
@@ -169,16 +193,24 @@ class ProductService {
 	 * @throws {BadRequestException} If the deletion fails
 	 * @returns void
 	 */
-	public async deleteOne(id: string): Promise<void> {
+	public async deleteOne({
+		id,
+	}: DeleteProductInputs): Promise<DeleteProductResponse> {
 		const existingProduct = await this.prisma.product.findUnique({
 			where: { id },
 		});
 		if (!existingProduct) throw new NotFoundException("Product not found");
 
 		try {
-			await this.prisma.product.delete({
+			const product = await this.prisma.product.delete({
 				where: { id },
+				include: {
+					reviews: true,
+					store: true,
+				},
 			});
+
+			return { product };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to delete product"

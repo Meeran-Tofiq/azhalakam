@@ -1,5 +1,5 @@
 import { BadRequestException, NotFoundException } from "@src/common/classes";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import prismaClient from "@src/common/PrismaClient";
 import {
 	CreateStoreInputs,
@@ -179,10 +179,22 @@ class StoreService {
 		});
 		if (!existingStore) throw new NotFoundException("Store not found");
 
+		let { locationId, ...data } = updateData;
+
+		let location;
+		if (locationId) {
+			location = this.getLocationConnection(locationId);
+		}
+
+		data = {
+			...data,
+			...location,
+		};
+
 		try {
 			const store = await this.prisma.store.update({
 				where: { id },
-				data: { ...updateData },
+				data,
 				include: {
 					products: true,
 					availability: true,
@@ -233,5 +245,16 @@ class StoreService {
 				error.message || "Failed to delete store"
 			);
 		}
+	}
+
+	// PRIVATE METHODS //
+	private getLocationConnection(
+		locationId: string
+	): Prisma.LocationUpdateOneWithoutStoreNestedInput {
+		return {
+			connect: {
+				id: locationId,
+			},
+		};
 	}
 }

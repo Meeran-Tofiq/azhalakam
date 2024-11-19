@@ -1,4 +1,14 @@
 import { PetStore, Prisma } from "@prisma/client";
+import {
+	CreatePetStoreInputs,
+	CreatePetStoreResponse,
+	DeletePetStoreInputs,
+	DeletePetStoreResponse,
+	GetPetStoreInputs,
+	GetPetStoreResponse,
+	UpdatePetStoreInputs,
+	UpdatePetStoreResponse,
+} from "@api-types/PetStore";
 
 export default class PetStoreApi {
 	private baseStoreUrl: string;
@@ -13,17 +23,16 @@ export default class PetStoreApi {
 	 * @throws {Error} If no store is provided, if the request fails, or if the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the pet store.
 	 */
-	async getPetStoreFromId(
-		storeId: string,
-		petStoreId: string
-	): Promise<{ petStore: PetStore }> {
+	async getPetStoreFromId({
+		id,
+		storeId,
+	}: GetPetStoreInputs & { storeId: string }): Promise<GetPetStoreResponse> {
 		if (!storeId) throw new Error("No store provided for this request.");
-		if (!petStoreId)
-			throw new Error("No pet store provided for this request.");
+		if (!id) throw new Error("No pet store provided for this request.");
 
 		try {
 			const response = await fetch(
-				`${this.getPetStoreUrl(storeId)}/${petStoreId}`,
+				`${this.getPetStoreUrl(storeId)}/${id}`,
 				{
 					method: "GET",
 					headers: {
@@ -49,10 +58,10 @@ export default class PetStoreApi {
 	 * @throws {Error} If no store is provided, if the request fails, or if the response is not ok.
 	 * @returns The id of the created pet store.
 	 */
-	async createPetStore(
-		storeId: string,
-		petStore: Omit<PetStore, "id" | "storeId">
-	): Promise<{ petStoreId: string }> {
+	async createPetStore({
+		petStore,
+		storeId,
+	}: CreatePetStoreInputs): Promise<CreatePetStoreResponse> {
 		if (!storeId) throw new Error("No store provided for this request.");
 
 		try {
@@ -80,29 +89,30 @@ export default class PetStoreApi {
 	/**
 	 * Asynchronously updates a pet store with the given id using the provided data.
 	 * @param storeId The id of the store to which the pet store belongs.
-	 * @param petStoreId The id of the pet store to update.
+	 * @param id The id of the pet store to update.
 	 * @param petStore The data to update the pet store with, excluding id.
 	 * @throws {Error} If no store or pet store id is provided, if the request fails, or if the response is not ok.
 	 * @returns The updated pet store data.
 	 */
-	async updatePetStore(
-		storeId: string,
-		petStoreId: string,
-		petStore: Partial<Omit<PetStore, "id">>
-	) {
+	async updatePetStore({
+		id,
+		storeId,
+		updateData,
+	}: UpdatePetStoreInputs & {
+		storeId: string;
+	}): Promise<UpdatePetStoreResponse> {
 		if (!storeId) throw new Error("No store provided for this request.");
-		if (!petStoreId)
-			throw new Error("No pet store provided for this request.");
+		if (!id) throw new Error("No pet store provided for this request.");
 
 		try {
 			const response = await fetch(
-				`${this.getPetStoreUrl(storeId)}/${petStoreId}/update`,
+				`${this.getPetStoreUrl(storeId)}/${id}/update`,
 				{
 					method: "PUT",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify(petStore),
+					body: JSON.stringify(updateData),
 				}
 			);
 
@@ -119,18 +129,22 @@ export default class PetStoreApi {
 	/**
 	 * Asynchronously deletes a pet store with the given id.
 	 * @param storeId The id of the store to which the pet store belongs.
-	 * @param petStoreId The id of the pet store to delete.
+	 * @param id The id of the pet store to delete.
 	 * @throws {Error} If no store or pet store id is provided, if the request fails, or if the response is not ok.
 	 * @returns A Promise that resolves with the JSON data of the deleted pet store.
 	 */
-	async deletePetStore(storeId: string, petStoreId: string) {
+	async deletePetStore({
+		id,
+		storeId,
+	}: DeletePetStoreInputs & {
+		storeId: string;
+	}): Promise<DeletePetStoreResponse> {
 		if (!storeId) throw new Error("No store provided for this request.");
-		if (!petStoreId)
-			throw new Error("No pet store provided for this request.");
+		if (!id) throw new Error("No pet store provided for this request.");
 
 		try {
 			const response = await fetch(
-				`${this.getPetStoreUrl(storeId)}/${petStoreId}/delete`,
+				`${this.getPetStoreUrl(storeId)}/${id}/delete`,
 				{
 					method: "DELETE",
 					headers: {
