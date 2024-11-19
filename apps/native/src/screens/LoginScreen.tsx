@@ -83,7 +83,7 @@ function LoginScreen() {
 			<GradientBackground />
 
 			<View style={styles.contentContainer}>
-				<LanguageText translationKey={"signIn"} style={styles.title} />
+				<LanguageText text={"signIn"} style={styles.title} />
 
 				<View style={styles.formContainer}>
 					<FormInput
