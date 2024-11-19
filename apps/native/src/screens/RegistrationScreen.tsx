@@ -1,16 +1,6 @@
 import React, { useState } from "react";
-import {
-	View,
-	Text,
-	StyleSheet,
-	ScrollView,
-	TouchableOpacity,
-	Dimensions,
-	Alert,
-} from "react-native";
-import { Button } from "react-native-elements";
+import { View, StyleSheet, ScrollView, Dimensions, Alert } from "react-native";
 import { useForm } from "react-hook-form";
-import { LinearGradient } from "expo-linear-gradient";
 import FormInput from "../components/FormInput";
 import useApiClient from "../hooks/useApiClient";
 import { useNavigation } from "@react-navigation/native";
@@ -70,7 +60,7 @@ function RegistrationScreen() {
 			};
 
 			const response = await apiClient.userApi.register(registerData);
-			await login(registerData);
+			await login(response);
 
 			Alert.alert("Registration Successful", "Welcome!", [
 				{
