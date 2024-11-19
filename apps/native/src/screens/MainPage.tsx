@@ -49,7 +49,11 @@ const MainPage = () => {
 	};
 
 	const services = [
-		{ image: require("../../assets/my-pets.png"), label: "My Pets" },
+		{
+			image: require("../../assets/my-pets.png"),
+			label: "My Pets",
+			redirection: "MyPets",
+		},
 		{ image: require("../../assets/grooming.png"), label: "Grooming" },
 		{ image: require("../../assets/pet-store.png"), label: "Pet Store" },
 		{ image: require("../../assets/pet-sitter.png"), label: "Pet Sitter" },
@@ -111,6 +115,13 @@ const MainPage = () => {
 							key={index}
 							image={service.image}
 							label={service.label}
+							onPress={() => {
+								if (service.redirection) {
+									navigation.navigate(
+										service.redirection as keyof RootStackParamList
+									);
+								}
+							}}
 						/>
 					))}
 				</View>

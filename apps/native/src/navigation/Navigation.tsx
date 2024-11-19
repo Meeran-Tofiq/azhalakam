@@ -8,6 +8,7 @@ import LoginScreen from "../screens/LoginScreen";
 import MainPage from "../screens/MainPage";
 import { AuthProvider, useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
+import MyPetsScreen from "src/screens/MyPetsScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -42,7 +43,10 @@ const NavigationContent = () => {
 				</>
 			) : (
 				// App screens
-				<Stack.Screen name="MainPage" component={MainPage} />
+				<>
+					<Stack.Screen name="MainPage" component={MainPage} />
+					<Stack.Screen name="MyPets" component={MyPetsScreen} />
+				</>
 			)}
 		</Stack.Navigator>
 	);
