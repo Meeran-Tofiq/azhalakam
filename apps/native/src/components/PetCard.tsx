@@ -1,18 +1,15 @@
 import { PetWithIncludes } from "@api-types/Pet";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { LinearGradient } from "expo-linear-gradient";
 import {
-	ImageBackground,
 	ImageSourcePropType,
 	StyleSheet,
 	TouchableOpacity,
-	View,
 } from "react-native";
-import { Text } from "react-native-elements";
 import { RootStackParamList } from "src/types/types";
 import images from "src/utils/imageImporter";
 import BackgroundImageWithTextOnTop from "./BackgroundImageWithTextOnTop";
+import { capitalizeFirstLetter } from "src/utils/stringHandler";
 
 const speciesColors = {
 	dog: "#FF6F61",
@@ -30,10 +27,6 @@ const speciesColors = {
 	mouse: "#BDC3C7",
 	bird: "#1F77B4",
 };
-
-function capitalizeFirstLetter(val: string) {
-	return String(val).charAt(0).toUpperCase() + String(val).slice(1);
-}
 
 interface PetCardProps {
 	pet: PetWithIncludes;
@@ -54,7 +47,6 @@ export default function PetCard({ pet }: PetCardProps) {
 			speciesColors[
 				pet.species.toLowerCase() as keyof typeof speciesColors
 			];
-	console.log(capitalizeFirstLetter(pet.species));
 
 	const texts = [`Name: ${pet.name}`];
 	if (pet.species)

@@ -7,12 +7,9 @@ import GradientBackground from "src/components/GradientBackground";
 import Header from "src/components/Header";
 import { RootStackParamList } from "src/types/types";
 import { formatDate } from "src/utils/dateFormatter";
+import { capitalizeFirstLetter } from "src/utils/stringHandler";
 
 type PetDetailsScreenRouteProp = RouteProp<RootStackParamList, "PetDetails">;
-
-function capitalizeFirstLetter(val: string) {
-	return String(val).charAt(0).toUpperCase() + String(val).slice(1);
-}
 
 export default function PetDetailsScreen() {
 	const route = useRoute<PetDetailsScreenRouteProp>();
