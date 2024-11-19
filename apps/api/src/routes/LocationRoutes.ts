@@ -1,35 +1,35 @@
 import HttpStatusCodes from "@src/common/HttpStatusCodes";
-import VetStoreServiceFactory from "@src/services/VetStoreService";
+import LocationServiceFactory from "@src/services/LocationService";
 
 import prismaClient from "@src/common/PrismaClient";
 import { NextFunction, Request, Response } from "express";
 import logger from "jet-logger";
 import {
-	createVetStoreValidator,
-	updateVetStoreValidator,
-} from "@src/validators/vetStoreValidator";
+	createLocationValidator,
+	updateLocationValidator,
+} from "@src/validators/locationValidator";
 
 // **** Variables **** //
 
-const vetStoreService = VetStoreServiceFactory.create(prismaClient);
+const locationService = LocationServiceFactory.create(prismaClient);
 
 // **** Functions **** //
 
 /**
- * Get one specific vet store from id
+ * Get one specific location from id
  * @param req
  * @param res
  * @param next
  */
 async function getOne(req: Request, res: Response, next: NextFunction) {
-	logger.info("Getting specific vet store...");
+	logger.info("Getting specific location...");
 
 	try {
-		const data = await vetStoreService.getOne({
-			id: req.params.vetStoreId,
+		const data = await locationService.getOne({
+			id: req.params.locationId,
 		});
 
-		logger.info("Vet store retrieved successfully.");
+		logger.info("Location retrieved successfully.");
 		res.status(HttpStatusCodes.OK).json({ ...data });
 	} catch (error) {
 		next(error);
@@ -37,21 +37,20 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 }
 
 /**
- * Create one vet store
+ * Create one location
  * @param req
  * @param res
  * @param next
  */
 async function create(req: Request, res: Response, next: NextFunction) {
-	logger.info("Creating vet store...");
+	logger.info("Creating location...");
 
 	try {
-		const data = await vetStoreService.create({
-			storeId: req.params.storeId,
-			vetStore: req.body,
+		const data = await locationService.create({
+			location: req.body,
 		});
 
-		logger.info("Vet store created successfully.");
+		logger.info("Location created successfully.");
 		res.status(HttpStatusCodes.CREATED).json({ ...data });
 	} catch (error) {
 		next(error);
@@ -59,23 +58,23 @@ async function create(req: Request, res: Response, next: NextFunction) {
 }
 
 /**
- * Update one vet store using id
+ * Update one location using id
  * @param req
  * @param res
  * @param next
  */
 async function update(req: Request, res: Response, next: NextFunction) {
-	logger.info("Updating vetStore...");
+	logger.info("Updating location...");
 
 	try {
-		const data = await vetStoreService.updateOne({
-			id: req.params.vetStoreId,
+		const data = await locationService.updateOne({
+			id: req.params.locationId,
 			updateData: req.body,
 		});
 
-		logger.info("Vet store updated successfully.");
+		logger.info("Location updated successfully.");
 		res.status(HttpStatusCodes.OK).json({
-			message: "VetStore updated successfully.",
+			message: "Location updated successfully.",
 			...data,
 		});
 	} catch (error) {
@@ -84,22 +83,22 @@ async function update(req: Request, res: Response, next: NextFunction) {
 }
 
 /**
- * Delete one vet store using id
+ * Delete one location using id
  * @param req
  * @param res
  * @param next
  */
 async function deleteOne(req: Request, res: Response, next: NextFunction) {
-	logger.info("Deleting vet store...");
+	logger.info("Deleting location...");
 
 	try {
-		const data = await vetStoreService.deleteOne({
-			id: req.params.vetStoreId,
+		const data = await locationService.deleteOne({
+			id: req.params.locationId,
 		});
 
-		logger.info("Vet store deleted successfully.");
+		logger.info("Location deleted successfully.");
 		res.status(HttpStatusCodes.OK).json({
-			message: "Vet store deleted successfully.",
+			message: "Location deleted successfully.",
 			...data,
 		});
 	} catch (error) {
@@ -111,7 +110,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 
 export default {
 	getOne,
-	create: [createVetStoreValidator, create],
-	update: [updateVetStoreValidator, update],
+	create: [createLocationValidator, create],
+	update: [updateLocationValidator, update],
 	deleteOne,
 } as const;

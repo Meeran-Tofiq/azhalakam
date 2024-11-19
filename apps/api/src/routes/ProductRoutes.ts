@@ -19,13 +19,13 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 	logger.info(`Getting all products in page ${req.params.page}...`);
 
 	try {
-		const products = await productService.getAll(
-			Number(req.query.page),
-			req.body.storeId ? String(req.body.storeId) : undefined
-		);
+		const data = await productService.getAll({
+			page: Number(req.query.page),
+			storeId: req.body.storeId ? String(req.body.storeId) : undefined,
+		});
 
 		logger.info("Products retrieved successfully.");
-		res.status(HttpStatusCodes.OK).json({ products });
+		res.status(HttpStatusCodes.OK).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -41,10 +41,10 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Getting specific product...");
 
 	try {
-		const product = await productService.getOne(req.params.productId);
+		const data = await productService.getOne({ id: req.params.productId });
 
 		logger.info("Product retrieved successfully.");
-		res.status(HttpStatusCodes.OK).json({ product });
+		res.status(HttpStatusCodes.OK).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -60,10 +60,12 @@ async function create(req: Request, res: Response, next: NextFunction) {
 	logger.info("Creating product...");
 
 	try {
-		const productId = await productService.create(req.body);
+		const data = await productService.create({
+			product: req.body,
+		});
 
 		logger.info("Product created successfully.");
-		res.status(HttpStatusCodes.CREATED).json({ productId });
+		res.status(HttpStatusCodes.CREATED).json({ ...data });
 	} catch (error) {
 		next(error);
 	}
@@ -79,10 +81,16 @@ async function update(req: Request, res: Response, next: NextFunction) {
 	logger.info("Updating product...");
 
 	try {
-		await productService.updateOne(req.params.productId, req.body);
+		const data = await productService.updateOne({
+			id: req.params.productId,
+			updateData: req.body,
+		});
 
 		logger.info("Product updated successfully.");
-		res.status(HttpStatusCodes.OK).json("Product updated successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			message: "Product updated successfully.",
+			...data,
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -98,10 +106,15 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 	logger.info("Deleting product...");
 
 	try {
-		await productService.deleteOne(req.params.productId);
+		const data = await productService.deleteOne({
+			id: req.params.productId,
+		});
 
 		logger.info("Product deleted successfully.");
-		res.status(HttpStatusCodes.OK).json("Product deleted successfully.");
+		res.status(HttpStatusCodes.OK).json({
+			message: "Product deleted successfully.",
+			...data,
+		});
 	} catch (error) {
 		next(error);
 	}

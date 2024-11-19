@@ -46,7 +46,9 @@ export type GetAllUsersResponse = GetAllUsersUser[];
 // Update a user types
 
 export type UpdateUserInputs = {
-	updateData: Partial<User>;
+	updateData: CreateUserInputs & {
+		locationId?: string;
+	};
 	token: CustomJwtPayload;
 };
 
