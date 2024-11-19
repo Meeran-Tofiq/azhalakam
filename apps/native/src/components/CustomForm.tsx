@@ -4,6 +4,7 @@ import {
 	StyleSheet,
 	Dimensions,
 	KeyboardTypeOptions,
+	ViewStyle,
 } from "react-native";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import FormInput from "../components/FormInput";
@@ -11,6 +12,8 @@ import LanguageButton from "../components/LanguageButton";
 import LanguageText from "../components/LanguageText";
 import TranslationKeys from "src/types/translations";
 import FormFieldConfig from "src/types/FormFieldConfig";
+import SelectInput from "./FormSelect";
+import { Text } from "react-native-elements";
 
 const { height } = Dimensions.get("window");
 
@@ -20,6 +23,7 @@ type FormProps = {
 	validationRules: any;
 	onSubmit: SubmitHandler<FieldValues>;
 	submitButtonTitle: keyof TranslationKeys | string;
+	containerStyle?: ViewStyle;
 };
 
 const CustomForm = ({
@@ -28,6 +32,7 @@ const CustomForm = ({
 	validationRules,
 	onSubmit,
 	submitButtonTitle,
+	containerStyle,
 }: FormProps) => {
 	const {
 		control,
@@ -47,24 +52,36 @@ const CustomForm = ({
 	};
 
 	return (
-		<View style={styles.contentContainer}>
+		<View style={[styles.contentContainer, containerStyle]}>
 			<LanguageText text={title} style={styles.title} />
 			<View style={styles.formContainer}>
-				{fields.map((field, index) => (
-					<FormInput
-						key={index}
-						control={control}
-						name={field.name}
-						label={field.label}
-						rules={validationRules[field.name]}
-						errors={errors}
-						focused={focusedInputs[field.name]}
-						onFocus={() => handleFocus(field.name)}
-						onBlur={() => handleBlur(field.name)}
-						secureTextEntry={field.secureTextEntry}
-						keyboardType={field.keyboardType}
-					/>
-				))}
+				{fields.map((field, index) =>
+					field.dropDownOptions ? (
+						<SelectInput
+							key={index}
+							control={control}
+							name={field.name}
+							label={field.label}
+							options={field.dropDownOptions}
+							rules={validationRules[field.name]}
+							errors={errors}
+						/>
+					) : (
+						<FormInput
+							key={index}
+							control={control}
+							name={field.name}
+							label={field.label}
+							rules={validationRules[field.name]}
+							errors={errors}
+							secureTextEntry={field.secureTextEntry}
+							keyboardType={field.keyboardType}
+							onFocus={() => handleFocus(field.name)}
+							onBlur={() => handleBlur(field.name)}
+							focused={focusedInputs[field.name] || false}
+						/>
+					)
+				)}
 				<LanguageButton
 					title={submitButtonTitle}
 					style={styles.button}

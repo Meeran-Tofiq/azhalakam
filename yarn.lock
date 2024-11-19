@@ -3072,6 +3072,11 @@
   resolved "https://registry.npmjs.org/@react-native-community/masked-view/-/masked-view-0.1.11.tgz"
   integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
 
+"@react-native-picker/picker@2.9.0":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.9.0.tgz#0a7053ca174ec697388cb79032fb4c1445554e07"
+  integrity sha512-khEhIW/uhfMqq/+tvg4rEAiPGT8GX+Y6QydlP2TSMSmRHoSJK+ShXvXZXSr4Sii4imkj4BwvLunGywwtQDODqg==
+
 "@react-native/assets-registry@0.73.1":
   version "0.73.1"
   resolved "https://registry.npmjs.org/@react-native/assets-registry/-/assets-registry-0.73.1.tgz"
@@ -3565,7 +3570,7 @@
 "@repo/typescript-config@file:packages/typescript-config":
   version "0.0.0"
   dependencies:
-    "@repo/typescript-config" "file:../../.cache/yarn/v6/npm-@repo-typescript-config-0.0.0-0d6819c6-66ec-4bae-9bab-0c19899adbb9-1732040349290/node_modules/@repo/typescript-config"
+    "@repo/typescript-config" "file:../../.cache/yarn/v6/npm-@repo-typescript-config-0.0.0-dfc0a52b-5f98-4ff6-91b5-6efb59f5e097-1732051815416/node_modules/@repo/typescript-config"
 
 "@rnx-kit/chromium-edge-launcher@^1.0.0":
   version "1.0.0"
