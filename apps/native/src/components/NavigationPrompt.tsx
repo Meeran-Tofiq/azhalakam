@@ -18,9 +18,9 @@ const NavigationPrompt: React.FC<NavigationPromptProps> = ({
 }) => {
 	return (
 		<LanguageRowView style={styles.container}>
-			<LanguageText translationKey={message} />
+			<LanguageText text={message} />
 			<TouchableOpacity onPress={onPress}>
-				<LanguageText translationKey={linkText} style={styles.link} />
+				<LanguageText text={linkText} style={styles.link} />
 			</TouchableOpacity>
 		</LanguageRowView>
 	);
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: "row",
 		justifyContent: "center",
-		marginTop: 20,
+		marginBottom: 20,
 	},
 	link: {
 		color: "#4652cc",
