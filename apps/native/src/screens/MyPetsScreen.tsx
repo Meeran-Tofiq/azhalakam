@@ -9,6 +9,7 @@ import { GetAllUserPetsResponse } from "../../../api/dist/src/types/Pet";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "src/types/types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import Header from "src/components/Header";
 
 export default function MyPetsScreen() {
 	const [isLoading, setIsLoading] = useState(true);
@@ -30,10 +31,7 @@ export default function MyPetsScreen() {
 
 	return (
 		<View style={styles.container}>
-			<LanguageRowView style={styles.header}>
-				<Icon name="arrow-left-long" style={styles.backButton} />
-				<Text style={styles.headerText}>My Pets</Text>
-			</LanguageRowView>
+			<Header title="My Pets" />
 
 			{isLoading ? null : pets ? (
 				<View style={styles.cardsContainer}>
@@ -62,25 +60,6 @@ export default function MyPetsScreen() {
 }
 
 const styles = StyleSheet.create({
-	header: {
-		padding: 20,
-		marginTop: 20,
-		width: "100%",
-		alignItems: "center",
-		justifyContent: "center",
-		borderBottomColor: "#aaa",
-		borderBottomWidth: 1,
-	},
-	headerText: {
-		fontSize: 20,
-		fontWeight: "bold",
-	},
-	backButton: {
-		color: "#4552CB",
-		fontSize: 20,
-		position: "absolute",
-		left: 20,
-	},
 	container: {
 		flex: 1,
 	},
