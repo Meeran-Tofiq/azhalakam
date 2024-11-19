@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-elements";
+import { Button, Text } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome6";
 import LanguageRowView from "src/components/LanguageView";
 import PetCard from "src/components/PetCard";
 import useApiClient from "src/hooks/useApiClient";
 import { GetAllUserPetsResponse } from "../../../api/dist/src/types/Pet";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "src/types/types";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export default function MyPetsScreen() {
 	const [isLoading, setIsLoading] = useState(true);
+	const navigation =
+		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const [pets, setPets] = useState<GetAllUserPetsResponse["pets"]>();
 	const apiClient = useApiClient();
 
@@ -26,9 +31,8 @@ export default function MyPetsScreen() {
 	return (
 		<View style={styles.container}>
 			<LanguageRowView style={styles.header}>
-				<Icon name="arrow-left-long" style={styles.headerButton} />
+				<Icon name="arrow-left-long" style={styles.backButton} />
 				<Text style={styles.headerText}>My Pets</Text>
-				<Icon name="plus" style={styles.headerButton} />
 			</LanguageRowView>
 
 			{isLoading ? null : pets ? (
@@ -36,6 +40,15 @@ export default function MyPetsScreen() {
 					{pets.map((pet) => (
 						<PetCard pet={pet} key={pet.id} />
 					))}
+
+					<Button
+						title={"+ Add Pet"}
+						buttonStyle={styles.addPetButton}
+						titleStyle={styles.addPetButtonText}
+						onPress={() => {
+							navigation.navigate("AddPet");
+						}}
+					/>
 				</View>
 			) : (
 				<View style={styles.noPetsTextContainer}>
@@ -54,7 +67,7 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 		width: "100%",
 		alignItems: "center",
-		justifyContent: "space-between",
+		justifyContent: "center",
 		borderBottomColor: "#aaa",
 		borderBottomWidth: 1,
 	},
@@ -62,9 +75,11 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: "bold",
 	},
-	headerButton: {
+	backButton: {
 		color: "#4552CB",
 		fontSize: 20,
+		position: "absolute",
+		left: 20,
 	},
 	container: {
 		flex: 1,
@@ -74,6 +89,7 @@ const styles = StyleSheet.create({
 		padding: 10,
 		width: "100%",
 		height: "100%",
+		gap: 10,
 	},
 	noPetsTextContainer: {
 		flex: 1,
@@ -83,5 +99,11 @@ const styles = StyleSheet.create({
 	noPetsText: {
 		fontSize: 20,
 		color: "#aaa",
+	},
+	addPetButton: {
+		backgroundColor: "#ddd",
+	},
+	addPetButtonText: {
+		color: "#4552CB",
 	},
 });
