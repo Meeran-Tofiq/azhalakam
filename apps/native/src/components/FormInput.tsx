@@ -47,6 +47,9 @@ const FormInput: React.FC<FormInputProps> = ({
 			<Text style={styles.label}>{label}</Text>
 		);
 
+	const value = "value";
+	const onChange = () => {};
+
 	return (
 		<View>
 			{renderLabel()}
@@ -96,7 +99,6 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		marginBottom: 15,
 		width: "100%",
-		flex: 1,
 	},
 	inputFocused: {
 		borderBottomColor: "#4552CB",
