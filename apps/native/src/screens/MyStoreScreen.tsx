@@ -10,7 +10,6 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/types";
-import { useAuth } from "../context/AuthContext";
 import useApiClient from "../hooks/useApiClient";
 import Icon from "react-native-vector-icons/Ionicons";
 import BackButton from "../components/BackButton";
@@ -19,7 +18,6 @@ import GenericButton from "../components/GenericButton";
 const MyStoreScreen = () => {
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-	const { user } = useAuth();
 	const apiClient = useApiClient();
 	const [store, setStore] = useState<any>(null);
 	const [loading, setLoading] = useState(true);
