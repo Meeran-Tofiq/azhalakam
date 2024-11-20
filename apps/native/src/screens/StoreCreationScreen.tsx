@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet, Alert, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import BackButton from "../components/BackButton";
 import FormInput from "../components/FormInput";
 import GenericButton from "../components/GenericButton";
@@ -13,8 +13,6 @@ import { RootStackParamList } from "../types/types";
 type FormValues = {
 	name: string;
 	storeType: "PET_STORE" | "VET_STORE";
-	vetSpecialty?: string;
-	petCategories?: string;
 };
 
 const StoreCreationScreen = () => {
@@ -32,21 +30,16 @@ const StoreCreationScreen = () => {
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const apiClient = useApiClient();
-	const [focusedField, setFocusedField] = useState<string | null>(null);
-	const [storeType, setStoreType] = useState<"PET_STORE" | "VET_STORE">(
-		"PET_STORE"
-	);
+	const [focusedField, setFocusedField] = React.useState<string | null>(null);
 
 	const onSubmit: SubmitHandler<FormValues> = async (data) => {
 		try {
-			const { name, storeType, vetSpecialty, petCategories } = data;
+			const { name, storeType } = data;
 
 			const storeData = {
 				name,
 				type: storeType,
 				userId: "7b35cd8c-e53a-4f03-8291-0d443db73e8f",
-				...(storeType === "VET_STORE" ? { vetSpecialty } : {}),
-				...(storeType === "PET_STORE" ? { petCategories } : {}),
 			};
 
 			const response = await apiClient.storeApi.createStore({
@@ -82,18 +75,22 @@ const StoreCreationScreen = () => {
 
 				<View style={styles.pickerContainer}>
 					<Text style={styles.label}>Store Type</Text>
-					<Picker
-						selectedValue={storeType}
-						onValueChange={(
-							itemValue: "PET_STORE" | "VET_STORE"
-						) => {
-							setStoreType(itemValue);
-						}}
-						style={styles.picker}
-					>
-						<Picker.Item label="Pet Store" value="PET_STORE" />
-						<Picker.Item label="Vet Store" value="VET_STORE" />
-					</Picker>
+					<Controller
+						control={control}
+						name="storeType"
+						render={({ field: { onChange, value } }) => (
+							<Picker
+								selectedValue={value}
+								onValueChange={(itemValue: "PET_STORE" | "VET_STORE") => {
+									onChange(itemValue);
+								}}
+								style={styles.picker}
+							>
+								<Picker.Item label="Pet Store" value="PET_STORE" />
+								<Picker.Item label="Vet Store" value="VET_STORE" />
+							</Picker>
+						)}
+					/>
 				</View>
 
 				<GenericButton
