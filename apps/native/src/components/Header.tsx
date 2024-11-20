@@ -11,7 +11,7 @@ interface HeaderProps {
 	textStyle?: TextStyle;
 	backButtonStyle?: any;
 	showThreeDots?: boolean;
-	menuItems: {
+	menuItems?: {
 		label: string;
 		onPress: () => void;
 		icon?: string;
