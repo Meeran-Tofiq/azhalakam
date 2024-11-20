@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
 	View,
 	Text,
@@ -15,6 +15,7 @@ import useApiClient from "../hooks/useApiClient";
 import BackButton from "../components/BackButton";
 import GenericButton from "../components/GenericButton";
 import Icon from "react-native-vector-icons/Ionicons";
+import { useFocusEffect } from "@react-navigation/native";
 
 type StoreDetailsRouteProp = RouteProp<RootStackParamList, "StoreDetails">;
 
@@ -38,10 +39,6 @@ const StoreDetailsScreen = () => {
 	const [store, setStore] = useState<Store | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 
-	useEffect(() => {
-		fetchStoreDetails();
-	}, [storeId]);
-
 	const fetchStoreDetails = async () => {
 		try {
 			const response = await apiClient.storeApi.getStoreFromId({
@@ -53,11 +50,16 @@ const StoreDetailsScreen = () => {
 				"Error",
 				error.message || "Failed to fetch store details"
 			);
-			navigation.goBack();
 		} finally {
 			setLoading(false);
 		}
 	};
+
+	useFocusEffect(
+		useCallback(() => {
+			fetchStoreDetails();
+		}, [storeId])
+	);
 
 	if (loading) {
 		return (
