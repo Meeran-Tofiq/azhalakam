@@ -1,53 +1,35 @@
 import React from "react";
-import { View, Text, StyleSheet, Alert, ScrollView } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import FormInput from "../components/FormInput";
-import GenericButton from "../components/GenericButton";
+import { View, StyleSheet, Alert } from "react-native";
 import useApiClient from "../hooks/useApiClient";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/types";
 import Header from "../components/Header";
-
-type FormValues = {
-	name: string;
-	storeType: "PET_STORE" | "VET_STORE";
-};
+import StoreForm from "src/components/StoreForm";
+import GradientBackground from "src/components/GradientBackground";
+import { CreateStoreInputs } from "../../../api/dist/src/types/Store";
 
 const StoreCreationScreen = () => {
-	const {
-		control,
-		handleSubmit,
-		formState: { errors },
-		reset,
-	} = useForm<FormValues>({
-		defaultValues: {
-			name: "",
-			storeType: "PET_STORE",
-		},
-	});
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const apiClient = useApiClient();
-	const [focusedField, setFocusedField] = React.useState<string | null>(null);
 
-	const onSubmit: SubmitHandler<FormValues> = async (data) => {
+	const onSubmit = async (data: any) => {
 		try {
-			const { name, storeType } = data;
+			const { name, type } = data;
 
-			const storeData = {
+			const storeData: CreateStoreInputs["store"] = {
 				name,
-				type: storeType,
-				userId: "7b35cd8c-e53a-4f03-8291-0d443db73e8f",
+				type,
 			};
+
+			console.log(storeData);
 
 			await apiClient.storeApi.createStore({
 				store: storeData,
 			});
 
 			Alert.alert("Success", "Store created successfully!");
-			reset();
 			navigation.goBack();
 		} catch (error: any) {
 			Alert.alert("Error", error.message || "Failed to create store.");
@@ -55,58 +37,21 @@ const StoreCreationScreen = () => {
 	};
 
 	return (
-		<ScrollView contentContainerStyle={styles.container}>
-			<Header title="Create Store" />
+		<View style={styles.container}>
+			<GradientBackground />
 
-			<View style={styles.content}>
-				<Text style={styles.title}>Create Your Store</Text>
+			<Header
+				title="Create a Store"
+				textStyle={{ color: "white" }}
+				backButtonStyle={{ color: "white" }}
+			/>
 
-				<FormInput
-					control={control}
-					name="name"
-					label="Store Name"
-					rules={{ required: "Store name is required." }}
-					errors={errors}
-					focused={focusedField === "name"}
-					onFocus={() => setFocusedField("name")}
-					onBlur={() => setFocusedField(null)}
-				/>
-
-				<View style={styles.pickerContainer}>
-					<Text style={styles.label}>Store Type</Text>
-					<Controller
-						control={control}
-						name="storeType"
-						render={({ field: { onChange, value } }) => (
-							<Picker
-								selectedValue={value}
-								onValueChange={(
-									itemValue: "PET_STORE" | "VET_STORE"
-								) => {
-									onChange(itemValue);
-								}}
-								style={styles.picker}
-							>
-								<Picker.Item
-									label="Pet Store"
-									value="PET_STORE"
-								/>
-								<Picker.Item
-									label="Vet Store"
-									value="VET_STORE"
-								/>
-							</Picker>
-						)}
-					/>
-				</View>
-
-				<GenericButton
-					onPress={handleSubmit(onSubmit)}
-					label="Submit"
-					style={styles.submitButton}
-				/>
-			</View>
-		</ScrollView>
+			<StoreForm
+				onSubmit={onSubmit}
+				submitButtonTitle="Create a Store"
+				title="Create a Store"
+			/>
+		</View>
 	);
 };
 
