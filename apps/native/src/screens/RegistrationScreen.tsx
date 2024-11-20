@@ -15,6 +15,7 @@ import TranslationKeys from "../types/translations";
 import LanguageButton from "../components/LanguageButton";
 import CustomForm from "src/components/CustomForm";
 import FormFieldConfig from "src/types/FormFieldConfig";
+import { useFooterContext } from "src/context/FooterContext";
 
 const { height } = Dimensions.get("window");
 const inputs: FormFieldConfig[] = [
@@ -56,6 +57,10 @@ const inputs: FormFieldConfig[] = [
 ];
 
 function RegistrationScreen() {
+	// set footer to not be visible
+	const { setIsVisible } = useFooterContext();
+	setIsVisible(false);
+
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const { login } = useAuth();

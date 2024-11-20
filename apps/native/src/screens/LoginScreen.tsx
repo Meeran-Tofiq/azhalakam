@@ -10,6 +10,7 @@ import GradientBackground from "../components/GradientBackground";
 import RegisterPrompt from "../components/RegisterPrompt";
 import CustomForm from "src/components/CustomForm";
 import FormFieldConfig from "src/types/FormFieldConfig";
+import { useFooterContext } from "src/context/FooterContext";
 
 const { height } = Dimensions.get("window");
 
@@ -27,6 +28,10 @@ const inputs: FormFieldConfig[] = [
 ];
 
 function LoginScreen() {
+	// set footer to not be visible
+	const { setIsVisible } = useFooterContext();
+	setIsVisible(false);
+
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const apiClient = useApiClient();

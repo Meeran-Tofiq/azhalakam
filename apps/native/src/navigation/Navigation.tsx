@@ -12,6 +12,7 @@ import MyPetsScreen from "src/screens/MyPetsScreen";
 import AddPetScreen from "src/screens/AddPetScreen";
 import PetDetailsScreen from "src/screens/PetDetailsScreen";
 import UpdatePetScreen from "src/screens/UpdatePetScreen";
+import { navigationRef } from "./NavigationService"; // Import the reference
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -67,7 +68,7 @@ const NavigationContent = () => {
 const Navigation = () => {
 	return (
 		<AuthProvider>
-			<NavigationContainer>
+			<NavigationContainer ref={navigationRef}>
 				<NavigationContent />
 			</NavigationContainer>
 		</AuthProvider>

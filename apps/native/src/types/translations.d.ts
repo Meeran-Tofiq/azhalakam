@@ -27,4 +27,8 @@ export default interface TranslationKeys {
 	signIn: string;
 
 	skip: string;
+
+	footerHome: string;
+	footerAppointments: string;
+	footerProfile: string;
 }

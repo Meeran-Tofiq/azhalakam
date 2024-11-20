@@ -38,6 +38,10 @@ const ar: TranslationKeys = {
 	signIn: "تسجيل الدخول",
 
 	skip: "تخطى",
+
+	footerHome: "الرئيسية",
+	footerAppointments: "المواعيد",
+	footerProfile: "الملف الشخصي",
 };
 
 export default ar;
