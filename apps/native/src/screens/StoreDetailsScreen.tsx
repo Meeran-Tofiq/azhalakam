@@ -1,27 +1,18 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { ScrollView, StyleSheet, Alert } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/types";
 import useApiClient from "../hooks/useApiClient";
-import GenericButton from "../components/GenericButton";
-import Icon from "react-native-vector-icons/Ionicons";
 import Header from "../components/Header";
 import StoreCard from "../components/StoreCard";
 import LoadingIndicator from "../components/LoadingIndicator";
 import ErrorDisplay from "../components/ErrorDisplay";
 import { useFocusEffect } from "@react-navigation/native";
+import { StoreWithIncludes } from "../../../api/dist/src/types/Store";
+import DeletePopUp from "src/components/DeletePopUp";
 
 type StoreDetailsRouteProp = RouteProp<RootStackParamList, "StoreDetails">;
-
-interface Store {
-	id: string;
-	name: string;
-	type: "PET_STORE" | "VET_STORE";
-	bannerImage?: string;
-	logoImage?: string;
-	avgRating?: number;
-}
 
 const StoreDetailsScreen = () => {
 	const navigation =
@@ -29,8 +20,9 @@ const StoreDetailsScreen = () => {
 	const route = useRoute<StoreDetailsRouteProp>();
 	const { storeId } = route.params;
 	const apiClient = useApiClient();
-	const [store, setStore] = useState<Store | null>(null);
+	const [store, setStore] = useState<StoreWithIncludes | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
+	const [deleteVisible, setDeleteVisible] = useState(false);
 
 	const fetchStoreDetails = async () => {
 		try {
@@ -62,20 +54,56 @@ const StoreDetailsScreen = () => {
 		return <ErrorDisplay message="Store not found." />;
 	}
 
+	async function handleDeleteStore() {
+		try {
+			await apiClient.storeApi.deleteStore({
+				id: storeId,
+			});
+			Alert.alert("Success", "Store deleted successfully!");
+			setDeleteVisible(false);
+			navigation.goBack();
+		} catch (error: any) {
+			Alert.alert("Error", error.message || "Failed to delete store.");
+		}
+	}
+
 	return (
 		<ScrollView style={styles.container}>
 			<Header
 				title="Store Details"
-				actionButton={{
-					label: "Edit",
-					iconName: "pencil",
-					onPress: () =>
-						navigation.navigate("StoreEdit", { storeId }),
-					style: styles.editButton,
+				showThreeDots={true}
+				menuItems={[
+					{
+						label: "Edit",
+						onPress: () =>
+							navigation.navigate("StoreEdit", {
+								storeId: storeId,
+							}),
+						icon: "edit",
+					},
+					{
+						label: "Delete",
+						onPress: () => setDeleteVisible(true),
+						icon: "trash",
+						labelColor: "red",
+					},
+				]}
+				threeDotsStyles={{
+					iconStyle: {
+						color: "#4652CC",
+					},
 				}}
 			/>
 
 			<StoreCard store={store} />
+
+			{deleteVisible && (
+				<DeletePopUp
+					title="Delete pet"
+					description="Are you sure you want to delete this pet?"
+					onDelete={handleDeleteStore}
+				/>
+			)}
 		</ScrollView>
 	);
 };

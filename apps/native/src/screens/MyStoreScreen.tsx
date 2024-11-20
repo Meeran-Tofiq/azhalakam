@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/types";
@@ -69,20 +69,15 @@ const MyStoreScreen = () => {
 
 	return (
 		<View style={styles.container}>
-			<Header
-				title="My Store"
-				actionButton={{
-					label: "View Store",
-					iconName: "eye",
-					onPress: () =>
-						navigation.navigate("StoreDetails", {
-							storeId: store.id,
-						}),
-					style: styles.headerButton,
-				}}
-			/>
+			<Header title="My Store" />
 
-			<StoreCard store={store} />
+			<TouchableOpacity
+				onPress={() =>
+					navigation.navigate("StoreDetails", { storeId: store.id })
+				}
+			>
+				<StoreCard store={store} />
+			</TouchableOpacity>
 		</View>
 	);
 };
