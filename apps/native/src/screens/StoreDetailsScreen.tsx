@@ -1,30 +1,23 @@
 import React, { useEffect, useState, useCallback } from "react";
-import {
-	View,
-	Text,
-	StyleSheet,
-	ScrollView,
-	Image,
-	ActivityIndicator,
-	Alert,
-} from "react-native";
+import { ScrollView, StyleSheet, Alert } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/types";
 import useApiClient from "../hooks/useApiClient";
-import BackButton from "../components/BackButton";
 import GenericButton from "../components/GenericButton";
 import Icon from "react-native-vector-icons/Ionicons";
+import Header from "../components/Header";
+import StoreCard from "../components/StoreCard";
+import LoadingIndicator from "../components/LoadingIndicator";
+import ErrorDisplay from "../components/ErrorDisplay";
 import { useFocusEffect } from "@react-navigation/native";
 
 type StoreDetailsRouteProp = RouteProp<RootStackParamList, "StoreDetails">;
 
-type StoreType = "PET_STORE" | "VET_STORE";
-
 interface Store {
 	id: string;
 	name: string;
-	type: StoreType;
+	type: "PET_STORE" | "VET_STORE";
 	bannerImage?: string;
 	logoImage?: string;
 	avgRating?: number;
@@ -62,71 +55,27 @@ const StoreDetailsScreen = () => {
 	);
 
 	if (loading) {
-		return (
-			<View style={styles.loadingContainer}>
-				<ActivityIndicator size="large" color="#4652CC" />
-			</View>
-		);
+		return <LoadingIndicator />;
 	}
 
 	if (!store) {
-		return (
-			<View style={styles.errorContainer}>
-				<Text style={styles.errorText}>Store not found.</Text>
-			</View>
-		);
+		return <ErrorDisplay message="Store not found." />;
 	}
 
 	return (
 		<ScrollView style={styles.container}>
-			<View style={styles.header}>
-				<BackButton />
-				<Text style={styles.headerTitle}>Store Details</Text>
-				<GenericButton
-					style={styles.editButton}
-					onPress={() =>
-						navigation.navigate("StoreEdit", { storeId })
-					}
-					label="Edit"
-				>
-					<Icon name="pencil" size={24} color="#fff" />
-				</GenericButton>
-			</View>
+			<Header
+				title="Store Details"
+				actionButton={{
+					label: "Edit",
+					iconName: "pencil",
+					onPress: () =>
+						navigation.navigate("StoreEdit", { storeId }),
+					style: styles.editButton,
+				}}
+			/>
 
-			<View style={styles.storeContainer}>
-				<Image
-					source={
-						store.bannerImage
-							? { uri: store.bannerImage }
-							: require("../../assets/placeholder-image.png")
-					}
-					style={styles.bannerImage}
-				/>
-				<Image
-					source={
-						store.logoImage
-							? { uri: store.logoImage }
-							: require("../../assets/placeholder-image.png")
-					}
-					style={styles.logoImage}
-				/>
-
-				<View style={styles.infoContainer}>
-					<Text style={styles.storeName}>{store.name}</Text>
-					<Text style={styles.storeType}>
-						{store.type.replace("_", " ")}
-					</Text>
-
-					<View style={styles.section}>
-						<Text style={styles.sectionTitle}>Rating</Text>
-						<Text style={styles.sectionText}>
-							{store.avgRating
-								? `${store.avgRating.toFixed(1)}/5.0`
-								: "No ratings yet"}
-						</Text>
-					</View>
-				</View>
-			</View>
+			<StoreCard store={store} />
 		</ScrollView>
 	);
 };
@@ -136,90 +85,10 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#F0F4F8",
 	},
-	loadingContainer: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	errorContainer: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		padding: 20,
-	},
-	errorText: {
-		fontSize: 18,
-		color: "#FF3B30",
-		textAlign: "center",
-	},
-	header: {
-		flexDirection: "row",
-		alignItems: "center",
-		padding: 20,
-		paddingTop: 40,
-		backgroundColor: "#fff",
-		borderBottomWidth: 1,
-		borderBottomColor: "#E5E7EB",
-	},
-	headerTitle: {
-		fontSize: 24,
-		fontWeight: "bold",
-		color: "#1F2937",
-		flex: 1,
-		marginLeft: 15,
-	},
 	editButton: {
 		padding: 10,
 		backgroundColor: "#4652CC",
 		borderRadius: 8,
-	},
-	storeContainer: {
-		padding: 20,
-		backgroundColor: "#fff",
-	},
-	bannerImage: {
-		width: "100%",
-		height: 200,
-		resizeMode: "cover",
-		borderRadius: 10,
-	},
-	logoImage: {
-		width: 100,
-		height: 100,
-		borderRadius: 50,
-		marginTop: -50,
-		alignSelf: "center",
-		borderWidth: 3,
-		borderColor: "#fff",
-	},
-	infoContainer: {
-		marginTop: 20,
-	},
-	storeName: {
-		fontSize: 24,
-		fontWeight: "bold",
-		color: "#1F2937",
-		textAlign: "center",
-	},
-	storeType: {
-		fontSize: 16,
-		color: "#4B5563",
-		marginTop: 5,
-		textAlign: "center",
-	},
-	section: {
-		marginTop: 20,
-		paddingHorizontal: 10,
-	},
-	sectionTitle: {
-		fontSize: 18,
-		fontWeight: "600",
-		color: "#1F2937",
-		marginBottom: 5,
-	},
-	sectionText: {
-		fontSize: 16,
-		color: "#4B5563",
 	},
 });
 
