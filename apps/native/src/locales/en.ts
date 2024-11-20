@@ -40,6 +40,10 @@ const en: TranslationKeys = {
 	signIn: "Sign in",
 
 	skip: "Skip",
+
+	footerHome: "Home",
+	footerAppointments: "Appointments",
+	footerProfile: "Profile",
 };
 
 export default en;

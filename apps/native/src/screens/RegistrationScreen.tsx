@@ -1,16 +1,6 @@
 import React, { useState } from "react";
-import {
-	View,
-	Text,
-	StyleSheet,
-	ScrollView,
-	TouchableOpacity,
-	Dimensions,
-	Alert,
-} from "react-native";
-import { Button } from "react-native-elements";
+import { View, StyleSheet, ScrollView, Dimensions, Alert } from "react-native";
 import { useForm } from "react-hook-form";
-import { LinearGradient } from "expo-linear-gradient";
 import FormInput from "../components/FormInput";
 import useApiClient from "../hooks/useApiClient";
 import { useNavigation } from "@react-navigation/native";
@@ -23,40 +13,58 @@ import SignInPrompt from "../components/SignInPrompt";
 import LanguageText from "../components/LanguageText";
 import TranslationKeys from "../types/translations";
 import LanguageButton from "../components/LanguageButton";
+import CustomForm from "src/components/CustomForm";
+import FormFieldConfig from "src/types/FormFieldConfig";
+import { useFooterContext } from "src/context/FooterContext";
 
 const { height } = Dimensions.get("window");
-const inputs: (keyof TranslationKeys)[] = [
-	"username",
-	"firstName",
-	"lastName",
-	"email",
-	"phoneNumber",
-	"password",
-	"retypePassword",
+const inputs: FormFieldConfig[] = [
+	{
+		name: "username",
+		label: "Username",
+		keyboardType: "default",
+	},
+	{
+		name: "firstName",
+		label: "First Name",
+		keyboardType: "default",
+	},
+	{
+		name: "lastName",
+		label: "Last Name",
+		keyboardType: "default",
+	},
+	{
+		name: "email",
+		label: "Email",
+		keyboardType: "email-address",
+	},
+	{
+		name: "phoneNumber",
+		label: "Phone Number",
+		keyboardType: "phone-pad",
+	},
+	{
+		name: "password",
+		label: "Password",
+		secureTextEntry: true,
+	},
+	{
+		name: "confirmPassword",
+		label: "Confirm Password",
+		secureTextEntry: true,
+	},
 ];
 
 function RegistrationScreen() {
+	// set footer to not be visible
+	const { setIsVisible } = useFooterContext();
+	setIsVisible(false);
+
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const { login } = useAuth();
-
-	const {
-		control,
-		handleSubmit,
-		formState: { errors },
-	} = useForm();
-	const [focusedInputs, setFocusedInputs] = useState<{
-		[key: string]: boolean;
-	}>({});
 	const apiClient = useApiClient();
-
-	const handleFocus = (field: string) => {
-		setFocusedInputs({ ...focusedInputs, [field]: true });
-	};
-
-	const handleBlur = (field: string) => {
-		setFocusedInputs({ ...focusedInputs, [field]: false });
-	};
 
 	const onSubmit = async (data: any) => {
 		try {
@@ -90,53 +98,15 @@ function RegistrationScreen() {
 		<ScrollView contentContainerStyle={styles.container}>
 			<GradientBackground />
 
-			<View style={styles.contentContainer}>
-				<LanguageText
-					translationKey="registration"
-					style={styles.title}
-				/>
+			<CustomForm
+				fields={inputs}
+				title="registration"
+				validationRules={validationRules}
+				onSubmit={onSubmit}
+				submitButtonTitle="register"
+			/>
 
-				<View style={styles.formContainer}>
-					{inputs.map((field, index) => (
-						<FormInput
-							key={index}
-							control={control}
-							name={field as keyof TranslationKeys}
-							label={
-								field.charAt(0).toUpperCase() +
-								field.slice(1).replace(/([A-Z])/g, " $1")
-							}
-							rules={
-								validationRules[
-									field as keyof typeof validationRules
-								]
-							}
-							errors={errors}
-							focused={focusedInputs[field]}
-							onFocus={() => handleFocus(field)}
-							onBlur={() => handleBlur(field)}
-							secureTextEntry={field
-								.toLowerCase()
-								.includes("password")}
-							keyboardType={
-								field === "phoneNumber"
-									? "numeric"
-									: field === "email"
-										? "email-address"
-										: "default"
-							}
-						/>
-					))}
-
-					<LanguageButton
-						title="register"
-						style={styles.button}
-						onPress={handleSubmit(onSubmit)}
-					/>
-				</View>
-
-				<SignInPrompt />
-			</View>
+			<SignInPrompt />
 		</ScrollView>
 	);
 }
@@ -145,6 +115,7 @@ const styles = StyleSheet.create({
 	container: {
 		flexGrow: 1,
 		backgroundColor: "#F0F4F8",
+		paddingBottom: 10,
 	},
 	contentContainer: {
 		marginTop: height * 0.1,

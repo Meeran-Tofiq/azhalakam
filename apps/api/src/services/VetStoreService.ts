@@ -1,6 +1,16 @@
 import { BadRequestException, NotFoundException } from "@src/common/classes";
 import { VetStore, PrismaClient, Prisma, Vet, Service } from "@prisma/client";
 import prismaClient from "@src/common/PrismaClient";
+import {
+	CreateVetStoreInputs,
+	CreateVetStoreResponse,
+	DeleteVetStoreInputs,
+	DeleteVetStoreResponse,
+	GetVetStoreInputs,
+	GetVetStoreResponse,
+	UpdateVetStoreInputs,
+	UpdateVetStoreResponse,
+} from "@src/types/VetStore";
 
 // **** Variables **** //
 
@@ -25,10 +35,10 @@ class VetStoreService {
 	 * @throws {BadRequestException} If the creation fails
 	 * @returns The id of the created vetStore
 	 */
-	public async create(
-		storeId: string,
-		vetStore: Prisma.VetStoreCreateInput
-	): Promise<string> {
+	public async create({
+		storeId,
+		vetStore,
+	}: CreateVetStoreInputs): Promise<CreateVetStoreResponse> {
 		try {
 			const storeExists = await this.prisma.store.findUnique({
 				where: {
@@ -49,9 +59,13 @@ class VetStoreService {
 						},
 					},
 				},
+				include: {
+					vets: true,
+					services: true,
+				},
 			});
 
-			return createdVetStore.id;
+			return { vetStore: createdVetStore };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to create vet store"
@@ -66,73 +80,72 @@ class VetStoreService {
 	 * @throws {NotFoundException} If no vetStore is found with the given id
 	 * @returns The found vetStore
 	 */
-	public async getOne(id: string): Promise<Partial<VetStore>> {
-		let vetStore: Partial<VetStore> | null;
-
+	public async getOne({
+		id,
+	}: GetVetStoreInputs): Promise<GetVetStoreResponse> {
 		try {
-			vetStore = await this.prisma.vetStore.findUnique({
+			const vetStore = await this.prisma.vetStore.findUnique({
 				where: { id },
 				include: {
 					services: true,
 					vets: true,
 				},
 			});
+
+			if (!vetStore) throw new NotFoundException("Vet store not found.");
+
+			return { vetStore };
 		} catch (error: any) {
 			throw new BadRequestException("Failed to get vet store");
 		}
-
-		if (!vetStore) throw new NotFoundException("Vet store not found.");
-
-		return vetStore;
 	}
 
 	/**
 	 * Updates a vetStore with the given id with the given data
 	 * @param id The id of the vetStore to update
-	 * @param updatedData The data to update the vetStore with
+	 * @param updateData The data to update the vetStore with
 	 * @throws {NotFoundException} If no vetStore is found with the given id
 	 * @throws {BadRequestException} If the update fails
 	 * @returns void
 	 */
-	public async updateOne(
-		id: string,
-		updatedData: Partial<Omit<VetStore, "id">> & {
-			storeId?: string;
-			vets?: string[];
-			services?: string[];
-		}
-	): Promise<void> {
+	public async updateOne({
+		id,
+		updateData,
+	}: UpdateVetStoreInputs): Promise<UpdateVetStoreResponse> {
 		const existingVetStore = await this.prisma.vetStore.findUnique({
 			where: { id },
 			include: {
 				services: true,
 				vets: true,
-				store: true,
 			},
 		});
 
-		const storeId = this.getStoreConnection(updatedData.storeId);
 		const vetIds = this.getVetConnections(
 			existingVetStore?.vets || [],
-			updatedData.vets
+			updateData.vets
 		);
 		const serviceIds = this.getServiceConnections(
 			existingVetStore?.services || [],
-			updatedData.services
+			updateData.services
 		);
 
 		const data: Prisma.VetStoreUpdateInput = {
-			...updatedData,
-			store: storeId,
+			...updateData,
 			vets: vetIds,
 			services: serviceIds,
 		};
 
 		try {
-			await this.prisma.vetStore.update({
+			const vetStore = await this.prisma.vetStore.update({
 				where: { id },
 				data,
+				include: {
+					services: true,
+					vets: true,
+				},
 			});
+
+			return { vetStore };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to update vet store"
@@ -147,7 +160,9 @@ class VetStoreService {
 	 * @throws {BadRequestException} If the deletion fails
 	 * @returns void
 	 */
-	public async deleteOne(id: string): Promise<void> {
+	public async deleteOne({
+		id,
+	}: DeleteVetStoreInputs): Promise<DeleteVetStoreResponse> {
 		const existingVetStore = await this.prisma.vetStore.findUnique({
 			where: { id },
 		});
@@ -155,9 +170,15 @@ class VetStoreService {
 			throw new NotFoundException("Vet store not found");
 
 		try {
-			await this.prisma.vetStore.delete({
+			const vetStore = await this.prisma.vetStore.delete({
 				where: { id },
+				include: {
+					services: true,
+					vets: true,
+				},
 			});
+
+			return { vetStore };
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to delete vet store"
@@ -166,18 +187,6 @@ class VetStoreService {
 	}
 
 	// **** Private Methods **** //
-
-	private getStoreConnection(
-		storeId?: string
-	): Prisma.StoreUpdateOneRequiredWithoutVetStoreNestedInput | undefined {
-		return storeId
-			? {
-					connect: {
-						id: storeId,
-					},
-				}
-			: undefined;
-	}
 
 	private getVetConnections(
 		existingVets: Vet[],

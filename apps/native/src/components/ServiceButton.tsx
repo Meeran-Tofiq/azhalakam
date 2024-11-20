@@ -7,7 +7,11 @@ type ServiceButtonProps = {
 	onPress: () => void;
 };
 
-const ServiceButton: React.FC<ServiceButtonProps> = ({ image, label, onPress }) => (
+const ServiceButton: React.FC<ServiceButtonProps> = ({
+	image,
+	label,
+	onPress,
+}) => (
 	<TouchableOpacity style={styles.serviceButton} onPress={onPress}>
 		<View style={styles.iconCircle}>
 			<Image
@@ -22,7 +26,7 @@ const ServiceButton: React.FC<ServiceButtonProps> = ({ image, label, onPress }) 
 
 const styles = StyleSheet.create({
 	serviceButton: {
-		width: 100, 
+		width: 100,
 		alignItems: "center",
 		marginBottom: 20,
 	},

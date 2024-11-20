@@ -13,7 +13,12 @@ export const createPetValidator = [
 		.escape()
 		.isString()
 		.withMessage("Name must be a string"),
-	body("age").optional().isInt().withMessage("Age must be a number"),
+	body("dateOfBirth")
+		.optional()
+		.trim()
+		.escape()
+		.isISO8601()
+		.withMessage("Date of Birth must be a valid date."),
 	body("weight").optional().isFloat().withMessage("Weight must be a number"),
 	body("species")
 		.exists()

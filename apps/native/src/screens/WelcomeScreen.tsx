@@ -7,9 +7,13 @@ import NextButton from "../components/NextButton";
 import { SkipButton } from "../components/SkipButton";
 import LanguageRowView from "../components/LanguageView";
 import { useTranslation } from "react-i18next";
-import TranslationKeys from "../types/translations";
+import { useFooterContext } from "src/context/FooterContext";
 
 const WelcomeScreen = () => {
+	// set footer to not be visible
+	const { setIsVisible } = useFooterContext();
+	setIsVisible(false);
+
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 

@@ -1,13 +1,14 @@
 import React from "react";
 import { ImageSourcePropType, StyleSheet } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../types/types";
+import { useRoute } from "@react-navigation/native";
 import LanguageRowView from "./LanguageView";
 import FooterIcon from "./FooterIcon";
+import { FooterPageNames, useFooterContext } from "src/context/FooterContext";
+import { navigate } from "src/navigation/NavigationService";
+import TranslationKeys from "src/types/translations";
 
 interface FooterPage {
-	pageName: string;
+	pageName: FooterPageNames;
 	pageText: string;
 	image: ImageSourcePropType | string;
 }
@@ -15,39 +16,44 @@ interface FooterPage {
 const homeIcon: ImageSourcePropType = require("../../assets/home-icon.png");
 
 const Footer = () => {
-	const navigation =
-		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-	const route = useRoute();
+	const { activeIcon, isVisible, setActiveIcon } = useFooterContext();
 
-	const getColor = (page: string) => {
-		return route.name === page ? "#4552CB" : "#BBC3CE";
+	const getColor = (page: FooterPageNames) => {
+		return activeIcon === page ? "#4552CB" : "#BBC3CE";
 	};
 
 	const footerPages: FooterPage[] = [
 		{
-			pageName: "MainPage",
-			pageText: "Home",
+			pageName: FooterPageNames.Home,
+			pageText: "footerHome" as keyof TranslationKeys,
 			image: homeIcon,
 		},
 		{
-			pageName: "AppointmentsScreen",
-			pageText: "Appointments",
+			pageName: FooterPageNames.Appointments,
+			pageText: "footerAppointments" as keyof TranslationKeys,
 			image: "calendar-outline",
 		},
 		{
-			pageName: "ProfileScreen",
-			pageText: "Profile",
+			pageName: FooterPageNames.Profile,
+			pageText: "footerProfile" as keyof TranslationKeys,
 			image: "person-outline",
 		},
 	];
 
+	const navigateTo = (screen: FooterPageNames, icon: FooterPageNames) => {
+		setActiveIcon(icon);
+		navigate(screen as string);
+	};
+
 	return (
-		<LanguageRowView style={styles.footer}>
+		<LanguageRowView
+			style={isVisible ? styles.footer : { display: "none" }}
+		>
 			{footerPages.map(({ pageName, pageText, image }) => (
 				<FooterIcon
 					key={pageName}
 					pageText={pageText}
-					onPress={() => navigation.navigate(pageName)}
+					onPress={() => navigateTo(pageName, pageName)}
 					color={getColor(pageName)}
 					image={image}
 				></FooterIcon>

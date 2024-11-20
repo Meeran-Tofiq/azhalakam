@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, KeyboardTypeOptions } from "react-native";
 import { Controller } from "react-hook-form";
-import TranslationKeys from "../types/translations";
 import LanguageText from "./LanguageText";
 import LanguageTextInput from "./LanguageTextInput";
 import { useTranslation } from "react-i18next";
+import TranslationKeys from "src/types/translations";
 
 interface FormInputProps {
 	control: any;
@@ -12,6 +12,7 @@ interface FormInputProps {
 	label: keyof TranslationKeys | string;
 	rules?: any;
 	errors: any;
+	value?: string;
 	focused: boolean;
 	onFocus: () => void;
 	onBlur: () => void;
@@ -29,6 +30,7 @@ const FormInput: React.FC<FormInputProps> = ({
 	label,
 	rules,
 	errors,
+	value,
 	focused,
 	onFocus,
 	onBlur,
@@ -37,39 +39,40 @@ const FormInput: React.FC<FormInputProps> = ({
 }) => {
 	const { t } = useTranslation();
 
+	const renderLabel = () =>
+		isTranslationKey(label) ? (
+			<LanguageText
+				text={label as keyof TranslationKeys}
+				style={styles.label}
+			/>
+		) : (
+			<Text style={styles.label}>{label}</Text>
+		);
+
 	return (
 		<View>
-			{/* Show translated text if it is passed a translation key, else show a normal text with a label */}
-			{isTranslationKey(name) ? (
-				<LanguageText
-					translationKey={name as keyof TranslationKeys}
-					style={styles.label}
-				/>
-			) : (
-				<Text style={styles.label}>{label}</Text>
-			)}
-
+			{renderLabel()}
 			<Controller
 				control={control}
 				name={name}
 				rules={rules}
-				render={({ field: { onChange, value } }) => (
-					<View>
+				render={({ field: { onChange, value: fieldValue } }) => (
+					<>
 						<LanguageTextInput
 							style={[
 								styles.input,
 								focused && styles.inputFocused,
-								errors[name] && {
-									borderBottomColor: "red",
-								}, // Red border if error
+								errors[name] && { borderBottomColor: "red" }, // Red border if error
 							]}
 							onFocus={onFocus}
 							onBlur={onBlur}
 							placeholder={
-								isTranslationKey(name) ? t(name) : label
+								isTranslationKey(name)
+									? t(name)
+									: (label as string)
 							}
-							value={value}
-							onChangeText={onChange}
+							value={fieldValue ?? value} // Use fieldValue for controlled input
+							onChangeText={(text) => onChange(text)} // Use onChange from Controller
 							secureTextEntry={secureTextEntry}
 							keyboardType={keyboardType}
 						/>
@@ -78,7 +81,7 @@ const FormInput: React.FC<FormInputProps> = ({
 								{errors[name]?.message}
 							</Text>
 						)}
-					</View>
+					</>
 				)}
 			/>
 		</View>
@@ -95,7 +98,6 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		marginBottom: 15,
 		width: "100%",
-		flex: 1,
 	},
 	inputFocused: {
 		borderBottomColor: "#4552CB",

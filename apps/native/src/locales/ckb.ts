@@ -40,6 +40,10 @@ const ckb: TranslationKeys = {
 	signIn: "چوونەژوورەوە",
 
 	skip: "پەراندن",
+
+	footerHome: "سەرەکی",
+	footerAppointments: "چاوپێکەوتنەکان",
+	footerProfile: "پرۆفایل",
 };
 
 export default ckb;

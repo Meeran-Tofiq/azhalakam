@@ -47,32 +47,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 	const login = async (userData: LoginUserResponse) => {
 		try {
-			const { user, token } = userData;
-
-			const userToStore: UserWithoutPassword = {
-				username: user.username,
-				firstName: user.firstName,
-				lastName: user.lastName,
-				email: user.email,
-				phoneNo: user.phoneNo,
-				bio: user.bio,
-				id: user.id,
-				location: user.location,
-				locationId: user.locationId,
-				pets: user.pets,
-				serviceProvider: user.serviceProvider,
-				serviceProviderId: user.serviceProviderId,
-				store: user.store,
-			};
-
-			const dataToStore = {
-				user: userToStore,
-				token: token,
-			};
-
-			await AsyncStorage.setItem("userData", JSON.stringify(dataToStore));
-			setUser(userToStore);
-			setToken(token);
+			await AsyncStorage.setItem("userData", JSON.stringify(userData));
+			setUser(userData.user);
+			setToken(userData.token);
 			setIsAuthenticated(true);
 		} catch (error) {
 			console.error("Error storing auth data:", error);

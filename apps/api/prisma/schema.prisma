@@ -61,7 +61,7 @@ model Pet {
     id           String    @id @default(uuid())
     name         String
     species      Species
-    age          Int?
+    dateOfBirth  DateTime?
     gender       Gender?
     weight       Float?
     lastVetVisit DateTime?

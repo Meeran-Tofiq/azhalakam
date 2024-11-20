@@ -7,7 +7,7 @@ const { height } = Dimensions.get("window");
 
 interface GradientBackgroundProps {
 	style?: ViewStyle;
-	colors?: string[];
+	colors?: readonly [string, string, ...string[]];
 	start?: { x: number; y: number };
 	end?: { x: number; y: number };
 }

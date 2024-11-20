@@ -6,12 +6,12 @@ import { use } from "i18next";
 import { useLanguageDirection } from "../context/LanguageDirectionContext";
 
 interface LanguageTextProps extends Omit<TextProps, "children"> {
-	translationKey: keyof TranslationKeys; // Ensure this matches your i18n keys
+	text: keyof TranslationKeys | string; // Ensure this matches your i18n keys
 }
 
 const LanguageText: React.FC<LanguageTextProps> = ({
 	style,
-	translationKey,
+	text,
 	...props
 }) => {
 	const { isRtl } = useLanguageDirection();
@@ -25,7 +25,7 @@ const LanguageText: React.FC<LanguageTextProps> = ({
 
 	return (
 		<Text style={combinedStyle} {...props}>
-			{t(translationKey)}
+			{t(text) || text}
 		</Text>
 	);
 };

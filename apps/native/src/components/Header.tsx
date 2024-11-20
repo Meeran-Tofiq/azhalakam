@@ -1,54 +1,68 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import BackButton from "./BackButton";
-import GenericButton from "./GenericButton";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/FontAwesome6";
+import LanguageRowView from "./LanguageView";
+import { Text } from "react-native-elements";
+import { StyleSheet, TextStyle, View, ViewStyle } from "react-native";
+import ThreeDotsMenu from "./ThreeDotsMenu";
 
 interface HeaderProps {
-  title: string;
-  actionButton?: {
-    label: string;
-    iconName: string;
-    onPress: () => void;
-    style?: object;
-  };
+	title: string;
+	headerStyle?: ViewStyle;
+	textStyle?: TextStyle;
+	backButtonStyle?: any;
+	showThreeDots?: boolean;
+	menuItems?: {
+		label: string;
+		onPress: () => void;
+		icon?: string;
+		labelColor?: string;
+	}[];
 }
 
-const Header: React.FC<HeaderProps> = ({ title, actionButton }) => {
-  return (
-    <View style={styles.header}>
-      <BackButton />
-      <Text style={styles.headerTitle}>{title}</Text>
-      {actionButton && (
-        <GenericButton
-          style={actionButton.style}
-          onPress={actionButton.onPress}
-          label={actionButton.label}
-        >
-          <Icon name={actionButton.iconName} size={24} color="#fff" />
-        </GenericButton>
-      )}
-    </View>
-  );
-};
+export default function Header({
+	title,
+	headerStyle,
+	textStyle,
+	backButtonStyle,
+	showThreeDots = false,
+	menuItems = [],
+}: HeaderProps) {
+	return (
+		<LanguageRowView style={[styles.header, headerStyle]}>
+			<Icon
+				name="arrow-left-long"
+				style={[styles.backButton, backButtonStyle]}
+			/>
+			<Text style={[styles.headerText, textStyle]}>{title}</Text>
+			{showThreeDots && (
+				<View style={styles.threeDots}>
+					<ThreeDotsMenu menuItems={menuItems} />
+				</View>
+			)}
+		</LanguageRowView>
+	);
+}
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 20,
-    paddingTop: 40,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#1F2937",
-    flex: 1,
-    marginLeft: 15,
-  },
+	header: {
+		padding: 20,
+		marginTop: 20,
+		width: "100%",
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	headerText: {
+		fontSize: 20,
+		fontWeight: "bold",
+	},
+	backButton: {
+		color: "#4552CB",
+		fontSize: 20,
+		position: "absolute",
+		left: 20,
+	},
+	threeDots: {
+		position: "absolute",
+		right: 20,
+	},
 });
-
-export default Header; 

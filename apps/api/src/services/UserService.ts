@@ -193,6 +193,8 @@ class UserService {
 		updateData,
 		token,
 	}: UpdateUserInputs): Promise<UpdateUserResponse> {
+		const { locationId, ...data } = updateData;
+
 		const existingUser = await this.prisma.user.findUnique({
 			where: { id: token.userId },
 		});
@@ -203,12 +205,20 @@ class UserService {
 			updateData.password = hashedPassword;
 		}
 
-		let updatedUser;
+		let locationConnection;
+		if (locationId) {
+			locationConnection = this.getLocationConnection(locationId);
+		}
+
+		let userUpdateData: Prisma.UserUpdateInput = {
+			...data,
+			...locationConnection,
+		};
 
 		try {
-			updatedUser = await this.prisma.user.update({
+			const user = await this.prisma.user.update({
 				where: { id: token.userId },
-				data: updateData,
+				data: userUpdateData,
 				include: {
 					pets: true,
 					serviceProvider: true,
@@ -216,13 +226,13 @@ class UserService {
 					store: true,
 				},
 			});
+
+			return user;
 		} catch (error: any) {
 			throw new BadRequestException(
 				error.message || "Failed to update user"
 			);
 		}
-
-		return updatedUser;
 	}
 
 	/**
@@ -263,6 +273,16 @@ class UserService {
 
 	// **** Private Methods **** //
 	private async generateToken(userId: string): Promise<string> {
-		return jwt.sign({ userId }, EnvVars.Jwt.Secret, { expiresIn: "1h" });
+		return jwt.sign({ userId }, EnvVars.Jwt.Secret);
+	}
+
+	private getLocationConnection(
+		locationId: string
+	): Prisma.LocationUpdateOneWithoutUserNestedInput {
+		return {
+			connect: {
+				id: locationId,
+			},
+		};
 	}
 }
