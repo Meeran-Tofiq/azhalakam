@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import GradientBackground from "src/components/GradientBackground";
 import Header from "src/components/Header";
 import PetForm from "src/components/PetForm";
@@ -21,6 +21,8 @@ export default function AddPetScreen() {
 				gender: data.gender,
 				weight: Number(data.weight),
 				notes: data.notes,
+				dateOfBirth: new Date(data.dateOfBirth),
+				lastVetVisit: new Date(data.lastVetVisit),
 			},
 			userId: "1",
 		};

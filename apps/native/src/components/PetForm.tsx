@@ -3,6 +3,7 @@ import { Gender, Species } from "../../../api/dist/src/types/PrismaEnums";
 import { capitalizeFirstLetter } from "src/utils/stringHandler";
 import CustomForm from "./CustomForm";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import { ScrollView } from "react-native";
 
 const petSpeciesArray: Species[] = [
 	"CAT",
@@ -57,6 +58,18 @@ let fields: FormFieldConfig[] = [
 		label: "Notes",
 		keyboardType: "default",
 	},
+	{
+		name: "dateOfBirth",
+		label: "Date of Birth",
+		keyboardType: "default",
+		isDate: true,
+	},
+	{
+		name: "lastVetVisit",
+		label: "Last Vet Visit",
+		keyboardType: "default",
+		isDate: true,
+	},
 ];
 
 interface PetFormProps {
@@ -71,13 +84,15 @@ export default function PetForm({
 	title,
 }: PetFormProps) {
 	return (
-		<CustomForm
-			fields={fields}
-			onSubmit={onSubmit}
-			title={title}
-			submitButtonTitle={submitButtonTitle}
-			validationRules={{}}
-			containerStyle={{ marginTop: 10 }}
-		/>
+		<ScrollView>
+			<CustomForm
+				fields={fields}
+				onSubmit={onSubmit}
+				title={title}
+				submitButtonTitle={submitButtonTitle}
+				validationRules={{}}
+				containerStyle={{ marginTop: 10 }}
+			/>
+		</ScrollView>
 	);
 }
