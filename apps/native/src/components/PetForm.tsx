@@ -4,6 +4,7 @@ import { capitalizeFirstLetter } from "src/utils/stringHandler";
 import CustomForm from "./CustomForm";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { ScrollView } from "react-native";
+import { PetWithIncludes } from "../../../api/dist/src/types/Pet";
 
 const petSpeciesArray: Species[] = [
 	"CAT",
@@ -76,12 +77,14 @@ interface PetFormProps {
 	onSubmit: SubmitHandler<FieldValues>;
 	submitButtonTitle: string;
 	title: string;
+	pet?: PetWithIncludes;
 }
 
 export default function PetForm({
 	onSubmit,
 	submitButtonTitle,
 	title,
+	pet,
 }: PetFormProps) {
 	return (
 		<ScrollView>
@@ -92,6 +95,7 @@ export default function PetForm({
 				submitButtonTitle={submitButtonTitle}
 				validationRules={{}}
 				containerStyle={{ marginTop: 10 }}
+				item={pet}
 			/>
 		</ScrollView>
 	);

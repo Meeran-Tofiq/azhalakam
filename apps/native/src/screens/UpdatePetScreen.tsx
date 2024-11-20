@@ -20,22 +20,25 @@ export default function UpdatePetScreen() {
 	if (!pet) throw new Error("No pet provided for this page.");
 
 	async function onSubmit(data: any) {
-		// const updateData: UpdatePetInputs["updateData"];
-		const petData: UpdatePetInputs = {
-			id: pet.id,
-			updateData: {
-				name: data.name,
-				species: data.species,
-				gender: data.gender,
-				weight: Number(data.weight),
-				notes: data.notes,
-				dateOfBirth: new Date(data.dateOfBirth),
-				lastVetVisit: new Date(data.lastVetVisit),
-			},
+		const petData: UpdatePetInputs["updateData"] = {
+			name: data.name,
+			species: data.species,
+			gender: data.gender,
+			weight: data.weight ? Number(data.weight) : undefined,
+			notes: data.notes,
+			dateOfBirth: data.dateOfBirth
+				? new Date(data.dateOfBirth)
+				: undefined,
+			lastVetVisit: data.lastVetVisit
+				? new Date(data.lastVetVisit)
+				: undefined,
 		};
 
 		try {
-			const { pet } = await apiClient.petApi.updatePet(petData);
+			const { pet: updatedPet } = await apiClient.petApi.updatePet({
+				updateData: petData,
+				id: pet.id,
+			});
 
 			navigation.navigate("MyPets");
 		} catch (error: any) {
@@ -55,8 +58,8 @@ export default function UpdatePetScreen() {
 
 			<PetForm
 				onSubmit={onSubmit}
-				title={"Update " + pet.name}
-				submitButtonTitle={"Update " + pet.name}
+				submitButtonTitle="Update Pet"
+				title="Update Pet"
 				pet={pet}
 			/>
 		</View>
