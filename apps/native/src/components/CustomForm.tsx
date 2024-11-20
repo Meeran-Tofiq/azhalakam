@@ -18,7 +18,19 @@ type FormProps = {
 	onSubmit: SubmitHandler<FieldValues>;
 	submitButtonTitle: keyof TranslationKeys | string;
 	containerStyle?: ViewStyle;
+	item?: any;
 };
+
+function extractDefaultsFromItem(item: any, fields: FormFieldConfig[]) {
+	const extractedFields = fields.map((field) => {
+		return {
+			...field,
+			value: item[field.name],
+		};
+	});
+
+	return extractedFields;
+}
 
 const CustomForm = ({
 	title,
@@ -27,6 +39,7 @@ const CustomForm = ({
 	onSubmit,
 	submitButtonTitle,
 	containerStyle,
+	item,
 }: FormProps) => {
 	const {
 		control,
@@ -45,6 +58,10 @@ const CustomForm = ({
 		setFocusedInputs({ ...focusedInputs, [field]: false });
 	};
 
+	if (item) {
+		fields = extractDefaultsFromItem(item, fields);
+	}
+
 	return (
 		<View style={[styles.contentContainer, containerStyle]}>
 			<LanguageText text={title} style={styles.title} />
@@ -56,6 +73,7 @@ const CustomForm = ({
 							control={control}
 							name={field.name}
 							label={field.label}
+							value={field.value as string}
 							options={field.dropDownOptions}
 							rules={validationRules[field.name]}
 							errors={errors}
@@ -66,6 +84,9 @@ const CustomForm = ({
 							control={control}
 							name={field.name}
 							label={field.label}
+							value={
+								field.value ? new Date(field.value) : undefined
+							}
 							rules={validationRules[field.name]}
 							errors={errors}
 						/>
@@ -75,6 +96,7 @@ const CustomForm = ({
 							control={control}
 							name={field.name}
 							label={field.label}
+							value={field.value ? String(field.value) : ""}
 							rules={validationRules[field.name]}
 							errors={errors}
 							secureTextEntry={field.secureTextEntry}

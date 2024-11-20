@@ -11,6 +11,7 @@ interface DateInputProps {
 	control: any;
 	name: keyof TranslationKeys | string;
 	label: keyof TranslationKeys | string;
+	value?: Date;
 	rules?: any;
 	errors: any;
 }
@@ -19,11 +20,12 @@ export default function DateInput({
 	control,
 	name,
 	label,
+	value,
 	errors,
 	rules,
 }: DateInputProps) {
 	const [showPicker, setShowPicker] = useState(false);
-	const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+	const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
 
 	const handleDateChange = (
 		onChange: (value: any) => void,
@@ -35,7 +37,8 @@ export default function DateInput({
 			setSelectedDate(date);
 			onChange(date.toISOString()); // Send ISO string to form
 		} else if (event.type === "dismissed") {
-			onChange(null); // Ensure value is null
+			setSelectedDate(undefined);
+			onChange(undefined); // Ensure value is undefined
 		}
 	};
 
@@ -53,7 +56,7 @@ export default function DateInput({
 								selectedDate
 									? formatDate(
 											selectedDate,
-											DateFormats.DAY_MONTH_YEAR
+											DateFormats.DEFAULT
 										)
 									: "Select Date"
 							}

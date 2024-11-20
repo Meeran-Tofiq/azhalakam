@@ -7,6 +7,7 @@ type SelectInputProps = {
 	control: any;
 	name: string;
 	label: string;
+	value?: string;
 	options: { label: string; value: string }[];
 	rules?: object;
 	errors?: any;
@@ -16,6 +17,7 @@ const SelectInput = ({
 	control,
 	name,
 	label,
+	value,
 	options,
 	rules = {},
 	errors,
@@ -27,7 +29,7 @@ const SelectInput = ({
 				control={control}
 				name={name}
 				rules={rules}
-				render={({ field: { onChange, value } }) => (
+				render={({ field: { onChange } }) => (
 					<View style={styles.pickerContainer}>
 						<Picker
 							selectedValue={value}

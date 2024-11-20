@@ -12,6 +12,7 @@ interface FormInputProps {
 	label: keyof TranslationKeys | string;
 	rules?: any;
 	errors: any;
+	value?: string;
 	focused: boolean;
 	onFocus: () => void;
 	onBlur: () => void;
@@ -29,6 +30,7 @@ const FormInput: React.FC<FormInputProps> = ({
 	label,
 	rules,
 	errors,
+	value,
 	focused,
 	onFocus,
 	onBlur,
@@ -47,9 +49,6 @@ const FormInput: React.FC<FormInputProps> = ({
 			<Text style={styles.label}>{label}</Text>
 		);
 
-	const value = "value";
-	const onChange = () => {};
-
 	return (
 		<View>
 			{renderLabel()}
@@ -57,7 +56,7 @@ const FormInput: React.FC<FormInputProps> = ({
 				control={control}
 				name={name}
 				rules={rules}
-				render={({ field: { onChange, value } }) => (
+				render={({ field: { onChange, value: fieldValue } }) => (
 					<>
 						<LanguageTextInput
 							style={[
@@ -72,8 +71,8 @@ const FormInput: React.FC<FormInputProps> = ({
 									? t(name)
 									: (label as string)
 							}
-							value={value}
-							onChangeText={onChange}
+							value={fieldValue ?? value} // Use fieldValue for controlled input
+							onChangeText={(text) => onChange(text)} // Use onChange from Controller
 							secureTextEntry={secureTextEntry}
 							keyboardType={keyboardType}
 						/>
