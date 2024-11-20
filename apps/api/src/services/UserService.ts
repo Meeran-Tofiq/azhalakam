@@ -273,7 +273,7 @@ class UserService {
 
 	// **** Private Methods **** //
 	private async generateToken(userId: string): Promise<string> {
-		return jwt.sign({ userId }, EnvVars.Jwt.Secret, { expiresIn: "1h" });
+		return jwt.sign({ userId }, EnvVars.Jwt.Secret);
 	}
 
 	private getLocationConnection(
