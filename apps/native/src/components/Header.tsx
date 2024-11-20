@@ -4,6 +4,7 @@ import LanguageRowView from "./LanguageView";
 import { Text } from "react-native-elements";
 import { StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 import ThreeDotsMenu from "./ThreeDotsMenu";
+import BackButton from "./BackButton";
 
 interface HeaderProps {
 	title: string;
@@ -29,9 +30,9 @@ export default function Header({
 }: HeaderProps) {
 	return (
 		<LanguageRowView style={[styles.header, headerStyle]}>
-			<Icon
-				name="arrow-left-long"
-				style={[styles.backButton, backButtonStyle]}
+			<BackButton
+				buttonStyle={styles.backButton}
+				iconStyle={backButtonStyle}
 			/>
 			<Text style={[styles.headerText, textStyle]}>{title}</Text>
 			{showThreeDots && (
@@ -56,8 +57,6 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 	backButton: {
-		color: "#4552CB",
-		fontSize: 20,
 		position: "absolute",
 		left: 20,
 	},
