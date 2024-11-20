@@ -13,6 +13,10 @@ import AddPetScreen from "src/screens/AddPetScreen";
 import PetDetailsScreen from "src/screens/PetDetailsScreen";
 import UpdatePetScreen from "src/screens/UpdatePetScreen";
 import { navigationRef } from "./NavigationService"; // Import the reference
+import MyStoreScreen from "../screens/MyStoreScreen";
+import StoreCreationScreen from "../screens/StoreCreationScreen";
+import StoreDetailsScreen from "src/screens/StoreDetailsScreen";
+import StoreEditScreen from "../screens/StoreEditScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -48,16 +52,31 @@ const NavigationContent = () => {
 			) : (
 				// App screens
 				<>
-					<Stack.Screen name="MainPage" component={MainPage} />
-					<Stack.Screen name="MyPets" component={MyPetsScreen} />
-					<Stack.Screen name="AddPet" component={AddPetScreen} />
+					<>
+						<Stack.Screen name="MainPage" component={MainPage} />
+						<Stack.Screen name="MyPets" component={MyPetsScreen} />
+						<Stack.Screen name="AddPet" component={AddPetScreen} />
+						<Stack.Screen
+							name="PetDetails"
+							component={PetDetailsScreen}
+						/>
+						<Stack.Screen
+							name="UpdatePet"
+							component={UpdatePetScreen}
+						/>
+					</>
+					<Stack.Screen name="MyStore" component={MyStoreScreen} />
 					<Stack.Screen
-						name="PetDetails"
-						component={PetDetailsScreen}
+						name="StoreCreation"
+						component={StoreCreationScreen}
 					/>
 					<Stack.Screen
-						name="UpdatePet"
-						component={UpdatePetScreen}
+						name="StoreDetails"
+						component={StoreDetailsScreen}
+					/>
+					<Stack.Screen
+						name="StoreEdit"
+						component={StoreEditScreen}
 					/>
 				</>
 			)}

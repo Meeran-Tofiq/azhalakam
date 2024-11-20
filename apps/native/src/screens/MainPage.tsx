@@ -29,7 +29,7 @@ const MainPage = () => {
 	const [showSearch, setShowSearch] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const searchWidth = useRef(new Animated.Value(40)).current;
-	const { user } = useAuth();
+	const { user, logout } = useAuth();
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
@@ -53,6 +53,28 @@ const MainPage = () => {
 		}
 	};
 
+	const handleLogout = async () => {
+		try {
+			await logout();
+			navigation.replace("Login");
+		} catch (error) {
+			console.error("Logout failed:", error);
+		}
+	};
+
+	const handleServicePress = (label: string) => {
+		switch (label) {
+			case "My Store":
+				navigation.navigate("MyStore");
+				break;
+			case "My Pets":
+				navigation.navigate("MyPets");
+				break;
+			default:
+				console.log("Service Pressed", `You pressed ${label}`);
+		}
+	};
+
 	const services = [
 		{
 			image: require("../../assets/my-pets.png"),
@@ -66,7 +88,7 @@ const MainPage = () => {
 			image: require("../../assets/info-graphics.png"),
 			label: "Info-graphics",
 		},
-		{ image: require("../../assets/training.png"), label: "Training" },
+		{ image: require("../../assets/my-store.png"), label: "My Store" },
 		{ image: require("../../assets/pet-taxi.png"), label: "Pet Taxi" },
 		{ image: require("../../assets/pet-date.png"), label: "Pet Date" },
 		{ image: require("../../assets/adoption.png"), label: "Adoption" },
@@ -103,6 +125,13 @@ const MainPage = () => {
 						/>
 					)}
 				</Animated.View>
+
+				<TouchableOpacity
+					onPress={handleLogout}
+					style={styles.logoutButton}
+				>
+					<Icon name="log-out-outline" size={24} color="#000" />
+				</TouchableOpacity>
 			</View>
 			<Text style={styles.title}>
 				What are you looking for,{" "}
@@ -120,13 +149,7 @@ const MainPage = () => {
 							key={index}
 							image={service.image}
 							label={service.label}
-							onPress={() => {
-								if (service.redirection) {
-									navigation.navigate(
-										service.redirection as keyof RootStackParamList
-									);
-								}
-							}}
+							onPress={() => handleServicePress(service.label)}
 						/>
 					))}
 				</View>
@@ -167,6 +190,10 @@ const styles = StyleSheet.create({
 	},
 	iconButton: {
 		padding: 8,
+	},
+	logoutButton: {
+		padding: 8,
+		marginLeft: "auto",
 	},
 	searchContainer: {
 		flexDirection: "row",

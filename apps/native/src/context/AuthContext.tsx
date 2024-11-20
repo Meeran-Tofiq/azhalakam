@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LoginUserResponse, UserWithoutPassword } from "@api-types/User";
 import useApiClient from "src/hooks/useApiClient";
+
 type AuthContextType = {
 	isAuthenticated: boolean;
 	user: UserWithoutPassword | null;
@@ -61,6 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			await AsyncStorage.removeItem("userData");
 			setUser(null);
 			setIsAuthenticated(false);
+			setToken(null);
 		} catch (error) {
 			console.error("Error removing auth data:", error);
 			throw error;
