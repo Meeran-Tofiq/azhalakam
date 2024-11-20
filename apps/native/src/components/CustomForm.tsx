@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-	View,
-	StyleSheet,
-	Dimensions,
-	KeyboardTypeOptions,
-	ViewStyle,
-} from "react-native";
+import { View, StyleSheet, Dimensions, ViewStyle } from "react-native";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import FormInput from "../components/FormInput";
 import LanguageButton from "../components/LanguageButton";
@@ -13,7 +7,7 @@ import LanguageText from "../components/LanguageText";
 import TranslationKeys from "src/types/translations";
 import FormFieldConfig from "src/types/FormFieldConfig";
 import SelectInput from "./FormSelect";
-import { Text } from "react-native-elements";
+import DateInput from "./DateInput";
 
 const { height } = Dimensions.get("window");
 
@@ -66,6 +60,15 @@ const CustomForm = ({
 							rules={validationRules[field.name]}
 							errors={errors}
 						/>
+					) : field.isDate ? (
+						<DateInput
+							key={index}
+							control={control}
+							name={field.name}
+							label={field.label}
+							rules={validationRules[field.name]}
+							errors={errors}
+						/>
 					) : (
 						<FormInput
 							key={index}
@@ -82,11 +85,13 @@ const CustomForm = ({
 						/>
 					)
 				)}
-				<LanguageButton
-					title={submitButtonTitle}
-					style={styles.button}
-					onPress={handleSubmit(onSubmit)}
-				/>
+				<View style={styles.buttonContainer}>
+					<LanguageButton
+						title={submitButtonTitle}
+						style={styles.button}
+						onPress={handleSubmit(onSubmit)}
+					/>
+				</View>
 			</View>
 		</View>
 	);
@@ -122,6 +127,19 @@ const styles = StyleSheet.create({
 		borderRadius: 28,
 		width: "100%",
 		paddingVertical: 15,
+	},
+	buttonContainer: {
+		borderTopColor: "#ccc",
+		borderTopWidth: 1,
+		paddingTop: 10,
+		marginTop: 10,
+	},
+	dateInputContainer: {
+		marginVertical: 10,
+	},
+	errorText: {
+		color: "red",
+		fontSize: 12,
 	},
 });
 

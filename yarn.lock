@@ -3067,6 +3067,13 @@
     prompts "^2.4.2"
     semver "^7.5.2"
 
+"@react-native-community/datetimepicker@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-8.2.0.tgz#f62ac4fc12bd527fbbe93934e6c1cfbb7ba570f3"
+  integrity sha512-qrUPhiBvKGuG9Y+vOqsc56RPFcHa1SU2qbAMT0hfGkoFIj3FodE0VuPVrEa8fgy7kcD5NQmkZIKgHOBLV0+hWg==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-community/masked-view@^0.1.11":
   version "0.1.11"
   resolved "https://registry.npmjs.org/@react-native-community/masked-view/-/masked-view-0.1.11.tgz"
@@ -3570,7 +3577,7 @@
 "@repo/typescript-config@file:packages/typescript-config":
   version "0.0.0"
   dependencies:
-    "@repo/typescript-config" "file:../../.cache/yarn/v6/npm-@repo-typescript-config-0.0.0-dfc0a52b-5f98-4ff6-91b5-6efb59f5e097-1732051815416/node_modules/@repo/typescript-config"
+    "@repo/typescript-config" "file:../../.cache/yarn/v6/npm-@repo-typescript-config-0.0.0-800a0fa5-986c-45c2-9679-2735f1d4d611-1732099484778/node_modules/@repo/typescript-config"
 
 "@rnx-kit/chromium-edge-launcher@^1.0.0":
   version "1.0.0"
