@@ -13,4 +13,7 @@ export type RootStackParamList = {
 		color: string;
 	};
 	AddPet: undefined;
+	UpdatePet: {
+		pet: PetWithIncludes;
+	};
 };

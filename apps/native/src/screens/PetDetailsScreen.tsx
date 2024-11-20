@@ -18,7 +18,7 @@ export default function PetDetailsScreen() {
 	const [deleteVisible, setDeleteVisible] = useState(false);
 
 	const apiClient = useApiClient();
-	const navidation =
+	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const route = useRoute<PetDetailsScreenRouteProp>();
 	const { pet, imageSource, color } = route.params;
@@ -51,14 +51,14 @@ export default function PetDetailsScreen() {
 			),
 	];
 
-	const handleEditOnPress = () => {};
+	const handleEditOnPress = () => navigation.navigate("UpdatePet", { pet });
 	const handleDeleteOnPress = () => {
 		setDeleteVisible(true);
 	};
 	const handleDeletePet = async () => {
 		try {
 			apiClient.petApi.deletePet({ id: pet.id });
-			navidation.navigate("MyPets");
+			navigation.navigate("MyPets");
 		} catch (error) {
 			Alert.alert("Error", "Something went wrong. Please try again.");
 		}
