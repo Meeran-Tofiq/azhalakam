@@ -67,6 +67,9 @@ const MainPage = () => {
 			case "My Store":
 				navigation.navigate("MyStore");
 				break;
+			case "My Pets":
+				navigation.navigate("MyPets");
+				break;
 			default:
 				console.log("Service Pressed", `You pressed ${label}`);
 		}
@@ -123,12 +126,11 @@ const MainPage = () => {
 					)}
 				</Animated.View>
 
-				<TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-					<Icon
-						name="log-out-outline"
-						size={24}
-						color="#000"
-					/>
+				<TouchableOpacity
+					onPress={handleLogout}
+					style={styles.logoutButton}
+				>
+					<Icon name="log-out-outline" size={24} color="#000" />
 				</TouchableOpacity>
 			</View>
 			<Text style={styles.title}>
