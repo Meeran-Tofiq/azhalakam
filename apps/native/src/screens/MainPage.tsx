@@ -126,7 +126,6 @@ const MainPage = () => {
 					))}
 				</View>
 			</ScrollView>
-			<Footer />
 		</View>
 	);
 };
