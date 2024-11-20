@@ -86,7 +86,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			setUser(null);
 			setIsAuthenticated(false);
 			setToken(null);
-			apiClient.setUserToken(null);
 		} catch (error) {
 			console.error("Error removing auth data:", error);
 			throw error;
