@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {
-	View,
-	Text,
-	StyleSheet,
-	ScrollView,
-	Image,
-	ActivityIndicator,
-	Alert,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, Alert } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/types";
 import useApiClient from "../hooks/useApiClient";
-import BackButton from "../components/BackButton";
 import GenericButton from "../components/GenericButton";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useForm, SubmitHandler } from "react-hook-form";
 import FormInput from "../components/FormInput";
 import { Picker } from "@react-native-picker/picker";
+import Header from "../components/Header";
+import LoadingIndicator from "../components/LoadingIndicator";
+import ErrorDisplay from "../components/ErrorDisplay";
 
 type StoreEditRouteProp = RouteProp<RootStackParamList, "StoreEdit">;
 
@@ -69,7 +63,6 @@ const StoreEditScreen = () => {
 				id: storeId,
 			});
 			setStore(response.store);
-			// Set form values
 			setValue("name", response.store.name);
 			setValue("storeType", response.store.type);
 		} catch (error: any) {
@@ -92,7 +85,7 @@ const StoreEditScreen = () => {
 				type: storeType,
 			};
 
-			const response = await apiClient.storeApi.updateStore({
+			await apiClient.storeApi.updateStore({
 				id: storeId,
 				updateData: updatedStore,
 			});
@@ -144,34 +137,24 @@ const StoreEditScreen = () => {
 	};
 
 	if (loading) {
-		return (
-			<View style={styles.loadingContainer}>
-				<ActivityIndicator size="large" color="#4652CC" />
-			</View>
-		);
+		return <LoadingIndicator />;
 	}
 
 	if (!store) {
-		return (
-			<View style={styles.errorContainer}>
-				<Text style={styles.errorText}>Store not found.</Text>
-			</View>
-		);
+		return <ErrorDisplay message="Store not found." />;
 	}
 
 	return (
 		<ScrollView style={styles.container}>
-			<View style={styles.header}>
-				<BackButton />
-				<Text style={styles.headerTitle}>Edit Store</Text>
-				<GenericButton
-					style={styles.saveButton}
-					onPress={handleSubmit(onSubmit)}
-					label="Save"
-				>
-					<Icon name="save" size={24} color="#fff" />
-				</GenericButton>
-			</View>
+			<Header
+				title="Edit Store"
+				actionButton={{
+					label: "Save",
+					iconName: "save",
+					onPress: handleSubmit(onSubmit),
+					style: styles.saveButton,
+				}}
+			/>
 
 			<View style={styles.formContainer}>
 				<FormInput
@@ -213,38 +196,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#F0F4F8",
-	},
-	loadingContainer: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	errorContainer: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-		padding: 20,
-	},
-	errorText: {
-		fontSize: 18,
-		color: "#FF3B30",
-		textAlign: "center",
-	},
-	header: {
-		flexDirection: "row",
-		alignItems: "center",
-		padding: 20,
-		paddingTop: 40,
-		backgroundColor: "#fff",
-		borderBottomWidth: 1,
-		borderBottomColor: "#E5E7EB",
-	},
-	headerTitle: {
-		fontSize: 24,
-		fontWeight: "bold",
-		color: "#1F2937",
-		flex: 1,
-		marginLeft: 15,
 	},
 	saveButton: {
 		padding: 10,
