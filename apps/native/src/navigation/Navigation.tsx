@@ -53,18 +53,18 @@ const NavigationContent = () => {
 				// App screens
 				<>
 					<>
-					<Stack.Screen name="MainPage" component={MainPage} />
-					<Stack.Screen name="MyPets" component={MyPetsScreen} />
-					<Stack.Screen name="AddPet" component={AddPetScreen} />
-					<Stack.Screen
-						name="PetDetails"
-						component={PetDetailsScreen}
-					/>
-					<Stack.Screen
-						name="UpdatePet"
-						component={UpdatePetScreen}
-					/>
-				</>
+						<Stack.Screen name="MainPage" component={MainPage} />
+						<Stack.Screen name="MyPets" component={MyPetsScreen} />
+						<Stack.Screen name="AddPet" component={AddPetScreen} />
+						<Stack.Screen
+							name="PetDetails"
+							component={PetDetailsScreen}
+						/>
+						<Stack.Screen
+							name="UpdatePet"
+							component={UpdatePetScreen}
+						/>
+					</>
 					<Stack.Screen name="MyStore" component={MyStoreScreen} />
 					<Stack.Screen
 						name="StoreCreation"
