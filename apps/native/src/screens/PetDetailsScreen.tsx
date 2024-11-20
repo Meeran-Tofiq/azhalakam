@@ -1,7 +1,6 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
-import { BackgroundImage } from "react-native-elements/dist/config";
 import BackgroundImageWithTextOnTop from "src/components/BackgroundImageWithTextOnTop";
 import GradientBackground from "src/components/GradientBackground";
 import Header from "src/components/Header";
@@ -24,6 +23,10 @@ export default function PetDetailsScreen() {
 		: "Hasn't been been to the vet yet. (Yay!)";
 
 	const petInformation = [
+		{
+			data: pet.weight + " kg" || "Hasn't been set yet.",
+			title: "Weight: ",
+		},
 		{ data: pet.notes || "Hasn't been set yet.", title: "Notes: " },
 		{ data: pet.gender || "Hasn't been set yet.", title: "Gender: " },
 		{ data: formattedDateOfBirth, title: "Date of Birth: " },
