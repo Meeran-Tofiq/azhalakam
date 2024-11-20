@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/types";
 import useApiClient from "../hooks/useApiClient";
@@ -17,15 +17,13 @@ const MyStoreScreen = () => {
 	const [store, setStore] = useState<any>(null);
 	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		fetchStore();
-	}, []);
-
 	const fetchStore = async () => {
 		try {
 			const storeData = await apiClient.storeApi.getAllStoresOfUser();
 			if (storeData.stores.length > 0) {
 				setStore(storeData.stores[0]);
+			} else {
+				setStore(null);
 			}
 		} catch (error) {
 			console.error("Error fetching store:", error);
@@ -33,6 +31,13 @@ const MyStoreScreen = () => {
 			setLoading(false);
 		}
 	};
+
+	useFocusEffect(
+		useCallback(() => {
+			setLoading(true);
+			fetchStore();
+		}, [])
+	);
 
 	const handleCreateStore = () => {
 		navigation.navigate("StoreCreation");
@@ -93,9 +98,6 @@ const styles = StyleSheet.create({
 		padding: 10,
 		borderRadius: 10,
 		backgroundColor: "#4652CC",
-	},
-	storeContainer: {
-		alignItems: "center",
 	},
 	noStoreContainer: {
 		justifyContent: "center",
