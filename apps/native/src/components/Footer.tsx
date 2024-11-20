@@ -5,6 +5,7 @@ import LanguageRowView from "./LanguageView";
 import FooterIcon from "./FooterIcon";
 import { FooterPageNames, useFooterContext } from "src/context/FooterContext";
 import { navigate } from "src/navigation/NavigationService";
+import TranslationKeys from "src/types/translations";
 
 interface FooterPage {
 	pageName: FooterPageNames;
@@ -24,17 +25,17 @@ const Footer = () => {
 	const footerPages: FooterPage[] = [
 		{
 			pageName: FooterPageNames.Home,
-			pageText: "Home",
+			pageText: "footerHome" as keyof TranslationKeys,
 			image: homeIcon,
 		},
 		{
 			pageName: FooterPageNames.Appointments,
-			pageText: "Appointments",
+			pageText: "footerAppointments" as keyof TranslationKeys,
 			image: "calendar-outline",
 		},
 		{
 			pageName: FooterPageNames.Profile,
-			pageText: "Profile",
+			pageText: "footerProfile" as keyof TranslationKeys,
 			image: "person-outline",
 		},
 	];

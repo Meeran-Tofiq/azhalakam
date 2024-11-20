@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Image, Text } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
+import LanguageText from "./LanguageText";
 
 interface FooterIconProps {
 	onPress: ((event: GestureResponderEvent) => void) | undefined;
@@ -33,7 +34,10 @@ const FooterIcon: React.FC<FooterIconProps> = function ({
 					resizeMode="contain"
 				/>
 			)}
-			<Text style={[styles.iconText, { color }]}>{pageText}</Text>
+			<LanguageText
+				text={pageText}
+				style={[styles.iconText, { color }]}
+			/>
 		</TouchableOpacity>
 	);
 };
