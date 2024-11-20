@@ -14,7 +14,12 @@ type GenericButtonProps = {
 	children?: React.ReactNode;
 };
 
-const GenericButton: React.FC<GenericButtonProps> = ({ onPress, style, label, children }) => {
+const GenericButton: React.FC<GenericButtonProps> = ({
+	onPress,
+	style,
+	label,
+	children,
+}) => {
 	return (
 		<TouchableOpacity onPress={onPress} style={[styles.button, style]}>
 			{children}
