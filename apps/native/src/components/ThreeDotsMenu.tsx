@@ -19,6 +19,7 @@ type ThreeDotsMenuProps = {
 	iconStyle?: object;
 	modalStyle?: object;
 	itemStyle?: object;
+	containerStyle?: object;
 };
 
 const ThreeDotsMenu: React.FC<ThreeDotsMenuProps> = ({
@@ -26,6 +27,7 @@ const ThreeDotsMenu: React.FC<ThreeDotsMenuProps> = ({
 	iconStyle,
 	modalStyle,
 	itemStyle,
+	containerStyle,
 }) => {
 	const [visible, setVisible] = useState(false);
 
@@ -34,7 +36,7 @@ const ThreeDotsMenu: React.FC<ThreeDotsMenuProps> = ({
 	};
 
 	return (
-		<View>
+		<View style={containerStyle}>
 			<TouchableOpacity onPress={toggleMenu}>
 				<Icon
 					name="ellipsis"

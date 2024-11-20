@@ -18,6 +18,12 @@ interface HeaderProps {
 		icon?: string;
 		labelColor?: string;
 	}[];
+	threeDotsStyles?: {
+		iconStyle?: object;
+		modalStyle?: object;
+		itemStyle?: object;
+		containerStyle?: object;
+	};
 }
 
 export default function Header({
@@ -27,6 +33,7 @@ export default function Header({
 	backButtonStyle,
 	showThreeDots = false,
 	menuItems = [],
+	threeDotsStyles,
 }: HeaderProps) {
 	return (
 		<LanguageRowView style={[styles.header, headerStyle]}>
@@ -37,7 +44,7 @@ export default function Header({
 			<Text style={[styles.headerText, textStyle]}>{title}</Text>
 			{showThreeDots && (
 				<View style={styles.threeDots}>
-					<ThreeDotsMenu menuItems={menuItems} />
+					<ThreeDotsMenu menuItems={menuItems} {...threeDotsStyles} />
 				</View>
 			)}
 		</LanguageRowView>
