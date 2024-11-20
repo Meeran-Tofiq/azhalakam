@@ -16,10 +16,8 @@ import BackButton from "../components/BackButton";
 import GenericButton from "../components/GenericButton";
 import Icon from "react-native-vector-icons/Ionicons";
 
-// Define the route prop type for StoreDetails
 type StoreDetailsRouteProp = RouteProp<RootStackParamList, "StoreDetails">;
 
-// Define the type for store data
 type StoreType = "PET_STORE" | "VET_STORE";
 
 interface Store {
@@ -28,12 +26,6 @@ interface Store {
 	type: StoreType;
 	bannerImage?: string;
 	logoImage?: string;
-	petStore?: {
-		petCategories: string;
-	};
-	vetStore?: {
-		vetSpecialty: string;
-	};
 	avgRating?: number;
 }
 
@@ -122,26 +114,6 @@ const StoreDetailsScreen = () => {
 					<Text style={styles.storeType}>
 						{store.type.replace("_", " ")}
 					</Text>
-
-					{store.type === "PET_STORE" && store.petStore && (
-						<View style={styles.section}>
-							<Text style={styles.sectionTitle}>
-								Pet Categories
-							</Text>
-							<Text style={styles.sectionText}>
-								{store.petStore.petCategories}
-							</Text>
-						</View>
-					)}
-
-					{store.type === "VET_STORE" && store.vetStore && (
-						<View style={styles.section}>
-							<Text style={styles.sectionTitle}>Specialties</Text>
-							<Text style={styles.sectionText}>
-								{store.vetStore.vetSpecialty}
-							</Text>
-						</View>
-					)}
 
 					<View style={styles.section}>
 						<Text style={styles.sectionTitle}>Rating</Text>
