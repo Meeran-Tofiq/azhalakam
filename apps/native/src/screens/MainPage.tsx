@@ -17,10 +17,15 @@ import Footer from "../components/Footer";
 import ServiceButton from "../components/ServiceButton";
 import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
+import { useFooterContext } from "src/context/FooterContext";
 
 const { width } = Dimensions.get("window");
 
 const MainPage = () => {
+	// make footer visible
+	const { setIsVisible } = useFooterContext();
+	setIsVisible(true);
+
 	const [showSearch, setShowSearch] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const searchWidth = useRef(new Animated.Value(40)).current;
