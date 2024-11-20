@@ -1,5 +1,6 @@
 import { PetWithIncludes } from "../../../api/dist/src/types/Pet";
 import { ImageURISource } from "react-native";
+import { StoreWithIncludes } from "../../../api/dist/src/types/Store";
 
 export type RootStackParamList = {
 	Welcome: undefined;
@@ -19,9 +20,9 @@ export type RootStackParamList = {
 	MyStore: undefined;
 	StoreCreation: undefined;
 	StoreDetails: {
-		storeId: string;
+		store: StoreWithIncludes;
 	};
 	StoreEdit: {
-		storeId: string;
+		store: StoreWithIncludes;
 	};
 };

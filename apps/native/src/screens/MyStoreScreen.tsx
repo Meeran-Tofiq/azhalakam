@@ -72,9 +72,7 @@ const MyStoreScreen = () => {
 			<Header title="My Store" />
 
 			<TouchableOpacity
-				onPress={() =>
-					navigation.navigate("StoreDetails", { storeId: store.id })
-				}
+				onPress={() => navigation.navigate("StoreDetails", { store })}
 			>
 				<StoreCard store={store} />
 			</TouchableOpacity>

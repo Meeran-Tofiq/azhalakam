@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, Alert } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -6,10 +6,7 @@ import { RootStackParamList } from "../types/types";
 import useApiClient from "../hooks/useApiClient";
 import Header from "../components/Header";
 import StoreCard from "../components/StoreCard";
-import LoadingIndicator from "../components/LoadingIndicator";
 import ErrorDisplay from "../components/ErrorDisplay";
-import { useFocusEffect } from "@react-navigation/native";
-import { StoreWithIncludes } from "../../../api/dist/src/types/Store";
 import DeletePopUp from "src/components/DeletePopUp";
 
 type StoreDetailsRouteProp = RouteProp<RootStackParamList, "StoreDetails">;
@@ -18,37 +15,9 @@ const StoreDetailsScreen = () => {
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const route = useRoute<StoreDetailsRouteProp>();
-	const { storeId } = route.params;
+	const { store } = route.params;
 	const apiClient = useApiClient();
-	const [store, setStore] = useState<StoreWithIncludes | null>(null);
-	const [loading, setLoading] = useState<boolean>(true);
 	const [deleteVisible, setDeleteVisible] = useState(false);
-
-	const fetchStoreDetails = async () => {
-		try {
-			const response = await apiClient.storeApi.getStoreFromId({
-				id: storeId,
-			});
-			setStore(response.store);
-		} catch (error: any) {
-			Alert.alert(
-				"Error",
-				error.message || "Failed to fetch store details"
-			);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	useFocusEffect(
-		useCallback(() => {
-			fetchStoreDetails();
-		}, [storeId])
-	);
-
-	if (loading) {
-		return <LoadingIndicator />;
-	}
 
 	if (!store) {
 		return <ErrorDisplay message="Store not found." />;
@@ -57,7 +26,7 @@ const StoreDetailsScreen = () => {
 	async function handleDeleteStore() {
 		try {
 			await apiClient.storeApi.deleteStore({
-				id: storeId,
+				id: store.id,
 			});
 			Alert.alert("Success", "Store deleted successfully!");
 			setDeleteVisible(false);
@@ -77,7 +46,7 @@ const StoreDetailsScreen = () => {
 						label: "Edit",
 						onPress: () =>
 							navigation.navigate("StoreEdit", {
-								storeId: storeId,
+								store,
 							}),
 						icon: "edit",
 					},
