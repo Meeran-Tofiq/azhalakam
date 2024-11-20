@@ -10,6 +10,7 @@ import { AuthProvider, useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
 import MyStoreScreen from "../screens/MyStoreScreen";
 import StoreCreationScreen from "../screens/StoreCreationScreen";
+import StoreDetailsScreen from "src/screens/StoreDetailsScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -48,6 +49,7 @@ const NavigationContent = () => {
 					<Stack.Screen name="MainPage" component={MainPage} />
 					<Stack.Screen name="MyStore" component={MyStoreScreen} />
 					<Stack.Screen name="StoreCreation" component={StoreCreationScreen} />
+					<Stack.Screen name="StoreDetails" component={StoreDetailsScreen} />
 				</>
 			)}
 		</Stack.Navigator>
