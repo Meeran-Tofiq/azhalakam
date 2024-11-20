@@ -1,51 +1,36 @@
-import React, { useState } from "react";
-import {
-	View,
-	Text,
-	StyleSheet,
-	ScrollView,
-	TouchableOpacity,
-	Dimensions,
-	Alert,
-} from "react-native";
-import { Button } from "react-native-elements";
-import { useForm } from "react-hook-form";
-import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { StyleSheet, ScrollView, Dimensions, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import FormInput from "../components/FormInput";
 import useApiClient from "../hooks/useApiClient";
 import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
 import validationRules from "../validation/validationRules";
 import GradientBackground from "../components/GradientBackground";
 import RegisterPrompt from "../components/RegisterPrompt";
-import LanguageText from "../components/LanguageText";
-import LanguageButton from "../components/LanguageButton";
+import CustomForm from "src/components/CustomForm";
+import FormFieldConfig from "src/types/FormFieldConfig";
 
 const { height } = Dimensions.get("window");
 
+const inputs: FormFieldConfig[] = [
+	{
+		name: "usernameOrEmail",
+		label: "Username or Email",
+		keyboardType: "default",
+	},
+	{
+		name: "password",
+		label: "Password",
+		secureTextEntry: true,
+	},
+];
+
 function LoginScreen() {
-	const {
-		control,
-		handleSubmit,
-		formState: { errors },
-	} = useForm();
-	const [focusedInputs, setFocusedInputs] = useState<{
-		[key: string]: boolean;
-	}>({});
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const apiClient = useApiClient();
 	const { login } = useAuth();
-
-	const handleFocus = (field: string) => {
-		setFocusedInputs({ ...focusedInputs, [field]: true });
-	};
-
-	const handleBlur = (field: string) => {
-		setFocusedInputs({ ...focusedInputs, [field]: false });
-	};
 
 	const onSubmit = async (data: any) => {
 		try {
@@ -82,42 +67,15 @@ function LoginScreen() {
 		<ScrollView contentContainerStyle={styles.container}>
 			<GradientBackground />
 
-			<View style={styles.contentContainer}>
-				<LanguageText translationKey={"signIn"} style={styles.title} />
+			<CustomForm
+				fields={inputs}
+				onSubmit={onSubmit}
+				validationRules={validationRules}
+				submitButtonTitle="signIn"
+				title="Sign In"
+			/>
 
-				<View style={styles.formContainer}>
-					<FormInput
-						control={control}
-						name="usernameOrEmail"
-						label="Username or Email"
-						rules={validationRules.usernameOrEmail}
-						errors={errors}
-						focused={focusedInputs["usernameOrEmail"]}
-						onFocus={() => handleFocus("usernameOrEmail")}
-						onBlur={() => handleBlur("usernameOrEmail")}
-					/>
-
-					<FormInput
-						control={control}
-						name="password"
-						label="Password"
-						rules={validationRules.password}
-						errors={errors}
-						focused={focusedInputs["password"]}
-						onFocus={() => handleFocus("password")}
-						onBlur={() => handleBlur("password")}
-						secureTextEntry={true}
-					/>
-
-					<LanguageButton
-						title="signIn"
-						style={styles.button}
-						onPress={handleSubmit(onSubmit)}
-					/>
-				</View>
-
-				<RegisterPrompt />
-			</View>
+			<RegisterPrompt />
 		</ScrollView>
 	);
 }

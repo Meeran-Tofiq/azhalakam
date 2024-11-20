@@ -17,7 +17,7 @@ export const SkipButton: React.FC<SkipButtonProps> = ({
 			{skipText ? (
 				<Text style={styles.skipText}>{skipText}</Text>
 			) : (
-				<LanguageText translationKey={"skip"} style={styles.skipText} />
+				<LanguageText text={"skip"} style={styles.skipText} />
 			)}
 		</TouchableOpacity>
 	);
