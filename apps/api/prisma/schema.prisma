@@ -77,14 +77,21 @@ model ServiceProvider {
     user     User?
 }
 
+enum BillingType {
+    PER_HOUR
+    TOTAL
+}
+
 model Service {
-    id          String @id @default(uuid())
-    name        String
-    description String
-    price       Float
+    id                String      @id @default(uuid())
+    name              String
+    description       String
+    price             Float
+    billingType       BillingType @default(TOTAL)
+    durationInMinutes Int?
 
     provider   ServiceProvider? @relation(fields: [providerId], references: [id])
-    providerId String
+    providerId String?
 
     vetStore   VetStore? @relation(fields: [vetStoreId], references: [id])
     vetStoreId String?

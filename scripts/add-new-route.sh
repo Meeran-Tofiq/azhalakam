@@ -97,3 +97,6 @@ else
 fi
 
 echo "Done! Successfully added $pluralized_name routes."
+
+code "$paths_file" # Open Paths.ts in VS Code
+code "$index_file" # Open index.ts in VS Code
