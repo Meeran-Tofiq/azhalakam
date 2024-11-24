@@ -1,6 +1,7 @@
 import LocationApi from "./services/locationApi";
 import PetApi from "./services/petApi";
 import ProductApi from "./services/productApi";
+import ReviewApi from "./services/reviewApi";
 import ServiceApi from "./services/serviceApi";
 import ServiceProviderApi from "./services/serviceProviderApi";
 import StoreApi from "./services/storeApi";
@@ -18,6 +19,7 @@ export default class ApiClient {
 	public locationApi: LocationApi;
 	public serviceProviderApi: ServiceProviderApi;
 	public serviceApi: ServiceApi;
+	public reviewApi: ReviewApi;
 
 	/**
 	 * Constructs an ApiClient instance with a given base URL.
@@ -35,6 +37,7 @@ export default class ApiClient {
 		this.locationApi = new LocationApi(this.baseUrl);
 		this.serviceProviderApi = new ServiceProviderApi(this.baseUrl);
 		this.serviceApi = new ServiceApi(this.baseUrl);
+		this.reviewApi = new ReviewApi(this.baseUrl);
 	}
 
 	public setUserToken(token: string) {
