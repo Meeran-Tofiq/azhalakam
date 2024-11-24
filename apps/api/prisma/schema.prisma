@@ -73,7 +73,7 @@ model Pet {
 model ServiceProvider {
     id       String    @id @default(uuid())
     services Service[]
-    rating   Float?
+    reviews  Review[]
     user     User?
 }
 
@@ -164,12 +164,14 @@ model Review {
     rating  Float
     content String
 
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    String
-    product   Product? @relation(fields: [productId], references: [id])
-    productId String?
-    Store     Store?   @relation(fields: [storeId], references: [id])
-    storeId   String?
+    user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId            String
+    product           Product?         @relation(fields: [productId], references: [id])
+    productId         String?
+    store             Store?           @relation(fields: [storeId], references: [id])
+    storeId           String?
+    serviceProvider   ServiceProvider? @relation(fields: [serviceProviderId], references: [id])
+    serviceProviderId String?
 }
 
 model Location {
