@@ -2,6 +2,7 @@ import LocationApi from "./services/locationApi";
 import PetApi from "./services/petApi";
 import ProductApi from "./services/productApi";
 import ServiceApi from "./services/serviceApi";
+import ServiceProviderApi from "./services/serviceProviderApi";
 import StoreApi from "./services/storeApi";
 import UserApi from "./services/userApi";
 import userToken from "./utils/userToken";
@@ -15,6 +16,7 @@ export default class ApiClient {
 	public storeApi: StoreApi;
 	public productsApi: ProductApi;
 	public locationApi: LocationApi;
+	public serviceProviderApi: ServiceProviderApi;
 	public serviceApi: ServiceApi;
 
 	/**
@@ -31,6 +33,7 @@ export default class ApiClient {
 		this.storeApi = new StoreApi(this.baseUrl);
 		this.productsApi = new ProductApi(this.baseUrl);
 		this.locationApi = new LocationApi(this.baseUrl);
+		this.serviceProviderApi = new ServiceProviderApi(this.baseUrl);
 		this.serviceApi = new ServiceApi(this.baseUrl);
 	}
 
