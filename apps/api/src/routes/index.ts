@@ -7,6 +7,7 @@ import StoreRoutes from "./StoreRoutes";
 import PetStoreRoutes from "./PetStoreRoutes";
 import VetStoreRoutes from "./VetStoreRoutes";
 import ProductRoutes from "./ProductRoutes";
+import ServiceRoutes from "./ServiceRoutes";
 import LocationRoutes from "./LocationRoutes";
 
 // **** Variables **** //
@@ -22,6 +23,7 @@ const storeRouter = Router();
 const petStoreRouter = Router({ mergeParams: true });
 const vetStoreRouter = Router({ mergeParams: true });
 const productRouter = Router();
+const serviceRouter = Router();
 const locationRouter = Router();
 
 // User routes
@@ -76,11 +78,18 @@ locationRouter.get(Paths.Locations.Get, LocationRoutes.getOne);
 locationRouter.put(Paths.Locations.Update, ...LocationRoutes.update);
 locationRouter.delete(Paths.Locations.Delete, LocationRoutes.deleteOne);
 
+// Service routes
+serviceRouter.post(Paths.Services.Create, ...ServiceRoutes.create);
+serviceRouter.get(Paths.Services.Get, ServiceRoutes.getOne);
+serviceRouter.put(Paths.Services.Update, ...ServiceRoutes.update);
+serviceRouter.delete(Paths.Services.Delete, ServiceRoutes.deleteOne);
+
 // Add routes to apiRouter
 apiRouter.use(Paths.Users.Base, userRouter);
 apiRouter.use(Paths.Pets.Base, petRouter);
 apiRouter.use(Paths.Stores.Base, storeRouter);
 apiRouter.use(Paths.Products.Base, productRouter);
+apiRouter.use(Paths.Services.Base, serviceRouter);
 apiRouter.use(Paths.Locations.Base, locationRouter);
 
 // **** Export default **** //

@@ -59,4 +59,11 @@ export default {
 		Update: "/:locationId/update",
 		Delete: "/:locationId/delete",
 	},
+	Services: {
+		Base: "/services",
+		Create: "/create",
+		Get: "/:serviceId",
+		Update: "/:serviceId/update",
+		Delete: "/:serviceId/delete",
+	},
 } as const;
