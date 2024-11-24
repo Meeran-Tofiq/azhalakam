@@ -107,6 +107,7 @@ serviceRouter.put(Paths.Services.Update, ...ServiceRoutes.update);
 serviceRouter.delete(Paths.Services.Delete, ServiceRoutes.deleteOne);
 
 // Review routes
+reviewRouter.get(Paths.Reviews.GetAll, ReviewRoutes.getAllInPage);
 reviewRouter.post(Paths.Reviews.Create, ...ReviewRoutes.create);
 reviewRouter.get(Paths.Reviews.Get, ReviewRoutes.getOne);
 reviewRouter.put(Paths.Reviews.Update, ...ReviewRoutes.update);

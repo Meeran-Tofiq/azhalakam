@@ -3,6 +3,8 @@ import {
 	CreateReviewResponse,
 	DeleteReviewInputs,
 	DeleteReviewResponse,
+	GetAllReviewsInputs,
+	GetAllReviewsResponse,
 	GetReviewInputs,
 	GetReviewResponse,
 	UpdateReviewInputs,
@@ -33,6 +35,50 @@ export default class ReviewApi {
 				throw new Error(response.statusText);
 			}
 
+			return await response.json();
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	/**
+	 * Asynchronously fetches all reviews at a given page associated with a specific entity.
+	 * Requires either a productId, serviceProviderId, or storeId to be provided for the request.
+	 * @param page The page of reviews to fetch.
+	 * @param productId The id of the product to get reviews from, if applicable.
+	 * @param serviceProviderId The id of the service provider to get reviews from, if applicable.
+	 * @param storeId The id of the store to get reviews from, if applicable.
+	 * @throws {Error} If no productId, serviceProviderId, or storeId is provided, if the request fails, or if the response is not ok.
+	 * @returns A Promise that resolves with the JSON data of all reviews at the given page.
+	 */
+	async getAllReviewsInPage({
+		page,
+		productId,
+		serviceProviderId,
+		storeId,
+	}: GetAllReviewsInputs): Promise<GetAllReviewsResponse> {
+		let reviewedEntityUrlParam: string = "";
+
+		if (productId) reviewedEntityUrlParam = `productId=${productId}`;
+		else if (serviceProviderId)
+			reviewedEntityUrlParam = `serviceProdiverId=${serviceProviderId}`;
+		else if (storeId) reviewedEntityUrlParam = `storeId=${storeId}`;
+		else {
+			throw new Error(
+				"Missing required fields. Must specify the reviewed entity."
+			);
+		}
+
+		try {
+			const response = await fetch(
+				`${this.reviewUrl}/all?page=${page}&${reviewedEntityUrlParam}`,
+				{
+					method: "GET",
+				}
+			);
+			if (!response.ok) {
+				throw new Error(response.statusText);
+			}
 			return await response.json();
 		} catch (error) {
 			throw error;

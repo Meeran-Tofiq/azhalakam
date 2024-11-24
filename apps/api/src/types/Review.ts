@@ -23,6 +23,14 @@ export type GetReviewInputs = {
 };
 export type GetReviewResponse = { review: ReviewWithIncludes };
 
+export type GetAllReviewsInputs = {
+	page: number;
+	storeId?: string;
+	productId?: string;
+	serviceProviderId?: string;
+};
+export type GetAllReviewsResponse = { reviews: ReviewWithIncludes[] };
+
 // Update review types
 
 export type UpdateReviewInputs = {

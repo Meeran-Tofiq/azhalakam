@@ -77,6 +77,7 @@ export default {
 		Base: "/reviews",
 		Create: "/create",
 		Get: "/:reviewId",
+		GetAll: "/all",
 		Update: "/:reviewId/update",
 		Delete: "/:reviewId/delete",
 	},

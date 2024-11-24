@@ -6,6 +6,8 @@ import {
 	CreateReviewResponse,
 	DeleteReviewInputs,
 	DeleteReviewResponse,
+	GetAllReviewsInputs,
+	GetAllReviewsResponse,
 	GetReviewInputs,
 	GetReviewResponse,
 	UpdateReviewInputs,
@@ -71,6 +73,41 @@ class ReviewService {
 			return { review };
 		} catch (error: any) {
 			throw new BadRequestException("Failed to get review");
+		}
+	}
+
+	public async getAllInPage({
+		page,
+		productId,
+		serviceProviderId,
+		storeId,
+	}: GetAllReviewsInputs): Promise<GetAllReviewsResponse> {
+		if (!productId && !serviceProviderId && !storeId)
+			throw new BadRequestException(
+				"Missing required fields. must specify the reviewed entity."
+			);
+
+		try {
+			const reviews = await this.prisma.review.findMany({
+				where: {
+					product: productId ? { id: productId } : undefined,
+					serviceProvider: serviceProviderId
+						? { id: serviceProviderId }
+						: undefined,
+					store: storeId ? { id: storeId } : undefined,
+				},
+				include: {
+					product: true,
+					serviceProvider: true,
+					store: true,
+				},
+				skip: (page - 1) * this.reviewPageLimit,
+				take: this.reviewPageLimit,
+			});
+
+			return { reviews };
+		} catch (error: any) {
+			throw new BadRequestException("Failed to get reviews");
 		}
 	}
 

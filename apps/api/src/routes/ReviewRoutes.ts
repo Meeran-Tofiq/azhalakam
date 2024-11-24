@@ -37,6 +37,31 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 	}
 }
 
+async function getAllInPage(req: Request, res: Response, next: NextFunction) {
+	logger.info("Getting all reviews...");
+
+	try {
+		const page = req.query.page ? Number(req.query.page) : 1;
+
+		const productId = req.query.productId?.toString();
+		const serviceProviderId = req.query.serviceProviderId?.toString();
+		const storeId = req.query.storeId?.toString();
+		console.log(storeId);
+
+		const data = await reviewService.getAllInPage({
+			page,
+			productId,
+			serviceProviderId,
+			storeId,
+		});
+
+		logger.info("Reviews retrieved successfully.");
+		res.status(HttpStatusCodes.OK).json({ ...data });
+	} catch (error) {
+		next(error);
+	}
+}
+
 /**
  * Create one review
  * @param req
@@ -115,6 +140,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 // **** Export default **** //
 
 export default {
+	getAllInPage,
 	getOne,
 	create: [createReviewValidator, create],
 	update: [updateReviewValidator, update],
