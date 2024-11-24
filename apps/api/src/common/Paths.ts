@@ -59,6 +59,13 @@ export default {
 		Update: "/:locationId/update",
 		Delete: "/:locationId/delete",
 	},
+	ServiceProviders: {
+		Base: "/service-providers",
+		Create: "/create",
+		Get: "/:serviceProviderId",
+		Update: "/:serviceProviderId/update",
+		Delete: "/:serviceProviderId/delete",
+	},
 	Services: {
 		Base: "/services",
 		Create: "/create",
