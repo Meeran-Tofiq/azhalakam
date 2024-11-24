@@ -73,4 +73,11 @@ export default {
 		Update: "/:serviceId/update",
 		Delete: "/:serviceId/delete",
 	},
+	Reviews: {
+		Base: "/reviews",
+		Create: "/create",
+		Get: "/:reviewId",
+		Update: "/:reviewId/update",
+		Delete: "/:reviewId/delete",
+	},
 } as const;
