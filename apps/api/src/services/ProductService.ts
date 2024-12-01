@@ -59,7 +59,12 @@ class ProductService {
 				},
 			});
 
-			return { products };
+			const total = await this.prisma.product.count({
+				where: { storeId },
+			});
+			const hasMore = page * this.productPageLimit < total;
+
+			return { products, hasMore };
 		} catch (error) {
 			throw new BadRequestException("Failed to get products");
 		}

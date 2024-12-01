@@ -29,7 +29,7 @@ export type GetAllProductsInputs = {
 	page: number;
 	storeId?: string;
 };
-export type GetAllProductsResponse = { products: ProductWithIncludes[] };
+export type GetAllProductsResponse = { products: ProductWithIncludes[], hasMore: boolean };
 
 // Update product types
 
