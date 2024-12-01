@@ -48,13 +48,16 @@ export default class ProductApi {
 		storeId,
 	}: GetAllProductsInputs): Promise<GetAllProductsResponse> {
 		try {
-			const response = await fetch(`${this.productUrl}/page/${page}`, {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ storeId }),
-			});
+			const response = await fetch(
+				`${this.productUrl}/all?page=${page}`,
+				{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ storeId }),
+				}
+			);
 
 			if (!response.ok) {
 				throw new Error(response.statusText);
