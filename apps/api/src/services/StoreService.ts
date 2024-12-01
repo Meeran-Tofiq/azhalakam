@@ -156,7 +156,15 @@ class StoreService {
 					vetStore: true,
 				},
 			});
-			return { stores };
+
+			const total = await this.prisma.store.count({
+				where: {
+					type: storeType,
+				},
+			});
+			const hasMore = page * this.storePageLimit < total;
+
+			return { stores, hasMore };
 		} catch (error) {
 			throw new BadRequestException("Failed to get stores");
 		}
