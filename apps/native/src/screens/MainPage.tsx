@@ -13,7 +13,6 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/Ionicons";
-import Footer from "../components/Footer";
 import ServiceButton from "../components/ServiceButton";
 import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/types";
@@ -70,6 +69,15 @@ const MainPage = () => {
 			case "My Pets":
 				navigation.navigate("MyPets");
 				break;
+			case "Pet Stores":
+				navigation.navigate("StoreListScreen", {
+					storeType: "PET_STORE",
+				});
+				break;
+			case "Vet Stores":
+				navigation.navigate("StoreListScreen", {
+					storeType: "VET_STORE",
+				});
 			default:
 				console.log("Service Pressed", `You pressed ${label}`);
 		}
@@ -88,10 +96,14 @@ const MainPage = () => {
 			image: require("../../assets/info-graphics.png"),
 			label: "Info-graphics",
 		},
-		{ image: require("../../assets/my-store.png"), label: "My Store" },
+		{
+			image: require("../../assets/my-store.png"),
+			label: "My Store",
+			redirection: "MyStore",
+		},
 		{ image: require("../../assets/pet-taxi.png"), label: "Pet Taxi" },
-		{ image: require("../../assets/pet-date.png"), label: "Pet Date" },
-		{ image: require("../../assets/adoption.png"), label: "Adoption" },
+		{ image: require("../../assets/pet-date.png"), label: "Vet Stores" },
+		{ image: require("../../assets/adoption.png"), label: "Pet Stores" },
 	];
 
 	return (

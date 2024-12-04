@@ -1,6 +1,7 @@
 import { PetWithIncludes } from "../../../api/dist/src/types/Pet";
 import { ImageURISource } from "react-native";
 import { StoreWithIncludes } from "../../../api/dist/src/types/Store";
+import { StoreType } from "../../../api/dist/src/types/PrismaEnums";
 
 export type RootStackParamList = {
 	Welcome: undefined;
@@ -24,5 +25,8 @@ export type RootStackParamList = {
 	};
 	StoreEdit: {
 		store: StoreWithIncludes;
+	};
+	StoreListScreen: {
+		storeType: StoreType;
 	};
 };
