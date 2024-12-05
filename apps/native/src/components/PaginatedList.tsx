@@ -45,6 +45,7 @@ const PaginatedList = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		padding: 20,
 	},
 	content: {
 		flex: 1,
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
 	pagination: {
 		justifyContent: "center",
 		alignItems: "center",
-		padding: 10,
+		marginTop: 10,
 	},
 	arrow: {
 		marginHorizontal: 20,
