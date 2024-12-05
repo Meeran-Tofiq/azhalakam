@@ -46,16 +46,16 @@ export default class ProductApi {
 	async getAllProductsAtPageOfStore({
 		page,
 		storeId,
+		category,
 	}: GetAllProductsInputs): Promise<GetAllProductsResponse> {
 		try {
 			const response = await fetch(
-				`${this.productUrl}/all?page=${page}`,
+				`${this.productUrl}/all?page=${page}&storeId=${storeId}&category=${category}`,
 				{
 					method: "GET",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ storeId }),
 				}
 			);
 

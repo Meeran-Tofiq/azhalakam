@@ -42,12 +42,14 @@ class ProductService {
 	public async getAll({
 		page,
 		storeId,
+		category,
 	}: GetAllProductsInputs): Promise<GetAllProductsResponse> {
 		if (page < 1) page = 1;
 
 		try {
+			console.log(category);
 			const products = await this.prisma.product.findMany({
-				where: { storeId },
+				where: { storeId, category },
 				take: this.productPageLimit,
 				skip: (page - 1) * this.productPageLimit,
 				orderBy: {
@@ -60,7 +62,7 @@ class ProductService {
 			});
 
 			const total = await this.prisma.product.count({
-				where: { storeId },
+				where: { storeId, category },
 			});
 			const hasMore = page * this.productPageLimit < total;
 
