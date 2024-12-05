@@ -154,12 +154,19 @@ model Vet {
     availabilityId String       @unique
 }
 
+enum ProductCategory {
+    FOOD
+    TOY
+    MISCELLANEOUS
+}
+
 model Product {
-    id          String  @id @default(uuid())
+    id          String          @id @default(uuid())
     name        String
     description String?
     price       Float
     avgRating   Float?
+    category    ProductCategory @default(MISCELLANEOUS)
 
     store   Store?   @relation(fields: [storeId], references: [id])
     storeId String?
