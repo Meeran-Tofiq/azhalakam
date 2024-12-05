@@ -97,3 +97,9 @@ For the store images:
 
 - Vet Store - [Ivan Rojas Urrea](https://unsplash.com/@ivnrjs)
 - Pet Store - [Jana Shnipelson](https://unsplash.com/@shnipelson)
+
+For products:
+
+- Pet toy - [Dorothe Wouters](https://unsplash.com/@darkmoonart)
+- Pet food - [Daniel Dan](https://unsplash.com/@outsideclick)
+- Miscellaneous - [Kelsey Dody](https://unsplash.com/@_kelseycam)
