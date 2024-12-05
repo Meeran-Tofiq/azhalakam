@@ -2,7 +2,7 @@
 	"name": "api",
 	"version": "0.0.0",
 	"scripts": {
-		"build": "npx ts-node ./scripts/build.ts",
+		"build": "tsc",
 		"dev": "nodemon --exec \"node ./preload.js && npx ts-node ./src\" --watch ./src -e ts",
 		"lint": "npx eslint ./src",
 		"lint:tests": "npx eslint ./spec",
