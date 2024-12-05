@@ -7,6 +7,7 @@ import {
 	ImageSourcePropType,
 } from "react-native";
 import { StoreWithIncludes } from "@api-types/Store";
+import images from "src/utils/imageImporter";
 
 interface StoreCardProps {
 	store: StoreWithIncludes & {
@@ -16,23 +17,18 @@ interface StoreCardProps {
 }
 
 const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
+	const image =
+		store.type === "VET_STORE" ? images.vetStore : images.petStore;
+
 	return (
 		<View style={styles.storeContainer}>
 			<Image
-				source={
-					store.bannerImage
-						? { uri: store.bannerImage }
-						: require("../../assets/placeholder-image.png")
-				}
+				source={store.bannerImage ? { uri: store.bannerImage } : image}
 				style={styles.bannerImage}
 			/>
 			<View style={styles.logoContainer}>
 				<Image
-					source={
-						store.logoImage
-							? { uri: store.logoImage }
-							: require("../../assets/placeholder-image.png")
-					}
+					source={store.logoImage ? { uri: store.logoImage } : image}
 					style={styles.logoImage}
 				/>
 				<Text style={styles.storeName}>{store.name}</Text>

@@ -20,6 +20,10 @@ const rodent: Image = require("../../assets/animals/rodent.jpg");
 const snake: Image = require("../../assets/animals/snake.jpg");
 const rabbit: Image = require("../../assets/animals/rabbit.jpg");
 
+// store images
+const vetStore: Image = require("../../assets/stores/vet-store.jpg");
+const petStore: Image = require("../../assets/stores/pet-store.jpg");
+
 const images = {
 	dog,
 	cat,
@@ -35,6 +39,8 @@ const images = {
 	insect,
 	rodent,
 	bird,
+	vetStore,
+	petStore,
 };
 
 export default images;
