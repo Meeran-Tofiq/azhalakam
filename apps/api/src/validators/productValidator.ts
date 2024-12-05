@@ -1,3 +1,4 @@
+import { $Enums } from "@prisma/client";
 import validationHandler from "@src/middleware/validationHandler";
 import { NextFunction } from "express";
 import { body } from "express-validator";
@@ -23,6 +24,12 @@ export const createProductValidator = [
 		.escape()
 		.isString()
 		.withMessage("Description must be a string"),
+	body("category")
+		.optional()
+		.isIn(Object.values($Enums.ProductCategory))
+		.withMessage(
+			"Category must be one of the entries of the enum: ProductCategory"
+		),
 	validationHandler,
 ];
 
@@ -52,5 +59,11 @@ export const updateProductValidator = [
 		.optional()
 		.isString()
 		.withMessage("reviewIds must be an array of strings"),
+	body("category")
+		.optional()
+		.isIn(Object.values($Enums.ProductCategory))
+		.withMessage(
+			"Category must be one of the entries of the enum: ProductCategory"
+		),
 	validationHandler,
 ];

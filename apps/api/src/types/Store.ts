@@ -41,7 +41,10 @@ export type GetAllStoresOfPageInputs = {
 	page: number;
 	storeType?: $Enums.StoreType;
 };
-export type GetAllStoresOfPageResponse = { stores: StoreWithIncludes[] };
+export type GetAllStoresOfPageResponse = {
+	stores: StoreWithIncludes[];
+	hasMore: boolean;
+};
 
 export type GetAllUserStoresInputs = {
 	userId: string;

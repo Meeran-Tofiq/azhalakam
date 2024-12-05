@@ -1,8 +1,12 @@
 {
 	"name": "api-client",
 	"version": "0.0.0",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"scripts": {
-		"build": "tsc"
+		"build": "tsc",
+		"clean": "rm -rf dist",
+		"dev": "ts-node src/index.ts"
 	},
 	"engines": {
 		"node": ">=16.0.0"

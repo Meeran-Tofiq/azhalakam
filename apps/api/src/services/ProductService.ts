@@ -42,12 +42,14 @@ class ProductService {
 	public async getAll({
 		page,
 		storeId,
+		category,
 	}: GetAllProductsInputs): Promise<GetAllProductsResponse> {
 		if (page < 1) page = 1;
 
 		try {
+			console.log(category);
 			const products = await this.prisma.product.findMany({
-				where: { storeId },
+				where: { storeId, category },
 				take: this.productPageLimit,
 				skip: (page - 1) * this.productPageLimit,
 				orderBy: {
@@ -59,7 +61,12 @@ class ProductService {
 				},
 			});
 
-			return { products };
+			const total = await this.prisma.product.count({
+				where: { storeId, category },
+			});
+			const hasMore = page * this.productPageLimit < total;
+
+			return { products, hasMore };
 		} catch (error) {
 			throw new BadRequestException("Failed to get products");
 		}

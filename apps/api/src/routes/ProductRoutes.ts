@@ -8,6 +8,7 @@ import {
 	createProductValidator,
 	updateProductValidator,
 } from "@src/validators/productValidator";
+import { $Enums } from "@prisma/client";
 
 // **** Variables **** //
 
@@ -21,7 +22,10 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 	try {
 		const data = await productService.getAll({
 			page: Number(req.query.page),
-			storeId: req.body.storeId ? String(req.body.storeId) : undefined,
+			storeId: req.query.storeId ? String(req.body.storeId) : undefined,
+			category: req.query.category
+				? (req.query.category as $Enums.ProductCategory)
+				: undefined,
 		});
 
 		logger.info("Products retrieved successfully.");
