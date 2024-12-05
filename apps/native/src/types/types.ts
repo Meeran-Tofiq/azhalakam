@@ -8,6 +8,7 @@ export type RootStackParamList = {
 	Registration: undefined;
 	Login: undefined;
 	MainPage: undefined;
+	Profile: undefined;
 	MyPets: undefined;
 	PetDetails: {
 		pet: PetWithIncludes;

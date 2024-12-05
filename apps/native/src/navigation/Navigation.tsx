@@ -17,6 +17,7 @@ import MyStoreScreen from "../screens/MyStoreScreen";
 import StoreCreationScreen from "../screens/StoreCreationScreen";
 import StoreDetailsScreen from "src/screens/StoreDetailsScreen";
 import StoreEditScreen from "../screens/StoreEditScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import StoreListScreen from "src/screens/StoreListScreen";
 import ProductListScreen from "src/screens/ProductsListScreen";
 
@@ -56,6 +57,10 @@ const NavigationContent = () => {
 				<>
 					<>
 						<Stack.Screen name="MainPage" component={MainPage} />
+						<Stack.Screen
+							name="Profile"
+							component={ProfileScreen}
+						/>
 						<Stack.Screen name="MyPets" component={MyPetsScreen} />
 						<Stack.Screen name="AddPet" component={AddPetScreen} />
 						<Stack.Screen

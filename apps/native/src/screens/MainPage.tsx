@@ -28,7 +28,7 @@ const MainPage = () => {
 	const [showSearch, setShowSearch] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const searchWidth = useRef(new Animated.Value(40)).current;
-	const { user, logout } = useAuth();
+	const { user } = useAuth();
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
@@ -49,15 +49,6 @@ const MainPage = () => {
 				duration: 300,
 				useNativeDriver: false,
 			}).start();
-		}
-	};
-
-	const handleLogout = async () => {
-		try {
-			await logout();
-			navigation.replace("Login");
-		} catch (error) {
-			console.error("Logout failed:", error);
 		}
 	};
 
@@ -140,13 +131,6 @@ const MainPage = () => {
 						/>
 					)}
 				</Animated.View>
-
-				<TouchableOpacity
-					onPress={handleLogout}
-					style={styles.logoutButton}
-				>
-					<Icon name="log-out-outline" size={24} color="#000" />
-				</TouchableOpacity>
 			</View>
 			<Text style={styles.title}>
 				What are you looking for,{" "}
@@ -205,10 +189,6 @@ const styles = StyleSheet.create({
 	},
 	iconButton: {
 		padding: 8,
-	},
-	logoutButton: {
-		padding: 8,
-		marginLeft: "auto",
 	},
 	searchContainer: {
 		flexDirection: "row",
