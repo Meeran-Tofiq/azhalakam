@@ -1,5 +1,11 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useRef } from "react";
+import {
+	View,
+	Text,
+	TouchableOpacity,
+	StyleSheet,
+	ScrollView,
+} from "react-native";
 import LanguageRowView from "./LanguageView";
 
 type PaginatedListProps = {
@@ -15,29 +21,41 @@ const PaginatedList = ({
 	hasMore,
 	onPageChange,
 }: PaginatedListProps) => {
+	const scrollViewRef = useRef<ScrollView>(null);
+
+	const handlePageChange = (newPage: number) => {
+		scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+		onPageChange(newPage);
+	};
+
 	return (
 		<View style={styles.container}>
-			{children}
+			<ScrollView
+				ref={scrollViewRef}
+				contentContainerStyle={styles.content}
+			>
+				{children}
 
-			<LanguageRowView style={styles.pagination}>
-				{currentPage > 1 && (
-					<TouchableOpacity
-						style={styles.arrow}
-						onPress={() => onPageChange(currentPage - 1)}
-					>
-						<Text style={styles.arrowText}>{"<"}</Text>
-					</TouchableOpacity>
-				)}
-				<Text style={styles.pageText}>{currentPage}</Text>
-				{hasMore && (
-					<TouchableOpacity
-						style={styles.arrow}
-						onPress={() => onPageChange(currentPage + 1)}
-					>
-						<Text style={styles.arrowText}>{">"}</Text>
-					</TouchableOpacity>
-				)}
-			</LanguageRowView>
+				<LanguageRowView style={styles.pagination}>
+					{currentPage > 1 && (
+						<TouchableOpacity
+							style={styles.arrow}
+							onPress={() => handlePageChange(currentPage - 1)}
+						>
+							<Text style={styles.arrowText}>{"<"}</Text>
+						</TouchableOpacity>
+					)}
+					<Text style={styles.pageText}>{currentPage}</Text>
+					{hasMore && (
+						<TouchableOpacity
+							style={styles.arrow}
+							onPress={() => handlePageChange(currentPage + 1)}
+						>
+							<Text style={styles.arrowText}>{">"}</Text>
+						</TouchableOpacity>
+					)}
+				</LanguageRowView>
+			</ScrollView>
 		</View>
 	);
 };
@@ -45,11 +63,10 @@ const PaginatedList = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 20,
 	},
 	content: {
-		flex: 1,
-		marginBottom: 20,
+		flexGrow: 1,
+		padding: 10,
 	},
 	pagination: {
 		justifyContent: "center",

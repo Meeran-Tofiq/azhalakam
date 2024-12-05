@@ -12,9 +12,7 @@ export default function StoreListScreen() {
 			<Header
 				title={storeType === "PET_STORE" ? "Pet Stores" : "Vet Stores"}
 			/>
-			<ScrollView style={{ flex: 1 }}>
-				<PaginatedStoreList storeType={storeType} />
-			</ScrollView>
+			<PaginatedStoreList storeType={storeType} />
 		</>
 	);
 }
