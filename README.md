@@ -21,8 +21,8 @@ This is a capstone project made by [Meeran Saman Jalal](https://github.com/Meera
 
 This is a monorepo built using `turborepo`. The basic structure is simple:
 
--   `apps/`: Applications like the mobile frontend and the backend are stored in the `apps/` dir.
--   `packages/`: Everything in `packages/` is a shared dependency between at least two applications.
+- `apps/`: Applications like the mobile frontend and the backend are stored in the `apps/` dir.
+- `packages/`: Everything in `packages/` is a shared dependency between at least two applications.
 
 ## Getting Started with Development/Contributing
 
@@ -78,17 +78,28 @@ This will generate all the tables in the database. It is setup so that whenever 
 
 For the pet images:
 
--   CAT - [Mikhail Vasilyev](https://unsplash.com/@miklevasilyev)
--   DOG - [Joe Caione](https://unsplash.com/@joeyc)
--   LIZARD - [Robert Koorenny](https://unsplash.com/@koorenny)
--   SNAKE - [Jordan](https://unsplash.com/@jordan_jelly)
--   FISH - [Delbert Pagayona](https://unsplash.com/@dpagayona)
--   HAMSTER - [Ricky Kharawala](https://unsplash.com/@sweetmangostudios)
--   RABBIT - [Dave Solce](https://unsplash.com/@dlsolce)
--   FERRET - [Steve Tsang](https://unsplash.com/@stevetsang)
--   GUINEAPIG - [Bonnie Kittle](https://unsplash.com/@bonniekdesign)
--   HORSE - [Lisa Lyne Blevins](https://unsplash.com/@lisablevins)
--   AMPHIBIAN - [David Clode](https://unsplash.com/@davidclode)
--   INSECT - [Julian Schultz](https://unsplash.com/@majorfluff)
--   RODENT - [Nikolett Emmert](https://unsplash.com/@niki_emmert)
--   BIRD - [Jason Hafso](https://unsplash.com/@jasonhafso)
+- CAT - [Mikhail Vasilyev](https://unsplash.com/@miklevasilyev)
+- DOG - [Joe Caione](https://unsplash.com/@joeyc)
+- LIZARD - [Robert Koorenny](https://unsplash.com/@koorenny)
+- SNAKE - [Jordan](https://unsplash.com/@jordan_jelly)
+- FISH - [Delbert Pagayona](https://unsplash.com/@dpagayona)
+- HAMSTER - [Ricky Kharawala](https://unsplash.com/@sweetmangostudios)
+- RABBIT - [Dave Solce](https://unsplash.com/@dlsolce)
+- FERRET - [Steve Tsang](https://unsplash.com/@stevetsang)
+- GUINEAPIG - [Bonnie Kittle](https://unsplash.com/@bonniekdesign)
+- HORSE - [Lisa Lyne Blevins](https://unsplash.com/@lisablevins)
+- AMPHIBIAN - [David Clode](https://unsplash.com/@davidclode)
+- INSECT - [Julian Schultz](https://unsplash.com/@majorfluff)
+- RODENT - [Nikolett Emmert](https://unsplash.com/@niki_emmert)
+- BIRD - [Jason Hafso](https://unsplash.com/@jasonhafso)
+
+For the store images:
+
+- Vet Store - [Ivan Rojas Urrea](https://unsplash.com/@ivnrjs)
+- Pet Store - [Jana Shnipelson](https://unsplash.com/@shnipelson)
+
+For products:
+
+- Pet toy - [Dorothe Wouters](https://unsplash.com/@darkmoonart)
+- Pet food - [Daniel Dan](https://unsplash.com/@outsideclick)
+- Miscellaneous - [Kelsey Dody](https://unsplash.com/@_kelseycam)

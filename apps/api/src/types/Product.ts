@@ -1,4 +1,4 @@
-import { Prisma, Product } from "@prisma/client";
+import { $Enums, Prisma, Product } from "@prisma/client";
 
 export type ProductWithoutIncludes = Prisma.ProductGetPayload<{}>;
 export type ProductWithIncludes = Prisma.ProductGetPayload<{
@@ -28,8 +28,12 @@ export type GetProductResponse = { product: ProductWithIncludes };
 export type GetAllProductsInputs = {
 	page: number;
 	storeId?: string;
+	category?: $Enums.ProductCategory;
 };
-export type GetAllProductsResponse = { products: ProductWithIncludes[] };
+export type GetAllProductsResponse = {
+	products: ProductWithIncludes[];
+	hasMore: boolean;
+};
 
 // Update product types
 

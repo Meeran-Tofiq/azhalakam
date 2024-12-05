@@ -17,6 +17,8 @@ import MyStoreScreen from "../screens/MyStoreScreen";
 import StoreCreationScreen from "../screens/StoreCreationScreen";
 import StoreDetailsScreen from "src/screens/StoreDetailsScreen";
 import StoreEditScreen from "../screens/StoreEditScreen";
+import StoreListScreen from "src/screens/StoreListScreen";
+import ProductListScreen from "src/screens/ProductsListScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -78,6 +80,11 @@ const NavigationContent = () => {
 						name="StoreEdit"
 						component={StoreEditScreen}
 					/>
+					<Stack.Screen
+						name="StoreListScreen"
+						component={StoreListScreen}
+					/>
+                    <Stack.Screen name="ProductListScreen" component={ProductListScreen} />
 				</>
 			)}
 		</Stack.Navigator>
