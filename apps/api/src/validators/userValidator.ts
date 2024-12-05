@@ -19,18 +19,15 @@ export const createUserValidator = [
 		.escape()
 		.isEmail()
 		.withMessage("Invalid email"),
-	body("password")
-		.exists()
-		.trim()
-		.escape()
-		.isLength({ min: 8 })
-		.withMessage("Password must be at least 8 characters long")
-		.matches(
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-		)
-		.withMessage(
-			"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-		),
+	body("password").exists().trim().escape(),
+	// .isLength({ min: 8 })
+	// .withMessage("Password must be at least 8 characters long")
+	// .matches(
+	// 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+	// )
+	// .withMessage(
+	// 	"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+	// )
 	body("firstName")
 		.exists()
 		.trim()
@@ -76,18 +73,15 @@ export const updateUserValidator = [
 		.escape()
 		.isEmail()
 		.withMessage("Invalid email"),
-	body("password")
-		.optional()
-		.trim()
-		.escape()
-		.isLength({ min: 8 })
-		.withMessage("Password must be at least 8 characters long")
-		.matches(
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-		)
-		.withMessage(
-			"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-		),
+	body("password").optional().trim().escape(),
+	// .isLength({ min: 8 })
+	// .withMessage("Password must be at least 8 characters long")
+	// .matches(
+	// 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+	// )
+	// .withMessage(
+	// 	"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+	// ),
 	body("firstName")
 		.optional()
 		.trim()
@@ -167,16 +161,14 @@ export const loginValidator = [
 		.escape()
 		.isEmail()
 		.withMessage("Invalid email"),
-	body("password")
-		.trim()
-		.escape()
-		.isLength({ min: 8 })
-		.withMessage("Password must be at least 8 characters long")
-		.matches(
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-		)
-		.withMessage(
-			"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-		),
+	body("password").trim().escape().exists(),
+	// .isLength({ min: 8 })
+	// .withMessage("Password must be at least 8 characters long")
+	// .matches(
+	// 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+	// )
+	// .withMessage(
+	// 	"Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+	// ),
 	validationHandler,
 ];
