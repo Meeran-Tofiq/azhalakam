@@ -69,6 +69,9 @@ const MainPage = () => {
 			case "My Pets":
 				navigation.navigate("MyPets");
 				break;
+			case "Products":
+				navigation.navigate("ProductListScreen");
+				break;
 			case "Pet Stores":
 				navigation.navigate("StoreListScreen", {
 					storeType: "PET_STORE",
@@ -101,7 +104,7 @@ const MainPage = () => {
 			label: "My Store",
 			redirection: "MyStore",
 		},
-		{ image: require("../../assets/pet-taxi.png"), label: "Pet Taxi" },
+		{ image: require("../../assets/pet-taxi.png"), label: "Products" },
 		{ image: require("../../assets/pet-date.png"), label: "Vet Stores" },
 		{ image: require("../../assets/adoption.png"), label: "Pet Stores" },
 	];

@@ -29,4 +29,5 @@ export type RootStackParamList = {
 	StoreListScreen: {
 		storeType: StoreType;
 	};
+	ProductListScreen: undefined;
 };
