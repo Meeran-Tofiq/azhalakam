@@ -17,7 +17,7 @@ echo "New term to use: '$newTerm'"
 
 # Find all files containing the old term (case-insensitive), excluding specific directories
 echo "Searching for files containing '$oldTerm' or '${oldTerm^}'..."
-files=$(find apps packages -type f \( -iname "*$oldTerm*" -o -iname "*${oldTerm^}*" \) | grep -vE "dist|prisma|node_modules")
+files=$(find apps packages -type f \( -iname "*$oldTerm*" -o -iname "*${oldTerm^}*" \) | grep -vE "dist|prisma|node_modules|native")
 
 # Check if any files were found
 if [ -z "$files" ]; then
