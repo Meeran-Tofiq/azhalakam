@@ -32,6 +32,7 @@ model User {
     serviceProviderId String?          @unique
     store             Store?
     reviews           Review[]
+    Appointment       Appointment[]
 }
 
 enum Species {
@@ -138,11 +139,12 @@ model PetStore {
 }
 
 model VetStore {
-    id       String    @id @default(uuid())
-    storeId  String    @unique
-    store    Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
-    services Service[]
-    vets     Vet[]
+    id              String            @id @default(uuid())
+    storeId         String            @unique
+    store           Store             @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    services        Service[]
+    vets            Vet[]
+    Appointment     Appointment[]
 }
 
 model Vet {
@@ -152,6 +154,24 @@ model Vet {
     vetStoreId     String?
     availability   Availability @relation(fields: [availabilityId], references: [id])
     availabilityId String       @unique
+}
+
+enum Status {
+    PENDING
+    CONFIRMED
+    CANCELLED
+}
+
+model Appointment {
+    id         String   @id @default(uuid())
+    date       DateTime
+    duration   Int
+    status     Status   @default(PENDING)
+    notes      String?
+    user       User     @relation(fields: [userId], references: [id])
+    userId     String
+    vetStore   VetStore @relation(fields: [vetStoreId], references: [id])
+    vetStoreId String
 }
 
 enum ProductCategory {
