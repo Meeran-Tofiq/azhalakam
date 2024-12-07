@@ -6,6 +6,7 @@ import useApiClient from "src/hooks/useApiClient";
 type AuthContextType = {
 	isAuthenticated: boolean;
 	user: UserWithoutPassword | null;
+	setUser: (user: UserWithoutPassword) => void;
 	token: string | null;
 	login: (userData: LoginUserResponse) => Promise<void>;
 	logout: () => Promise<void>;
@@ -74,6 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			value={{
 				isAuthenticated,
 				user,
+				setUser,
 				login,
 				logout,
 				token,
