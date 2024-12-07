@@ -73,29 +73,50 @@ const CartScreen = () => {
 						</View>
 					))
 				) : (
-					<Text style={styles.itemText}>Your cart is empty.</Text>
+					<View style={styles.emptyCartContainer}>
+						<Text style={styles.emptyCartText}>
+							There's nothing in your cart yet.
+						</Text>
+						<GenericButton
+							label="Add Items"
+							style={[
+								styles.addItemsButton,
+								styles.footerButtons,
+							]}
+							onPress={() => {
+								navigation.navigate("ProductListScreen");
+							}}
+							labelStyle={styles.addItemsButtonLabel}
+						/>
+					</View>
 				)}
-				<Text style={styles.totalText}>Total: ${totalPrice}</Text>
+				{cartItems.length > 0 && (
+					<Text style={styles.totalText}>Total: ${totalPrice}</Text>
+				)}
 			</ScrollView>
-			<View style={styles.buttonContainer}>
-				<GenericButton
-					label="Add Items"
-					style={[styles.addItemsButton, styles.footerButtons]}
-					onPress={() => {
-						navigation.navigate("ProductListScreen");
-					}}
-					labelStyle={styles.addItemsButtonLabel}
-				></GenericButton>
-				<GenericButton
-					label="Deliver Order"
-					style={styles.footerButtons}
-					onPress={() => {
-						alert(`Order is being delivered, ${user?.firstName}`);
-						clearCart();
-						navigation.navigate("MainPage");
-					}}
-				/>
-			</View>
+			{cartItems.length > 0 && (
+				<View style={styles.buttonContainer}>
+					<GenericButton
+						label="Add Items"
+						style={[styles.addItemsButton, styles.footerButtons]}
+						onPress={() => {
+							navigation.navigate("ProductListScreen");
+						}}
+						labelStyle={styles.addItemsButtonLabel}
+					></GenericButton>
+					<GenericButton
+						label="Deliver Order"
+						style={styles.footerButtons}
+						onPress={() => {
+							alert(
+								`Order is being delivered, ${user?.firstName}`
+							);
+							clearCart();
+							navigation.navigate("MainPage");
+						}}
+					/>
+				</View>
+			)}
 		</View>
 	);
 };
@@ -169,6 +190,18 @@ const styles = StyleSheet.create({
 	},
 	addItemsButtonLabel: {
 		color: "#4652cc",
+	},
+	emptyCartContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		padding: 20,
+	},
+	emptyCartText: {
+		fontSize: 18,
+		color: "#4B5563",
+		marginBottom: 20,
+		textAlign: "center",
 	},
 });
 
