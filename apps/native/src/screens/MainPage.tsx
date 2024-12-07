@@ -7,7 +7,6 @@ import {
 	ScrollView,
 	TextInput,
 	Dimensions,
-	Alert,
 	Animated,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -132,16 +131,16 @@ const MainPage = () => {
 					)}
 				</Animated.View>
 			</View>
-			<Text style={styles.title}>
-				What are you looking for,{" "}
-				<Text style={styles.highlightedText}>
-					{user?.firstName || "User"}?
-				</Text>
-			</Text>
 			<ScrollView
 				contentContainerStyle={styles.servicesContainer}
 				showsVerticalScrollIndicator={false}
 			>
+				<Text style={styles.title}>
+					What are you looking for,{" "}
+					<Text style={styles.highlightedText}>
+						{user?.firstName || "User"}?
+					</Text>
+				</Text>
 				<View style={styles.servicesGrid}>
 					{services.map((service, index) => (
 						<ServiceButton
@@ -178,7 +177,6 @@ const styles = StyleSheet.create({
 		fontSize: 34,
 		fontWeight: "600",
 		color: "#1F2937",
-		marginHorizontal: 40,
 		marginVertical: 40,
 	},
 	highlightedText: {
