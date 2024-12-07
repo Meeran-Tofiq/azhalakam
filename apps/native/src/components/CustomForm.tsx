@@ -89,6 +89,7 @@ const CustomForm = ({
 							}
 							rules={validationRules[field.name]}
 							errors={errors}
+							mode={field.dateMode}
 						/>
 					) : (
 						<FormInput

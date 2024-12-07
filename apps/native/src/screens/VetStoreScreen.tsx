@@ -23,6 +23,13 @@ const bookingFields: FormFieldConfig[] = [
 		isDate: true,
 	},
 	{
+		label: "Time",
+		name: "time",
+		keyboardType: "default",
+		isDate: true,
+		dateMode: "time",
+	},
+	{
 		label: "Duration",
 		name: "duration",
 		keyboardType: "numeric",
