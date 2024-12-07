@@ -89,4 +89,11 @@ export default {
 		Update: "/:appointmentId/update",
 		Delete: "/:appointmentId/delete",
 	},
+	Vets: {
+		Base: "/vets",
+		Create: "/create",
+		Get: "/:vetId",
+		Update: "/:vetId/update",
+		Delete: "/:vetId/delete",
+	},
 } as const;
