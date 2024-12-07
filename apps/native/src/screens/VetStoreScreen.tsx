@@ -3,17 +3,50 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "src/types/types";
 import { StyleSheet, View } from "react-native";
 import GradientBackground from "src/components/GradientBackground";
+import { Image, Text } from "react-native-elements";
+import images from "src/utils/imageImporter";
+import BackgroundImageWithTextOnTop from "src/components/BackgroundImageWithTextOnTop";
+import useApiClient from "src/hooks/useApiClient";
+import { VetStoreWithIncludes } from "../../../api/dist/src/types/VetStore";
+import { useEffect, useState } from "react";
+import VetCard from "src/components/VetCard";
 
 type VetStoreScreenRouteProp = RouteProp<RootStackParamList, "VetStoreScreen">;
 
 export default function VetStoreScreen() {
+	const [vetStore, setVetStore] = useState<VetStoreWithIncludes | undefined>(
+		undefined
+	);
 	const route = useRoute<VetStoreScreenRouteProp>();
 	const { store } = route.params;
 
+	const apiClient = useApiClient();
+
 	if (!store) return null;
 
+	const image =
+		store.type === "VET_STORE" ? images.vetStore : images.petStore;
+
+	useEffect(() => {
+		async function loadVetStoreData() {
+			try {
+				const { vetStore } =
+					await apiClient.storeApi.vetStoreApi.getVetStoreFromId({
+						id: store?.vetStore?.id || "",
+						storeId: store.id,
+					});
+
+				setVetStore(vetStore);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+
+		loadVetStoreData();
+	}, [store]);
+
 	return (
-		<View>
+		<>
 			<GradientBackground />
 			<Header
 				title={store.name}
@@ -21,19 +54,100 @@ export default function VetStoreScreen() {
 				backButtonStyle={{ color: "white" }}
 			/>
 
-			<View style={styles.container}></View>
-		</View>
+			<View style={styles.container}>
+				<BackgroundImageWithTextOnTop
+					imageSource={image}
+					texts={[store.name]}
+					shouldHaveOverlay={false}
+					backgroundImageStyle={styles.bannerImage}
+					textStyle={{ color: "#4552CB" }}
+				/>
+				<View style={styles.infoContainer}>
+					<Text style={styles.storeType}>
+						{store.type.replace("_", " ")}
+					</Text>
+					{store.avgRating !== undefined && (
+						<Text style={styles.storeRating}>
+							{store.avgRating
+								? `${store.avgRating.toFixed(1)}/5.0`
+								: "No ratings yet"}
+						</Text>
+					)}
+				</View>
+
+				<View style={styles.vetsContainer}>
+					<Text style={styles.vetsTitle}>Vets</Text>
+					{vetStore &&
+						vetStore.vets.length > 0 &&
+						vetStore.vets.map((vet) => (
+							<VetCard key={vet.id} vet={vet} />
+						))}
+				</View>
+			</View>
+		</>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		padding: 20,
-		width: "80%",
-		backgroundColor: "white",
-		borderRadius: 20,
-		marginHorizontal: "auto",
+		backgroundColor: "#fff",
+		borderRadius: 10,
+		elevation: 2,
+		flex: 1,
+		margin: 20,
+		gap: 5,
+	},
+	bannerImage: {
+		borderRadius: 10,
+	},
+	logoContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 10,
+	},
+	logoImage: {
+		width: 100,
+		height: 100,
+		borderRadius: 50,
+		alignSelf: "flex-start",
+		borderWidth: 3,
+		borderColor: "#fff",
+		marginLeft: 15,
+	},
+	infoContainer: {
+		marginTop: 10,
+		flexDirection: "row",
+		justifyContent: "space-around",
+	},
+	storeName: {
+		fontSize: 24,
+		fontWeight: "bold",
+		color: "#1F2937",
+		textAlign: "center",
+	},
+	storeType: {
+		fontSize: 16,
+		color: "#4B5563",
+		marginTop: 5,
+		textAlign: "center",
+	},
+	storeRating: {
+		fontSize: 16,
+		color: "#4B5563",
+		marginTop: 5,
+		textAlign: "center",
+	},
+	vetsContainer: {
+		gap: 10,
 		marginTop: 20,
+		borderTopColor: "#ccc",
+		borderTopWidth: 1,
+	},
+	vetsTitle: {
+		marginTop: 5,
+		fontSize: 20,
+		textAlign: "center",
+		fontWeight: "bold",
 	},
 });
