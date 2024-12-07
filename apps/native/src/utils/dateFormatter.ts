@@ -4,6 +4,7 @@ export enum DateFormats {
 	DEFAULT = "MMMM d, yyyy",
 	YEAR_MONTH_DAY = "yyyy-MM-dd",
 	DAY_MONTH_YEAR = "dd/MM/yyyy",
+	DATETIME = "MMMM d, yyyy HH:mm",
 }
 
 export function formatDate(date: Date, dateFormat?: DateFormats): string {

@@ -2802,6 +2802,7 @@
   version "0.0.0"
   dependencies:
     "@repo/typescript-config" "file:../../../AppData/Local/Yarn/Cache/v6/npm-@repo-typescript-config-0.0.0-e79bf438-b1b2-47ab-aba4-ce773abafa0f-1733572648215/node_modules/@repo/typescript-config"
+    "@repo/typescript-config" "file:../../.cache/yarn/v6/npm-@repo-typescript-config-0.0.0-8ecd7f0b-feac-47ff-94ea-7db5e082a190-1733579965767/node_modules/@repo/typescript-config"
 
 "@rollup/rollup-android-arm-eabi@4.28.0":
   version "4.28.0"
@@ -3943,7 +3944,6 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     morgan "^1.10.0"
     pg "^8.13.0"
     prisma "^5.20.0"
-
 appdirsjs@^1.2.4:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/appdirsjs/-/appdirsjs-1.2.7.tgz#50b4b7948a26ba6090d4aede2ae2dc2b051be3b3"

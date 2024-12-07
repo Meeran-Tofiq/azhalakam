@@ -32,4 +32,8 @@ export type RootStackParamList = {
 	};
 	ProductListScreen: undefined;
 	CartScreen: undefined;
+	VetStoreScreen: {
+		store: StoreWithIncludes;
+	};
+	Appointments: undefined;
 };

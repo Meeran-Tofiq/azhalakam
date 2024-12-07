@@ -5,7 +5,11 @@ import { StoreType } from "@api-types/PrismaEnums";
 import useApiClient from "src/hooks/useApiClient";
 import StoreCard from "./StoreCard";
 import { Text } from "react-native-elements";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "src/types/types";
+import { useLoading } from "src/context/LoadingContext";
 
 type PaginatedStoreListProps = {
 	storeType?: StoreType;
@@ -15,6 +19,9 @@ export default function PaginatedStoreList({
 	storeType,
 }: PaginatedStoreListProps) {
 	const apiClient = useApiClient();
+	const { setIsLoading } = useLoading();
+	const navigation =
+		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [data, setData] = useState<GetAllStoresOfPageResponse["stores"]>();
@@ -27,6 +34,7 @@ export default function PaginatedStoreList({
 
 	useEffect(() => {
 		const loadData = async () => {
+			setIsLoading(true);
 			try {
 				const { stores, hasMore } =
 					await apiClient.storeApi.getAllStoresOfPage({
@@ -38,6 +46,8 @@ export default function PaginatedStoreList({
 				setHasMore(hasMore);
 			} catch (error) {
 				console.error("Error fetching data:", error);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 
@@ -51,7 +61,24 @@ export default function PaginatedStoreList({
 			onPageChange={onPageChange}
 		>
 			{data && data.length > 0 ? (
-				data.map((store) => <StoreCard key={store.id} store={store} />)
+				data.map((store) => {
+					if (storeType === "VET_STORE") {
+						return (
+							<TouchableOpacity
+								onPress={() =>
+									navigation.navigate("VetStoreScreen", {
+										store,
+									})
+								}
+								key={store.id}
+							>
+								<StoreCard store={store} />
+							</TouchableOpacity>
+						);
+					} else if (storeType === "PET_STORE") {
+						return <StoreCard key={store.id} store={store} />;
+					}
+				})
 			) : (
 				<Text style={styles.noStoresText}>No stores found</Text>
 			)}
