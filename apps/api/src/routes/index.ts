@@ -7,6 +7,7 @@ import StoreRoutes from "./StoreRoutes";
 import PetStoreRoutes from "./PetStoreRoutes";
 import VetStoreRoutes from "./VetStoreRoutes";
 import ProductRoutes from "./ProductRoutes";
+import VetRoutes from "./VetRoutes";
 import AppointmentRoutes from "./AppointmentRoutes";
 import ReviewRoutes from "./ReviewRoutes";
 import ServiceProviderRoutes from "./ServiceProviderRoutes";
@@ -26,6 +27,7 @@ const storeRouter = Router();
 const petStoreRouter = Router({ mergeParams: true });
 const vetStoreRouter = Router({ mergeParams: true });
 const productRouter = Router();
+const vetRouter = Router();
 const appointmentRouter = Router();
 const reviewRouter = Router();
 const serviceProviderRouter = Router();
@@ -128,11 +130,18 @@ appointmentRouter.delete(
 	AppointmentRoutes.deleteOne
 );
 
+// Vet routes
+vetRouter.post(Paths.Vets.Create, ...VetRoutes.create);
+vetRouter.get(Paths.Vets.Get, VetRoutes.getOne);
+vetRouter.put(Paths.Vets.Update, ...VetRoutes.update);
+vetRouter.delete(Paths.Vets.Delete, VetRoutes.deleteOne);
+
 // Add routes to apiRouter
 apiRouter.use(Paths.Users.Base, userRouter);
 apiRouter.use(Paths.Pets.Base, petRouter);
 apiRouter.use(Paths.Stores.Base, storeRouter);
 apiRouter.use(Paths.Products.Base, productRouter);
+apiRouter.use(Paths.Vets.Base, vetRouter);
 apiRouter.use(Paths.Appointments.Base, appointmentRouter);
 apiRouter.use(Paths.Reviews.Base, reviewRouter);
 apiRouter.use(Paths.ServiceProviders.Base, serviceProviderRouter);

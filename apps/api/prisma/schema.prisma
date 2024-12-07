@@ -139,21 +139,21 @@ model PetStore {
 }
 
 model VetStore {
-    id              String            @id @default(uuid())
-    storeId         String            @unique
-    store           Store             @relation(fields: [storeId], references: [id], onDelete: Cascade)
-    services        Service[]
-    vets            Vet[]
-    Appointment     Appointment[]
+    id          String        @id @default(uuid())
+    storeId     String        @unique
+    store       Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    services    Service[]
+    vets        Vet[]
+    Appointment Appointment[]
 }
 
 model Vet {
-    id             String       @id @default(uuid())
+    id             String        @id @default(uuid())
     name           String
-    vetStore       VetStore?    @relation(fields: [vetStoreId], references: [id])
+    vetStore       VetStore?     @relation(fields: [vetStoreId], references: [id])
     vetStoreId     String?
-    availability   Availability @relation(fields: [availabilityId], references: [id])
-    availabilityId String       @unique
+    availability   Availability? @relation(fields: [availabilityId], references: [id])
+    availabilityId String?       @unique
 }
 
 enum Status {

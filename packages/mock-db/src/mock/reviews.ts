@@ -6,9 +6,9 @@ import { createdStores } from "./stores";
 export let createdReviews: ReviewWithIncludes[] = [];
 
 function initializeStoreIds() {
-    if (createdStores.length === 0) {
-        throw new Error("No stores created yet.");
-    }
+	if (createdStores.length === 0) {
+		throw new Error("No stores created yet.");
+	}
 }
 
 export default async function createReviews() {
@@ -24,7 +24,7 @@ export default async function createReviews() {
 			apiClient.setUserToken(createdUsers[usersIndex++].token);
 			const { review: createdReview } =
 				await apiClient.reviewApi.createReview({
-					review,
+					review: review.review,
 				});
 			createdReviews.push(createdReview);
 		}
