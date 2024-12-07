@@ -1,49 +1,73 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaginatedList from "./PaginatedList";
+import { ProductCategory, StoreType } from "@api-types/PrismaEnums";
+import useApiClient from "src/hooks/useApiClient";
 import ProductCard from "./ProductCard";
 import { Text } from "react-native-elements";
 import { StyleSheet } from "react-native";
-import { ProductCategory } from "@api-types/PrismaEnums";
-import Popup from "./PopUp";
+import { GetAllProductsResponse } from "../../../api/dist/src/types/Product";
+import { ProductWithIncludes } from "../../../api/dist/src/types/Product";
+// import { useLoading } from "src/context/LoadingContext";
 
 type PaginatedProductListProps = {
+	storeId?: ProductWithIncludes["id"];
 	category?: ProductCategory;
 };
 
-const hardcodedProducts = [
-	{ id: "1", name: "Pet Collar", price: 15, category: "MISCELLANEOUS" },
-	{ id: "2", name: "Cat Food", price: 5, category: "FOOD" },
-	{ id: "3", name: "Cat Toy", price: 10, category: "TOY" },
-];
-
 export default function PaginatedProductList({
+	storeId,
 	category,
 }: PaginatedProductListProps) {
-	const [data, setData] = useState(hardcodedProducts);
-	const [totalPrice, setTotalPrice] = useState(0);
-	const [popupVisible, setPopupVisible] = useState(false);
+	const apiClient = useApiClient();
+	// const { setIsLoading } = useLoading();
 
-	const handleAddToCart = (price: number) => {
-		setTotalPrice(totalPrice + price);
-		setPopupVisible(true);
-	};
+	const [currentPage, setCurrentPage] = useState(1);
+	const [data, setData] = useState<GetAllProductsResponse["products"]>();
+	const [hasMore, setHasMore] =
+		useState<GetAllProductsResponse["hasMore"]>(false);
+
+	function onPageChange(newPage: number) {
+		setCurrentPage(newPage);
+	}
+
+	useEffect(() => {
+		const loadData = async () => {
+			// setIsLoading(true);
+			try {
+				const { products, hasMore } =
+					await apiClient.productsApi.getAllProductsAtPage({
+						page: currentPage,
+						category,
+					});
+
+				setData(products);
+				setHasMore(hasMore);
+			} catch (error) {
+				console.error("Error fetching data:", error);
+			} finally {
+				// setIsLoading(false);
+			}
+		};
+		loadData();
+	}, [currentPage, category]);
 
 	return (
-		<>
-			<PaginatedList>
-				{data && data.length > 0 ? (
-					data.map((product) => (
-						<ProductCard
-							key={product.id}
-							product={product}
-							onAddToCart={() => handleAddToCart(product.price)}
-						/>
-					))
-				) : (
+		<PaginatedList
+			currentPage={currentPage}
+			hasMore={hasMore}
+			onPageChange={onPageChange}
+		>
+			{data && data.length > 0 ? (
+				data.map((product) => (
+					<ProductCard key={product.id} product={product} />
+				))
+			) : (
+				<>
 					<Text style={styles.noProductsText}>No products found</Text>
-				)}
-			</PaginatedList>
-		</>
+					<Text style={styles.noProductsText}>{currentPage}</Text>
+				</>
+			)}
+		</PaginatedList>
 	);
 }
 
