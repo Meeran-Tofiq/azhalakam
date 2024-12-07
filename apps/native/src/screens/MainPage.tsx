@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import {
 	View,
 	Text,
@@ -7,7 +7,6 @@ import {
 	ScrollView,
 	TextInput,
 	Dimensions,
-	Alert,
 	Animated,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -15,13 +14,13 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/Ionicons";
 import ServiceButton from "../components/ServiceButton";
 import { useAuth } from "../context/AuthContext";
+import { CartContext } from "../context/CartContext";
 import { RootStackParamList } from "../types/types";
 import { useFooterContext } from "src/context/FooterContext";
 
 const { width } = Dimensions.get("window");
 
 const MainPage = () => {
-	// make footer visible
 	const { setIsVisible } = useFooterContext();
 	setIsVisible(true);
 
@@ -29,6 +28,7 @@ const MainPage = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const searchWidth = useRef(new Animated.Value(40)).current;
 	const { user } = useAuth();
+	const { totalItemCount } = useContext(CartContext);
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
@@ -132,12 +132,19 @@ const MainPage = () => {
 					)}
 				</Animated.View>
 
-				<TouchableOpacity
-					onPress={() => navigation.navigate("OrderScreen")}
-					style={styles.cartButton}
-				>
-					<Icon name="cart" size={24} color="#000" />
-				</TouchableOpacity>
+				{totalItemCount > 0 && (
+					<TouchableOpacity
+						onPress={() => navigation.navigate("CartScreen")}
+						style={styles.cartButton}
+					>
+						<Icon name="cart" size={24} color="#000" />
+						<View style={styles.cartBadge}>
+							<Text style={styles.cartBadgeText}>
+								{totalItemCount}
+							</Text>
+						</View>
+					</TouchableOpacity>
+				)}
 			</View>
 			<Text style={styles.title}>
 				What are you looking for,{" "}
@@ -221,6 +228,23 @@ const styles = StyleSheet.create({
 	cartButton: {
 		marginLeft: "auto",
 		padding: 8,
+		position: "relative",
+	},
+	cartBadge: {
+		position: "absolute",
+		right: 0,
+		top: 0,
+		backgroundColor: "#6C63FF",
+		borderRadius: 10,
+		width: 20,
+		height: 20,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	cartBadgeText: {
+		color: "white",
+		fontSize: 12,
+		fontWeight: "bold",
 	},
 });
 
