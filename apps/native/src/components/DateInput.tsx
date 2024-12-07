@@ -14,6 +14,7 @@ interface DateInputProps {
 	value?: Date;
 	rules?: any;
 	errors: any;
+	mode?: "date" | "time";
 }
 
 export default function DateInput({
@@ -23,6 +24,7 @@ export default function DateInput({
 	value,
 	errors,
 	rules,
+	mode,
 }: DateInputProps) {
 	const [showPicker, setShowPicker] = useState(false);
 	const [selectedDate, setSelectedDate] = useState<Date | undefined>(value);
@@ -66,7 +68,7 @@ export default function DateInput({
 						{showPicker && (
 							<DateTimePicker
 								value={selectedDate || new Date()}
-								mode="date"
+								mode={mode || "date"}
 								display="default"
 								onChange={(event, date) =>
 									handleDateChange(onChange, event, date)
