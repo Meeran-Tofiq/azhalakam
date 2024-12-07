@@ -47,6 +47,13 @@ class AppointmentService {
 					...appointment,
 					userId,
 				},
+				include: {
+					vetStore: {
+						include: {
+							store: true,
+						},
+					},
+				},
 			});
 
 			return { appointment: createdAppointment };
@@ -70,6 +77,13 @@ class AppointmentService {
 		try {
 			const appointment = await this.prisma.appointment.findUnique({
 				where: { id },
+				include: {
+					vetStore: {
+						include: {
+							store: true,
+						},
+					},
+				},
 			});
 
 			if (!appointment)
@@ -94,6 +108,13 @@ class AppointmentService {
 		try {
 			const appointments = await this.prisma.appointment.findMany({
 				where: { userId },
+				include: {
+					vetStore: {
+						include: {
+							store: true,
+						},
+					},
+				},
 			});
 
 			if (!appointments)
@@ -127,6 +148,13 @@ class AppointmentService {
 			const appointment = await this.prisma.appointment.update({
 				where: { id },
 				data: { ...updateData },
+				include: {
+					vetStore: {
+						include: {
+							store: true,
+						},
+					},
+				},
 			});
 
 			return { appointment };
@@ -156,6 +184,13 @@ class AppointmentService {
 		try {
 			const appointment = await this.prisma.appointment.delete({
 				where: { id },
+				include: {
+					vetStore: {
+						include: {
+							store: true,
+						},
+					},
+				},
 			});
 
 			return { appointment };
