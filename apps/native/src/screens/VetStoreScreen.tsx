@@ -1,19 +1,36 @@
 import Header from "src/components/Header";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "src/types/types";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import GradientBackground from "src/components/GradientBackground";
-import { Image, Text } from "react-native-elements";
+import { Button, Text } from "react-native-elements";
 import images from "src/utils/imageImporter";
 import BackgroundImageWithTextOnTop from "src/components/BackgroundImageWithTextOnTop";
 import useApiClient from "src/hooks/useApiClient";
 import { VetStoreWithIncludes } from "../../../api/dist/src/types/VetStore";
 import { useEffect, useState } from "react";
 import VetCard from "src/components/VetCard";
+import PopUpForm from "src/components/PopUpForm";
+import FormFieldConfig from "src/types/FormFieldConfig";
 
 type VetStoreScreenRouteProp = RouteProp<RootStackParamList, "VetStoreScreen">;
 
+const bookingFields: FormFieldConfig[] = [
+	{
+		label: "Date",
+		name: "date",
+		keyboardType: "default",
+		isDate: true,
+	},
+	{
+		label: "Duration",
+		name: "duration",
+		keyboardType: "numeric",
+	},
+];
+
 export default function VetStoreScreen() {
+	const [popUpFormVisible, setPopupFormVisible] = useState(false);
 	const [vetStore, setVetStore] = useState<VetStoreWithIncludes | undefined>(
 		undefined
 	);
@@ -45,45 +62,80 @@ export default function VetStoreScreen() {
 		loadVetStoreData();
 	}, [store]);
 
+	async function bookAnAppoinment(data: any) {
+		try {
+			await apiClient.appointmentApi.createAppointment({
+				appointment: {
+					date: data.date,
+					duration: Number(data.duration),
+					vetStoreId: store?.vetStore?.id || "",
+				},
+			});
+
+			setPopupFormVisible(false);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
 	return (
 		<>
-			<GradientBackground />
-			<Header
-				title={store.name}
-				textStyle={{ color: "white" }}
-				backButtonStyle={{ color: "white" }}
-			/>
-
-			<View style={styles.container}>
-				<BackgroundImageWithTextOnTop
-					imageSource={image}
-					texts={[store.name]}
-					shouldHaveOverlay={false}
-					backgroundImageStyle={styles.bannerImage}
-					textStyle={{ color: "#4552CB" }}
+			<ScrollView>
+				<PopUpForm
+					fields={bookingFields}
+					visible={popUpFormVisible}
+					onSubmit={bookAnAppoinment}
+					submitButtonTitle="Book"
+					title="Book an appointment"
+					validationRules={{}}
+					onClose={() => setPopupFormVisible(false)}
 				/>
-				<View style={styles.infoContainer}>
-					<Text style={styles.storeType}>
-						{store.type.replace("_", " ")}
-					</Text>
-					{store.avgRating !== undefined && (
-						<Text style={styles.storeRating}>
-							{store.avgRating
-								? `${store.avgRating.toFixed(1)}/5.0`
-								: "No ratings yet"}
-						</Text>
-					)}
-				</View>
+				<GradientBackground />
+				<Header
+					title={store.name}
+					textStyle={{ color: "white" }}
+					backButtonStyle={{ color: "white" }}
+				/>
 
-				<View style={styles.vetsContainer}>
-					<Text style={styles.vetsTitle}>Vets</Text>
-					{vetStore &&
-						vetStore.vets.length > 0 &&
-						vetStore.vets.map((vet) => (
-							<VetCard key={vet.id} vet={vet} />
-						))}
+				<View style={styles.container}>
+					<BackgroundImageWithTextOnTop
+						imageSource={image}
+						texts={[store.name]}
+						shouldHaveOverlay={false}
+						backgroundImageStyle={styles.bannerImage}
+						textStyle={{ color: "#4552CB" }}
+					/>
+					<View style={styles.infoContainer}>
+						<Text style={styles.storeType}>
+							{store.type.replace("_", " ")}
+						</Text>
+						{store.avgRating !== undefined && (
+							<Text style={styles.storeRating}>
+								{store.avgRating
+									? `${store.avgRating.toFixed(1)}/5.0`
+									: "No ratings yet"}
+							</Text>
+						)}
+					</View>
+
+					<View style={styles.vetsContainer}>
+						<Text style={styles.vetsTitle}>Vets</Text>
+						{vetStore &&
+							vetStore.vets.length > 0 &&
+							vetStore.vets.map((vet) => (
+								<VetCard key={vet.id} vet={vet} />
+							))}
+					</View>
 				</View>
-			</View>
+				<View style={styles.appointmentBookingContainer}>
+					<Button
+						buttonStyle={styles.appointmentBookingButton}
+						title="Book an Appointment"
+						onPress={() => setPopupFormVisible(true)}
+					/>
+				</View>
+			</ScrollView>
+			{popUpFormVisible && <View style={styles.popUpShadow}></View>}
 		</>
 	);
 }
@@ -149,5 +201,25 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		textAlign: "center",
 		fontWeight: "bold",
+	},
+	appointmentBookingContainer: {
+		width: "100%",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	appointmentBookingButton: {
+		backgroundColor: "#4552CB",
+		color: "#fff",
+		padding: 15,
+	},
+	popUpShadow: {
+		height: "100%",
+		width: "100%",
+		position: "absolute",
+		top: 0,
+		left: 0,
+		backgroundColor: "black",
+		flex: 1,
+		opacity: 0.5,
 	},
 });
