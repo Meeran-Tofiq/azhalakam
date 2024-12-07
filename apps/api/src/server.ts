@@ -39,6 +39,11 @@ if (EnvVars.NodeEnv === NodeEnvs.Production.valueOf()) {
 // extract JWT token
 app.use(extractJwtMiddleware);
 
+app.use((req, res, next) => {
+	const delay = Math.floor(Math.random() * 600);
+	setTimeout(next, delay);
+});
+
 // Add APIs, must be after middleware
 app.use(Paths.Base, BaseRouter);
 
