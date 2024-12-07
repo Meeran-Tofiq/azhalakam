@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import VetCard from "src/components/VetCard";
 import PopUpForm from "src/components/PopUpForm";
 import FormFieldConfig from "src/types/FormFieldConfig";
+import { useLoading } from "src/context/LoadingContext";
 
 type VetStoreScreenRouteProp = RouteProp<RootStackParamList, "VetStoreScreen">;
 
@@ -43,6 +44,7 @@ export default function VetStoreScreen() {
 	);
 	const route = useRoute<VetStoreScreenRouteProp>();
 	const { store } = route.params;
+	const { setIsLoading } = useLoading();
 
 	const apiClient = useApiClient();
 
@@ -53,6 +55,7 @@ export default function VetStoreScreen() {
 
 	useEffect(() => {
 		async function loadVetStoreData() {
+			setIsLoading(true);
 			try {
 				const { vetStore } =
 					await apiClient.storeApi.vetStoreApi.getVetStoreFromId({
@@ -63,6 +66,8 @@ export default function VetStoreScreen() {
 				setVetStore(vetStore);
 			} catch (error) {
 				console.error(error);
+			} finally {
+				setIsLoading(false);
 			}
 		}
 

@@ -5,15 +5,18 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import AppointmentCard from "src/components/AppointmentCard";
 import Header from "src/components/Header";
+import { useLoading } from "src/context/LoadingContext";
 
 export default function AppointmentsScreen() {
 	const apiClient = useApiClient();
 	const [appointments, setAppointments] = useState<AppointmentWithIncludes[]>(
 		[]
 	);
+	const { setIsLoading } = useLoading();
 
 	useEffect(() => {
 		async function loadAppointments() {
+			setIsLoading(true);
 			try {
 				const { appointments } =
 					await apiClient.appointmentApi.getAllAppointmentsOfUser();
@@ -21,11 +24,13 @@ export default function AppointmentsScreen() {
 				setAppointments(appointments);
 			} catch (error) {
 				console.error(error);
+			} finally {
+				setIsLoading(false);
 			}
 		}
 
 		loadAppointments();
-	});
+	}, []);
 
 	return (
 		<>
