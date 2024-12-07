@@ -6,19 +6,22 @@ import i18n from "./src/i18n";
 import { LanguageDirectionProvider } from "./src/context/LanguageDirectionContext";
 import Footer from "src/components/Footer";
 import { FooterProvider } from "src/context/FooterContext";
+import { CartProvider } from "src/context/CartContext";
 
 export default function Native() {
 	i18n.changeLanguage("en");
 	return (
-		<I18nextProvider i18n={i18n}>
-			<LanguageDirectionProvider>
-				<FooterProvider>
-					<Navigation />
-					<Footer />
-					<StatusBar style="auto" />
-				</FooterProvider>
-			</LanguageDirectionProvider>
-		</I18nextProvider>
+		<CartProvider>
+			<I18nextProvider i18n={i18n}>
+				<LanguageDirectionProvider>
+					<FooterProvider>
+						<Navigation />
+						<Footer />
+						<StatusBar style="auto" />
+					</FooterProvider>
+				</LanguageDirectionProvider>
+			</I18nextProvider>
+		</CartProvider>
 	);
 }
 
