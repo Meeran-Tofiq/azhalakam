@@ -21,6 +21,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import StoreListScreen from "src/screens/StoreListScreen";
 import ProductListScreen from "src/screens/ProductsListScreen";
 import VetStoreScreen from "src/screens/VetStoreScreen";
+import AppointmentsScreen from "src/screens/AppointmentsScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -93,6 +94,7 @@ const NavigationContent = () => {
 						name="VetStoreScreen"
 						component={VetStoreScreen}
 					/>
+                    <Stack.Screen name="Appointments" component={AppointmentsScreen}/>
 				</>
 			)}
 		</Stack.Navigator>
