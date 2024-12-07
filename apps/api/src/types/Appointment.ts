@@ -1,7 +1,13 @@
 import { Prisma, Appointment } from "@prisma/client";
 
 export type AppointmentWithIncludes = Prisma.AppointmentGetPayload<{
-	include: {};
+	include: {
+		vetStore: {
+			include: {
+				store: true;
+			};
+		};
+	};
 }>;
 
 // Create a appointment types

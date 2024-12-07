@@ -34,4 +34,5 @@ export type RootStackParamList = {
 	VetStoreScreen: {
 		store: StoreWithIncludes;
 	};
+	Appointments: undefined;
 };
