@@ -31,4 +31,7 @@ export type RootStackParamList = {
 		storeType: StoreType;
 	};
 	ProductListScreen: undefined;
+	VetStoreScreen: {
+		store: StoreWithIncludes;
+	};
 };

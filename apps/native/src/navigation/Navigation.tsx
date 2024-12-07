@@ -20,6 +20,7 @@ import StoreEditScreen from "../screens/StoreEditScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import StoreListScreen from "src/screens/StoreListScreen";
 import ProductListScreen from "src/screens/ProductsListScreen";
+import VetStoreScreen from "src/screens/VetStoreScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -55,23 +56,18 @@ const NavigationContent = () => {
 			) : (
 				// App screens
 				<>
-					<>
-						<Stack.Screen name="MainPage" component={MainPage} />
-						<Stack.Screen
-							name="Profile"
-							component={ProfileScreen}
-						/>
-						<Stack.Screen name="MyPets" component={MyPetsScreen} />
-						<Stack.Screen name="AddPet" component={AddPetScreen} />
-						<Stack.Screen
-							name="PetDetails"
-							component={PetDetailsScreen}
-						/>
-						<Stack.Screen
-							name="UpdatePet"
-							component={UpdatePetScreen}
-						/>
-					</>
+					<Stack.Screen name="MainPage" component={MainPage} />
+					<Stack.Screen name="Profile" component={ProfileScreen} />
+					<Stack.Screen name="MyPets" component={MyPetsScreen} />
+					<Stack.Screen name="AddPet" component={AddPetScreen} />
+					<Stack.Screen
+						name="PetDetails"
+						component={PetDetailsScreen}
+					/>
+					<Stack.Screen
+						name="UpdatePet"
+						component={UpdatePetScreen}
+					/>
 					<Stack.Screen name="MyStore" component={MyStoreScreen} />
 					<Stack.Screen
 						name="StoreCreation"
@@ -89,7 +85,14 @@ const NavigationContent = () => {
 						name="StoreListScreen"
 						component={StoreListScreen}
 					/>
-                    <Stack.Screen name="ProductListScreen" component={ProductListScreen} />
+					<Stack.Screen
+						name="ProductListScreen"
+						component={ProductListScreen}
+					/>
+					<Stack.Screen
+						name="VetStoreScreen"
+						component={VetStoreScreen}
+					/>
 				</>
 			)}
 		</Stack.Navigator>
