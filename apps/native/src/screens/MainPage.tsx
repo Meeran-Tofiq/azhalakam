@@ -131,6 +131,13 @@ const MainPage = () => {
 						/>
 					)}
 				</Animated.View>
+
+				<TouchableOpacity
+					onPress={() => navigation.navigate("OrderScreen")}
+					style={styles.cartButton}
+				>
+					<Icon name="cart" size={24} color="#000" />
+				</TouchableOpacity>
 			</View>
 			<Text style={styles.title}>
 				What are you looking for,{" "}
@@ -210,6 +217,10 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		flexWrap: "wrap",
 		justifyContent: "space-between",
+	},
+	cartButton: {
+		marginLeft: "auto",
+		padding: 8,
 	},
 });
 
