@@ -30,7 +30,7 @@ export default function ProductListScreen() {
 
 	return (
 		<>
-			<Header title={title + " Products"} />
+			<Header title={"Products"} />
 			<Picker
 				selectedValue={productCategory}
 				onValueChange={(itemValue) => setProductCategory(itemValue)}

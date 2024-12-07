@@ -2801,6 +2801,7 @@
 "@repo/typescript-config@file:packages/typescript-config":
   version "0.0.0"
   dependencies:
+    "@repo/typescript-config" "file:../../../AppData/Local/Yarn/Cache/v6/npm-@repo-typescript-config-0.0.0-e79bf438-b1b2-47ab-aba4-ce773abafa0f-1733572648215/node_modules/@repo/typescript-config"
     "@repo/typescript-config" "file:../../.cache/yarn/v6/npm-@repo-typescript-config-0.0.0-8ecd7f0b-feac-47ff-94ea-7db5e082a190-1733579965767/node_modules/@repo/typescript-config"
 
 "@rollup/rollup-android-arm-eabi@4.28.0":
@@ -3914,6 +3915,35 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
+"api-client@file:packages/api-client":
+  version "0.0.0"
+  dependencies:
+    "@prisma/client" "^5.20.0"
+    api-client "file:../../../AppData/Local/Yarn/Cache/v6/npm-api-client-0.0.0-3484f807-b308-4fcc-9952-caa098f475d0-1733572648214/node_modules/api-client"
+    prisma "^5.20.0"
+
+"api@file:apps/api":
+  version "0.0.0"
+  dependencies:
+    "@prisma/client" "^5.20.0"
+    api "file:../../../AppData/Local/Yarn/Cache/v6/npm-api-0.0.0-5961ec4e-f27e-4d00-abbf-23e2982b6269-1733572648216/node_modules/api"
+    bcryptjs "^2.4.3"
+    cookie-parser "^1.4.6"
+    dotenv "^16.4.5"
+    express "^4.21.0"
+    express-async-errors "^3.1.1"
+    express-validator "^7.2.0"
+    helmet "^8.0.0"
+    inserturlparams "^2.0.4"
+    jet-logger "^2.0.1"
+    jet-paths "^1.0.9"
+    jsonfile "^6.1.0"
+    jsonwebtoken "^9.0.2"
+    module-alias "^2.2.3"
+    moment "^2.30.1"
+    morgan "^1.10.0"
+    pg "^8.13.0"
+    prisma "^5.20.0"
 appdirsjs@^1.2.4:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/appdirsjs/-/appdirsjs-1.2.7.tgz#50b4b7948a26ba6090d4aede2ae2dc2b051be3b3"
@@ -9362,6 +9392,12 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
+
+"mock-db@file:packages/mock-db":
+  version "1.0.0"
+  dependencies:
+    api-client "*"
+    mock-db "file:../../../AppData/Local/Yarn/Cache/v6/npm-mock-db-1.0.0-a3fc490a-5f82-4ee3-ac60-9aedbb7dfdec-1733572648213/node_modules/mock-db"
 
 module-alias@^2.2.3:
   version "2.2.3"

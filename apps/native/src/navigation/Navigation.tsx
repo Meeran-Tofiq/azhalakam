@@ -20,6 +20,7 @@ import StoreEditScreen from "../screens/StoreEditScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import StoreListScreen from "src/screens/StoreListScreen";
 import ProductListScreen from "src/screens/ProductsListScreen";
+import CartScreen from "../screens/CartScreen";
 import VetStoreScreen from "src/screens/VetStoreScreen";
 import AppointmentsScreen from "src/screens/AppointmentsScreen";
 
@@ -90,6 +91,7 @@ const NavigationContent = () => {
 						name="ProductListScreen"
 						component={ProductListScreen}
 					/>
+					<Stack.Screen name="CartScreen" component={CartScreen} />
 					<Stack.Screen
 						name="VetStoreScreen"
 						component={VetStoreScreen}

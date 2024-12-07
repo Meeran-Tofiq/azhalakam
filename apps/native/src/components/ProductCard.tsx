@@ -1,14 +1,18 @@
-import { StyleSheet, Text, View } from "react-native";
+import React, { useContext } from "react";
+import { StyleSheet, Text, View, Button } from "react-native";
 import { ProductWithIncludes } from "../../../api/dist/src/types/Product";
 import images from "src/utils/imageImporter";
 import { Image } from "react-native-elements";
 import LanguageRowView from "./LanguageView";
+import { CartContext } from "../context/CartContext";
 
 interface ProductCardProps {
 	product: ProductWithIncludes;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+	const { addToCart } = useContext(CartContext);
+
 	let image;
 	switch (product.category) {
 		case "FOOD":
@@ -28,6 +32,10 @@ export default function ProductCard({ product }: ProductCardProps) {
 			<View style={styles.infoContainer}>
 				<Text style={styles.productName}>{product.name}</Text>
 				<Text style={styles.productInfoText}>${product.price}</Text>
+				<Button
+					title="Add to Cart"
+					onPress={() => addToCart({ ...product, image })}
+				/>
 			</View>
 		</LanguageRowView>
 	);
@@ -47,7 +55,7 @@ const styles = StyleSheet.create({
 	productImage: {
 		width: 100,
 		height: 100,
-		borderRadius: 5,
+		borderRadius: 16,
 		borderWidth: 2,
 		borderColor: "#4552CB",
 	},
