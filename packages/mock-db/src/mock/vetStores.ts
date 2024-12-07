@@ -5,6 +5,12 @@ import apiClient from "../util/apiClientImport";
 export let createdVetStores: VetStoreWithIncludes[] = [];
 
 export default async function createVetStores() {
+    if (createdStores.length === 0) {
+        throw new Error("No stores created yet.");
+    }
+
+    console.info("VetStores: Creating...");
+
 	for (const store of createdStores) {
 		if (store.type !== "VET_STORE") continue;
 
@@ -16,4 +22,6 @@ export default async function createVetStores() {
 
 		createdVetStores.push(vetStore);
 	}
+
+    console.info("VetStores: created.");
 }

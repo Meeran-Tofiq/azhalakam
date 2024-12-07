@@ -5,6 +5,12 @@ import apiClient from "../util/apiClientImport";
 export let createdVets: VetWithIncludes[] = [];
 
 export default async function createVets() {
+	if (createdVetStores.length === 0) {
+		throw new Error("No vet stores created yet.");
+	}
+
+	console.info("Vets: Creating...");
+
 	for (const vetStore of createdVetStores) {
 		for (const vetInput of vets) {
 			const { vet: createdVet } = await apiClient.vetApi.createVet({
@@ -17,6 +23,8 @@ export default async function createVets() {
 			createdVets.push(createdVet);
 		}
 	}
+
+	console.info("Vets: created.");
 }
 
 const vets: CreateVetInputs[] = [
