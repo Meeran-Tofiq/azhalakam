@@ -1,68 +1,49 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PaginatedList from "./PaginatedList";
-import { ProductCategory, StoreType } from "@api-types/PrismaEnums";
-import useApiClient from "src/hooks/useApiClient";
 import ProductCard from "./ProductCard";
 import { Text } from "react-native-elements";
 import { StyleSheet } from "react-native";
-import { GetAllProductsResponse } from "../../../api/dist/src/types/Product";
-import { ProductWithIncludes } from "../../../api/dist/src/types/Product";
+import { ProductCategory } from "@api-types/PrismaEnums";
+import Popup from "./PopUp";
 
 type PaginatedProductListProps = {
-	storeId?: ProductWithIncludes["id"];
 	category?: ProductCategory;
 };
 
+const hardcodedProducts = [
+	{ id: "1", name: "Pet Collar", price: 15, category: "MISCELLANEOUS" },
+	{ id: "2", name: "Cat Food", price: 5, category: "FOOD" },
+	{ id: "3", name: "Cat Toy", price: 10, category: "TOY" },
+];
+
 export default function PaginatedProductList({
-	storeId,
 	category,
 }: PaginatedProductListProps) {
-	const apiClient = useApiClient();
+	const [data, setData] = useState(hardcodedProducts);
+	const [totalPrice, setTotalPrice] = useState(0);
+	const [popupVisible, setPopupVisible] = useState(false);
 
-	const [currentPage, setCurrentPage] = useState(1);
-	const [data, setData] = useState<GetAllProductsResponse["products"]>();
-	const [hasMore, setHasMore] =
-		useState<GetAllProductsResponse["hasMore"]>(false);
-
-	function onPageChange(newPage: number) {
-		setCurrentPage(newPage);
-	}
-
-	useEffect(() => {
-		const loadData = async () => {
-			try {
-				const { products, hasMore } =
-					await apiClient.productsApi.getAllProductsAtPage({
-						page: currentPage,
-						category,
-					});
-
-				setData(products);
-				setHasMore(hasMore);
-			} catch (error) {
-				console.error("Error fetching data:", error);
-			}
-		};
-		loadData();
-	}, [currentPage, category]);
+	const handleAddToCart = (price: number) => {
+		setTotalPrice(totalPrice + price);
+		setPopupVisible(true);
+	};
 
 	return (
-		<PaginatedList
-			currentPage={currentPage}
-			hasMore={hasMore}
-			onPageChange={onPageChange}
-		>
-			{data && data.length > 0 ? (
-				data.map((product) => (
-					<ProductCard key={product.id} product={product} />
-				))
-			) : (
-				<>
+		<>
+			<PaginatedList>
+				{data && data.length > 0 ? (
+					data.map((product) => (
+						<ProductCard
+							key={product.id}
+							product={product}
+							onAddToCart={() => handleAddToCart(product.price)}
+						/>
+					))
+				) : (
 					<Text style={styles.noProductsText}>No products found</Text>
-					<Text style={styles.noProductsText}>{currentPage}</Text>
-				</>
-			)}
-		</PaginatedList>
+				)}
+			</PaginatedList>
+		</>
 	);
 }
 
