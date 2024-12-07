@@ -9,6 +9,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "src/types/types";
+import { useLoading } from "src/context/LoadingContext";
 
 type PaginatedStoreListProps = {
 	storeType?: StoreType;
@@ -18,6 +19,7 @@ export default function PaginatedStoreList({
 	storeType,
 }: PaginatedStoreListProps) {
 	const apiClient = useApiClient();
+	const { setIsLoading } = useLoading();
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
@@ -32,6 +34,7 @@ export default function PaginatedStoreList({
 
 	useEffect(() => {
 		const loadData = async () => {
+			setIsLoading(true);
 			try {
 				const { stores, hasMore } =
 					await apiClient.storeApi.getAllStoresOfPage({
@@ -43,6 +46,8 @@ export default function PaginatedStoreList({
 				setHasMore(hasMore);
 			} catch (error) {
 				console.error("Error fetching data:", error);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 

@@ -6,19 +6,24 @@ import i18n from "./src/i18n";
 import { LanguageDirectionProvider } from "./src/context/LanguageDirectionContext";
 import Footer from "src/components/Footer";
 import { FooterProvider } from "src/context/FooterContext";
+import { LoadingProvider } from "src/context/LoadingContext";
+import LoadingOverlay from "src/screens/LoadingOverlay";
 
 export default function Native() {
 	i18n.changeLanguage("en");
 	return (
-		<I18nextProvider i18n={i18n}>
-			<LanguageDirectionProvider>
-				<FooterProvider>
-					<Navigation />
-					<Footer />
-					<StatusBar style="auto" />
-				</FooterProvider>
-			</LanguageDirectionProvider>
-		</I18nextProvider>
+		<LoadingProvider>
+			<I18nextProvider i18n={i18n}>
+				<LanguageDirectionProvider>
+					<FooterProvider>
+						<Navigation />
+						<LoadingOverlay />
+						<Footer />
+						<StatusBar style="auto" />
+					</FooterProvider>
+				</LanguageDirectionProvider>
+			</I18nextProvider>
+		</LoadingProvider>
 	);
 }
 

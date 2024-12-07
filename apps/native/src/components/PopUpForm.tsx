@@ -3,6 +3,7 @@ import { Modal } from "react-native";
 import CustomForm from "./CustomForm";
 import FormFieldConfig from "src/types/FormFieldConfig";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useLoading } from "src/context/LoadingContext";
 
 interface PopupProps {
 	visible: boolean;
@@ -23,6 +24,7 @@ const PopUpForm: React.FC<PopupProps> = ({
 	validationRules,
 }) => {
 	const { reset } = useForm();
+    const { setIsLoading } = useLoading();
 
 	useEffect(() => {
 		if (!visible) {

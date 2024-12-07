@@ -8,15 +8,17 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "src/types/types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Header from "src/components/Header";
+import { useLoading } from "src/context/LoadingContext";
 
 export default function MyPetsScreen() {
-	const [isLoading, setIsLoading] = useState(true);
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const [pets, setPets] = useState<GetAllUserPetsResponse["pets"]>();
 	const apiClient = useApiClient();
+	const { setIsLoading } = useLoading();
 
 	async function getAllPets() {
+		setIsLoading(true);
 		const data = await apiClient.petApi.getAllPetsOfUser();
 		setPets(data.pets);
 		setIsLoading(false);
@@ -34,7 +36,7 @@ export default function MyPetsScreen() {
 		<View style={styles.container}>
 			<Header title="My Pets" />
 
-			{isLoading ? null : pets ? (
+			{pets ? (
 				<ScrollView>
 					<View style={styles.cardsContainer}>
 						{pets.map((pet) => (

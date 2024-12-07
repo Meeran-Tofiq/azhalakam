@@ -9,15 +9,17 @@ import GenericButton from "../components/GenericButton";
 import Header from "../components/Header";
 import StoreCard from "../components/StoreCard";
 import LoadingIndicator from "../components/LoadingIndicator";
+import { useLoading } from "src/context/LoadingContext";
 
 const MyStoreScreen = () => {
 	const navigation =
 		useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const apiClient = useApiClient();
 	const [store, setStore] = useState<any>(null);
-	const [loading, setLoading] = useState(true);
+	const { setIsLoading } = useLoading();
 
 	const fetchStore = async () => {
+		setIsLoading(true);
 		try {
 			const storeData = await apiClient.storeApi.getAllStoresOfUser();
 			if (storeData.stores.length > 0) {
@@ -28,13 +30,12 @@ const MyStoreScreen = () => {
 		} catch (error) {
 			console.error("Error fetching store:", error);
 		} finally {
-			setLoading(false);
+			setIsLoading(false);
 		}
 	};
 
 	useFocusEffect(
 		useCallback(() => {
-			setLoading(true);
 			fetchStore();
 		}, [])
 	);
@@ -42,10 +43,6 @@ const MyStoreScreen = () => {
 	const handleCreateStore = () => {
 		navigation.navigate("StoreCreation");
 	};
-
-	if (loading) {
-		return <LoadingIndicator />;
-	}
 
 	if (!store) {
 		return (

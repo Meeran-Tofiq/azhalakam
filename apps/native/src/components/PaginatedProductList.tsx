@@ -7,6 +7,7 @@ import { Text } from "react-native-elements";
 import { StyleSheet } from "react-native";
 import { GetAllProductsResponse } from "../../../api/dist/src/types/Product";
 import { ProductWithIncludes } from "../../../api/dist/src/types/Product";
+import { useLoading } from "src/context/LoadingContext";
 
 type PaginatedProductListProps = {
 	storeId?: ProductWithIncludes["id"];
@@ -18,6 +19,7 @@ export default function PaginatedProductList({
 	category,
 }: PaginatedProductListProps) {
 	const apiClient = useApiClient();
+	const { setIsLoading } = useLoading();
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [data, setData] = useState<GetAllProductsResponse["products"]>();
@@ -30,6 +32,7 @@ export default function PaginatedProductList({
 
 	useEffect(() => {
 		const loadData = async () => {
+			setIsLoading(true);
 			try {
 				const { products, hasMore } =
 					await apiClient.productsApi.getAllProductsAtPage({
@@ -41,6 +44,8 @@ export default function PaginatedProductList({
 				setHasMore(hasMore);
 			} catch (error) {
 				console.error("Error fetching data:", error);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 		loadData();
