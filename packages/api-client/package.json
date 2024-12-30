@@ -12,6 +12,7 @@
 		"node": ">=16.0.0"
 	},
 	"dependencies": {
+		"api": "*",
 		"@prisma/client": "^5.20.0",
 		"prisma": "^5.20.0"
 	},
