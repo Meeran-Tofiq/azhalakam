@@ -4,7 +4,7 @@ const en: TranslationKeys = {
 	greeting: "Hello",
 	onboarding: [
 		{
-			title: "Welcome to Pet Care",
+			title: "Welcome to Azhalakam",
 			description:
 				"All types of services for your pet in one place, instantly searchable.",
 		},
