@@ -6,7 +6,7 @@
 		"dev": "nodemon --exec \"node ./preload.js && npx ts-node ./src\" --watch ./src -e ts",
 		"lint": "npx eslint ./src",
 		"lint:tests": "npx eslint ./spec",
-		"test": "NODE_ENV=test jest --watch"
+		"test": "jest"
 	},
 	"engines": {
 		"node": ">=16.0.0"
