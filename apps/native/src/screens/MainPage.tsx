@@ -83,13 +83,13 @@ const MainPage = () => {
 			label: "My Pets",
 			redirection: "MyPets",
 		},
-		{ image: require("../../assets/grooming.png"), label: "Grooming" },
-		{ image: require("../../assets/pet-store.png"), label: "Pet Store" },
-		{ image: require("../../assets/pet-sitter.png"), label: "Pet Sitter" },
-		{
-			image: require("../../assets/info-graphics.png"),
-			label: "Info-graphics",
-		},
+		// { image: require("../../assets/grooming.png"), label: "Grooming" },
+		// { image: require("../../assets/pet-store.png"), label: "Pet Store" },
+		// { image: require("../../assets/pet-sitter.png"), label: "Pet Sitter" },
+		// {
+		// 	image: require("../../assets/info-graphics.png"),
+		// 	label: "Info-graphics",
+		// },
 		{
 			image: require("../../assets/my-store.png"),
 			label: "My Store",
