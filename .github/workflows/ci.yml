@@ -43,8 +43,11 @@ jobs:
               with:
                   node-version: "18"
 
+            - name: Install Frontend Dependencies
+              run: cd apps/native && yarn install
+
             - name: Run Frontend Tests
-              run: cd apps/native && yarn test
+              run: yarn test
 
     test-backend:
         runs-on: ubuntu-latest
@@ -57,5 +60,8 @@ jobs:
               with:
                   node-version: "18"
 
+            - name: Install Backend Dependencies
+              run: cd apps/api && yarn install
+
             - name: Run Backend Tests
-              run: cd apps/api && yarn test
+              run: yarn test
