@@ -39,9 +39,14 @@ export default class StoreApi {
 			);
 
 		try {
-			const response = await fetch(`${this.storeUrl}/all`, {
-				headers: { Authorization: `Bearer ${userToken.getToken()}` },
-			});
+			const response = await fetch(
+				`${this.storeUrl}/user/${userToken.getToken()}`,
+				{
+					headers: {
+						Authorization: `Bearer ${userToken.getToken()}`,
+					},
+				}
+			);
 
 			if (!response.ok) {
 				throw new Error(response.statusText);
