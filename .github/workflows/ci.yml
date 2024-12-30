@@ -47,7 +47,7 @@ jobs:
               run: cd apps/native && yarn install
 
             - name: Run Frontend Tests
-              run: yarn test
+              run: cd apps/native && yarn test
 
     test-backend:
         runs-on: ubuntu-latest
@@ -64,4 +64,4 @@ jobs:
               run: cd apps/api && yarn install
 
             - name: Run Backend Tests
-              run: yarn test
+              run: cd apps/api && yarn test
