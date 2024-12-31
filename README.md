@@ -9,6 +9,18 @@
 
 ```
 
+## Table of Content
+
+* [About](#about)
+* [Structure of the Repo](#structure-of-the-repo)
+* [Getting Started with Development/Contributing](#getting-started-with-developmentcontributing)
+  * [Environment Variables](#environment-variables)
+    * [Backend](#backend)
+    * [Frontend](#frontend)
+  * [Database](#database)
+    * [Prisma Migrations](#prisma-migrations)
+* [Credits](#credits)
+
 ## About
 
 Azhalakam is a mobile app that helps users with all things pet related. Our app lets you order pet food, book services for you pets like pet-sitting, walkers, and groomers, and view and compare all the local veternary clinics around you. If you like working with animals and want to make some extra cash, you can put yourself as a service provider and list whatever services that you are able to provide with your own custom fees. If you have a vet clinic and want to list your clinic on our app, you can do so with ust the click of a button!
@@ -16,6 +28,8 @@ Azhalakam is a mobile app that helps users with all things pet related. Our app 
 The app consists of a main monorepo, with two applications that are fleshed out within. The first is an Express based backend that has a PostgreSQL database and uses Prisma to facilitate all interactions with it. The frontend consists of a React Native/Expo mobile app, that then interacts with the backend to get the necessary information.
 
 This is a capstone project made by [Meeran Saman Jalal](https://github.com/Meeran-Tofiq) and [Mohammed Fryad Saleem](https://github.com/MohammedF02), supervised by Dr. Hoger Mahmud.
+
+The design of this app was made using a Figma template that we then edited to fit our needs. The original creator seems to have removed their original template, and thus we can't link to it.
 
 ## Structure of the Repo
 
