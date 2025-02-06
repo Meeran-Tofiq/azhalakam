@@ -9,6 +9,24 @@
 
 ```
 
+## Table of Content
+
+* [Demo Videos](#demo-videos)
+* [About](#about)
+* [Structure of the Repo](#structure-of-the-repo)
+* [Getting Started with Development/Contributing](#getting-started-with-developmentcontributing)
+  * [Environment Variables](#environment-variables)
+    * [Backend](#backend)
+    * [Frontend](#frontend)
+  * [Database](#database)
+    * [Prisma Migrations](#prisma-migrations)
+* [Credits](#credits)
+
+
+## Demo Videos
+
+
+
 https://github.com/user-attachments/assets/86e966fc-4bf1-4720-a85b-5c88f8a4c962
 
 
@@ -32,18 +50,6 @@ https://github.com/user-attachments/assets/46c7117b-8858-42ae-aee1-7b600e18d6a0
 https://github.com/user-attachments/assets/2efdf7e9-b3c9-43e0-97c7-83289a436e5d
 
 
-
-## Table of Content
-
-* [About](#about)
-* [Structure of the Repo](#structure-of-the-repo)
-* [Getting Started with Development/Contributing](#getting-started-with-developmentcontributing)
-  * [Environment Variables](#environment-variables)
-    * [Backend](#backend)
-    * [Frontend](#frontend)
-  * [Database](#database)
-    * [Prisma Migrations](#prisma-migrations)
-* [Credits](#credits)
 
 ## About
 
